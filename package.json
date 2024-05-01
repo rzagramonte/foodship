@@ -1,0 +1,25 @@
+{
+  "name": "foodship",
+  "version": "1.0.0",
+  "description": "app that fosters deep connections over food",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzagramonte/foodship.git"
+  },
+  "keywords": [
+    "friends",
+    "connection",
+    "food"
+  ],
+  "author": "Roosiel Agramonte",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rzagramonte/foodship/issues"
+  },
+  "homepage": "https://github.com/rzagramonte/foodship#readme"
+}
