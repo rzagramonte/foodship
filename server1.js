@@ -3,7 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default;
+const MongoDB = require("connect-mongo");
+//Use .env file in config folder
+require("dotenv").config({ path: "./config/.env" });
+const mongoURL = process.env.MONGO_URL
+//const mongoStore = MongoDB.create(mongoURL);
+
 const methodOverride = require("method-override");
 const flash = require("express-flash");
 const logger = require("morgan");
@@ -11,8 +16,7 @@ const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
 const postRoutes = require("./routes/posts");
 
-//Use .env file in config folder
-require("dotenv").config({ path: "./config/.env" });
+
 
 // Passport config
 require("./config/passport")(passport);
@@ -37,26 +41,20 @@ app.use(logger("dev"));
 app.use(methodOverride("_method"));
 
 // Setup Sessions - stored in MongoDB
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,},
-    {store:  async function connectToMongoDB() {
-      try {
-        await mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-        console.log('Connected to MongoDB');
-      } catch (error) {
-        console.error('MongoDB connection error:', error);
-      }
-    },
-  })
-);
+console.log(process.env.MONGO_URL);
+try{
+  app.use(
+    session({
+      secret: "keyboard cat",
+      resave: false,
+      saveUninitialized: false,
+      store: mongoose.connect(mongoURL),
+    })
+  );
+}catch(error){
+  console.error("Error creating session middleware:", error);
+}
 
-/*
-MongoStore.create('mongodb://localhost:27017/Foodship'
-
-*/
 
 // Passport middleware
 app.use(passport.initialize());
@@ -74,3 +72,4 @@ app.use("/post", postRoutes);
 app.listen(process.env.PORT, () => {
   console.log("Server is running, you better catch it!");
 });
+
