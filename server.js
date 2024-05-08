@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const MongoStore = require("connect-mongo").default;
+const MongoStore = require("connect-mongo");
 const methodOverride = require("method-override");
 const flash = require("express-flash");
 const logger = require("morgan");
@@ -41,22 +41,11 @@ app.use(
   session({
     secret: "keyboard cat",
     resave: false,
-    saveUninitialized: false,},
-    {store:  async function connectToMongoDB() {
-      try {
-        await mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-        console.log('Connected to MongoDB');
-      } catch (error) {
-        console.error('MongoDB connection error:', error);
-      }
-    },
-  })
+    saveUninitialized: false,
+    store: MongoStore.create({mongoUrl:process.env.DB_STRING})
+  }
+ )
 );
-
-/*
-MongoStore.create('mongodb://localhost:27017/Foodship'
-
-*/
 
 // Passport middleware
 app.use(passport.initialize());
