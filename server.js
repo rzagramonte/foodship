@@ -38,17 +38,20 @@ app.use(logger("dev"));
 //Use forms for put / delete
 app.use(methodOverride("_method"));
 
+mongoose.connect(process.env.DB_STRING)
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error('Error connecting to MongoDB:', err));
+
 // Setup Sessions - stored in MongoDB
 app.use(
   session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({mongoUrl:process.env.DB_STRING})
-  }
- )
-);
-
+    secret: 'keyboard cat',
+      resave: false,
+      saveUninitialized: false,
+      store: 
+      MongoStore.create({ mongoUrl: process.env.DB_STRING })
+    })
+  );
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
