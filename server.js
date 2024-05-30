@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const MongoStore = require("connect-mongo")(session);
 const methodOverride = require("method-override");
 const flash = require("express-flash");
 const logger = require("morgan");
@@ -38,20 +36,16 @@ app.use(logger("dev"));
 //Use forms for put / delete
 app.use(methodOverride("_method"));
 
-mongoose.connect(process.env.DB_STRING)
-    .then(() => console.log('MongoDB Connected'))
-    .catch(err => console.error('Error connecting to MongoDB:', err));
-
 // Setup Sessions - stored in MongoDB
 app.use(
   session({
-    secret: 'keyboard cat',
-      resave: false,
-      saveUninitialized: false,
-      store: 
-      MongoStore.create({ mongoUrl: process.env.DB_STRING })
-    })
-  );
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  })
+);
+
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());

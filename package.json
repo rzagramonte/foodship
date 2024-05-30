@@ -4,8 +4,8 @@
   "description": "app that fosters deep connections over food",
   "main": "server.js",
   "scripts": {
-    "test": "test",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,33 +18,24 @@
   ],
   "author": "Roosiel Agramonte",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rzagramonte/foodship/issues"
-  },
   "homepage": "https://github.com/rzagramonte/foodship#readme",
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cloudinary": "^2.2.0",
-    "connect-mongo": "^5.1.0",
-    "dotenv": "^16.4.5",
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.25.1",
+    "connect-mongo": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
     "express-flash": "^0.0.2",
-    "express-session": "^1.18.0",
+    "express-session": "^1.17.1",
     "method-override": "^3.0.0",
-    "mongodb": "^6.5.0",
-    "mongoose": "^8.3.3",
+    "mongodb": "^3.6.5",
+    "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "node": "^22.1.0",
-    "nodemon": "^3.1.0",
-    "passport": "^0.7.0",
+    "nodemon": "^2.0.7",
+    "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "validator": "^13.11.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.2.0",
-    "eslint": "^9.2.0",
-    "globals": "^15.1.0"
+    "validator": "^13.6.0"
   }
 }
