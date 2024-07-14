@@ -2,11 +2,15 @@ const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, unique: true },
-  email: { type: String, unique: true },
+  userName: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  preferences: [{ type: String }],
-  location: {type: String}
+  bio: { type: String },
+  profilePic : { type: String, required: true },
+  cloudinaryId: { type: String, required: true },
+  interests: [{ type: String }],
+  location: {type: String},
+  group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" }
 });
 
 // Password hash middleware.

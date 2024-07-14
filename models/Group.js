@@ -7,11 +7,11 @@ const GroupSchema = new mongoose.Schema({
   },
   groupImage: {
     type: String,
-    require: true,
+    required: true,
   },
   cloudinaryId: {
     type: String,
-    require: true,
+    required: true,
   },
   members: [{
     type: mongoose.Schema.Types.ObjectId,
