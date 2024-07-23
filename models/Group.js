@@ -20,10 +20,9 @@ const GroupSchema = new mongoose.Schema({
   preferences: [{ 
     type: String 
   }],
-  meetupDetails: {
-    date: { type: Date, required: true },
-    time: { type: String, required: true },
-    location: { type: String, required: true }
+  meetup: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Meetup", 
   },
   createdAt: {
     type: Date,
