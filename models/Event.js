@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const MeetupSchema = new mongoose.Schema({
+const EventSchema = new mongoose.Schema({
   date: { 
     type: Date,
     required: true,
@@ -24,5 +24,4 @@ const MeetupSchema = new mongoose.Schema({
   }],
 });
 
-//MongoDB Collection named here - will give lowercase plural of name 
-module.exports = mongoose.model("Meetup", MeetupSchema);
+module.exports = mongoose.model("Event", EventSchema);

@@ -20,9 +20,13 @@ const GroupSchema = new mongoose.Schema({
   preferences: [{ 
     type: String 
   }],
-  meetup: {
+  messages: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Meetup", 
+    ref: "Message", 
+  }],
+  event: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Event", 
   },
   createdAt: {
     type: Date,
@@ -30,5 +34,4 @@ const GroupSchema = new mongoose.Schema({
   },
 });
 
-//MongoDB Collection named here - will give lowercase plural of name 
 module.exports = mongoose.model("Group", GroupSchema);
