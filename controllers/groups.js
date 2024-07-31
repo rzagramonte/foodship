@@ -23,32 +23,61 @@ module.exports = {
     try {
       // Upload image to cloudinary
       const result = await cloudinary.uploader.upload(req.file.path);
+      const {members, preferences} = request.body;
 
-      //media is stored on cloudainary - the above request responds with url to media and the media id that you will need when deleting content 
-      await Post.create({
-        title: req.body.title,
-        image: result.secure_url,
-        cloudinaryId: result.public_id,
-        caption: req.body.caption,
-        likes: 0,
-        user: req.user.id,
+      await Group.create({
+        members,
+        preferences
       });
-      console.log("Post has been added!");
-      res.redirect("/profile");
+      console.log("Group has been added!");
+      res.redirect("/chat");
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  updateGroupName: async (req, res) => {
+    try {
+      const { groupId } = req.params;
+      const { name } = req.body;
+      // Find the group and update the name
+      await Group.findByIdAndUpdate(
+        groupId,
+            { name },
+            { new: true }
+          );
+      console.log("Group name has been updated!");
+      res.redirect("/chat");
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  updateGroupPic: async (req, res) => {
+    try {
+      const { groupId } = req.params;
+      const { secure_url, public_id } = await cloudinary.uploader.upload(req.file.path);
+      // Find the group and update the name
+      await Group.findByIdAndUpdate({
+        groupId,
+        secure_url,
+        public_id,
+      }
+
+          );
+      console.log("Group pic has been updated!");
+      res.redirect("/chat");
     } catch (err) {
       console.log(err);
     }
   },
   leaveGroup: async (req, res) => {
     try {
-      await Post.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $inc: { likes: 1 },
-        }
+      const { groupId } = req.params;
+      await Group.findByIdAndUpdate(
+        groupId,
+        
       );
-      console.log("Likes +1");
-      res.redirect(`/post/${req.params.id}`);
+      console.log("Left group :(");
+      res.redirect(`/profle`);
     } catch (err) {
       console.log(err);
     }

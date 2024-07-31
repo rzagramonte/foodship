@@ -1,5 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
-const Post = require("../models/Chat");
+const Connection = require("../models/Connection");
 
 module.exports = {
   getConnection: async (req, res) => {
@@ -8,8 +8,8 @@ module.exports = {
       //router.get("/:id", ensureAuth, postsController.getPost);
       //http://localhost:2121/post/631a7f59a3e56acfc7da286f
       //id === 631a7f59a3e56acfc7da286f
-      const post = await Post.findById(req.params.id);
-      res.render("post.ejs", { post: post, user: req.user});
+      const post = await Connection.findById(req.params.id);
+      res.render("connection.ejs", { connection: connection, sendTo: req.user});
     } catch (err) {
       console.log(err);
     }

@@ -24,10 +24,10 @@ const GroupSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Message", 
   }],
-  event: {
+  event: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Event", 
-  },
+  }],
   createdAt: {
     type: Date,
     default: Date.now,
