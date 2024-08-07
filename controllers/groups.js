@@ -21,8 +21,6 @@ module.exports = {
   },
   createGroup: async (req, res) => {
     try {
-      // Upload image to cloudinary
-      const result = await cloudinary.uploader.upload(req.file.path);
       const {members, preferences} = request.body;
 
       await Group.create({
@@ -61,7 +59,6 @@ module.exports = {
         secure_url,
         public_id,
       }
-
           );
       console.log("Group pic has been updated!");
       res.redirect("/chat");
@@ -71,13 +68,14 @@ module.exports = {
   },
   leaveGroup: async (req, res) => {
     try {
-      const { groupId } = req.params;
+      const { groupId, userId } = req.params;
       await Group.findByIdAndUpdate(
-        groupId,
-        
+        { _id: groupId },
+        { $pull: { user: userId } },
+        { upsert: true }        
       );
       console.log("Left group :(");
-      res.redirect(`/profle`);
+      res.redirect(`/profile`);
     } catch (err) {
       console.log(err);
     }

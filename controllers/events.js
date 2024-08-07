@@ -2,12 +2,9 @@ const cloudinary = require("../middleware/cloudinary");
 const Event = require("../models/Event");
 
 module.exports = {
-  getEvents: async (req, res) => { 
+  getUserEvents: async (req, res) => { 
     console.log(req.user)
     try {
-      //Since we have a session each request (req) contains the logged-in users info: req.user
-      //console.log(req.user) to see everything
-      //Grabbing just the posts of the logged-in user
       const events = await Event.find({ user: req.user.id });
       //Sending post data from mongodb and user data to ejs template
       res.render("events.ejs", { events: events, user: req.user });
@@ -15,12 +12,18 @@ module.exports = {
       console.log(err);
     }
   },
+  getGroupEvents: async (req, res) => { 
+    console.log(req.user)
+    try {
+      const events = await Event.find({ ground: req.group.id });
+      //Sending post data from mongodb and user data to ejs template
+      res.render("events.ejs", { events: events, group: req.group });
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getEvent: async (req, res) => {
     try {
-      //id parameter comes from the post routes
-      //router.get("/:id", ensureAuth, postsController.getPost);
-      //http://localhost:2121/post/631a7f59a3e56acfc7da286f
-      //id === 631a7f59a3e56acfc7da286f
       const event = await Event.findById(req.params.id);
       res.render("event.ejs", { event: event, user: req.user});
     } catch (err) {
@@ -45,6 +48,28 @@ module.exports = {
         { _id: req.params.id },
         {
           $inc: { likes: 1 },
+        }
+        try {
+          const { eventId } = req.params;
+          const { newDate, newLocation } = req.body;
+      
+          // Create an update object dynamically
+          const updateFields = {};
+          if (newDate) updateFields.date = newDate;
+          if (newLocation) updateFields.location = newLocation;
+      
+          // Update the event with the new date and/or location
+          await Event.findByIdAndUpdate(
+            { _id: eventId },
+            { $set: updateFields },
+            { new: true }
+          );
+      
+          console.log("Event updated successfully!");
+          res.redirect(`/events/${eventId}`);
+        } catch (err) {
+          console.log(err);
+          res.status(500).send("Server error");
         }
       );
       console.log("Likes +1");
