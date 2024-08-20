@@ -13,9 +13,9 @@ const EventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   }],
-  group: {
+  groupChat: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Group", 
+    ref: "GroupChat", 
   },
   status: [{ 
     type: String,

@@ -10,7 +10,7 @@ const UserSchema = new mongoose.Schema({
   cloudinaryId: { type: String, required: true },
   interests: [{ type: String }],
   location: {type: String},
-  group: { type: mongoose.Schema.Types.ObjectId, ref: "Group" }
+  groupChat: { type: mongoose.Schema.Types.ObjectId, ref: "GroupChat" }
 });
 
 // Password hash middleware.

@@ -1,5 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
-const Group = require("../models/Group");
+const Group = require("../models/GroupChat");
 
 module.exports = {
   getGroups: async (req, res) => { 

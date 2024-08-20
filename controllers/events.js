@@ -1,4 +1,3 @@
-const cloudinary = require("../middleware/cloudinary");
 const Event = require("../models/Event");
 
 module.exports = {
@@ -6,8 +5,7 @@ module.exports = {
     console.log(req.user)
     try {
       const events = await Event.find({ user: req.user.id });
-      //Sending post data from mongodb and user data to ejs template
-      res.render("events.ejs", { events: events, user: req.user });
+      res.render("userEvents.ejs", { events: events, user: req.user });
     } catch (err) {
       console.log(err);
     }
@@ -17,7 +15,7 @@ module.exports = {
     try {
       const events = await Event.find({ ground: req.group.id });
       //Sending post data from mongodb and user data to ejs template
-      res.render("events.ejs", { events: events, group: req.group });
+      res.render("groupEvent.ejs", { events: events, group: req.group });
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +35,7 @@ module.exports = {
         location: result.secure_url
       });
       console.log("Event has been created!");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
       console.log(err);
     }

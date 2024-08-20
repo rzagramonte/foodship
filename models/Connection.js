@@ -10,9 +10,9 @@ const ConnectionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  group: {
+  groupChat: {
     type: mongoose.Schema.Types.ObjectId, 
-    ref: "Group",
+    ref: "GroupChat",
     required: true,
   },
 });
