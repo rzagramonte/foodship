@@ -8,7 +8,7 @@ module.exports = {
       //http://localhost:2121/post/631a7f59a3e56acfc7da286f
       //id === 631a7f59a3e56acfc7da286f
       const connection = await Connection.findById(req.params.id);
-      res.render("connection.ejs", { connection: connection, sendTo: req.user});
+      res.render("connection.ejs", { user, connection: connection, sendTo: req.user});
     } catch (err) {
       console.log(err);
     }
