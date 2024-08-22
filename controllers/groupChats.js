@@ -2,7 +2,7 @@ const cloudinary = require("../middleware/cloudinary");
 const Group = require("../models/GroupChat");
 
 module.exports = {
-  getGroups: async (req, res) => { 
+  getGroupChats: async (req, res) => { 
     console.log(req.user)
     try {
       const groups = await Group.find({ user: req.user.id });
@@ -11,15 +11,17 @@ module.exports = {
       console.log(err);
     }
   },
-  getGroup: async (req, res) => {
+  getGroupChat: async (req, res) => {
     try {
       const group = await Group.findById(req.params.id);
-      res.render("chat.ejs", { group: group, user: req.user});
+      res.render("groupChat.ejs", { group: group, user: req.user});
     } catch (err) {
       console.log(err);
     }
   },
-  createGroup: async (req, res) => {
+  createGroupChat: async (req, res) => {
+    //math.random, limit six, some interest match
+    //find group with highest interest match, if group exists and members length is under 6, add user to group, else create new group
     try {
       const {members, preferences} = request.body;
 
@@ -28,12 +30,12 @@ module.exports = {
         preferences
       });
       console.log("Group has been added!");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
       console.log(err);
     }
   },
-  updateGroupName: async (req, res) => {
+  updateGroupChatName: async (req, res) => {
     try {
       const { groupId } = req.params;
       const { name } = req.body;
@@ -44,12 +46,12 @@ module.exports = {
             { new: true }
           );
       console.log("Group name has been updated!");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
       console.log(err);
     }
   },
-  updateGroupPic: async (req, res) => {
+  updateGroupChatPic: async (req, res) => {
     try {
       const { groupId } = req.params;
       const { secure_url, public_id } = await cloudinary.uploader.upload(req.file.path);
@@ -61,12 +63,12 @@ module.exports = {
       }
           );
       console.log("Group pic has been updated!");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
       console.log(err);
     }
   },
-  leaveGroup: async (req, res) => {
+  leaveGroupChat: async (req, res) => {
     try {
       const { groupId, userId } = req.params;
       await Group.findByIdAndUpdate(
@@ -74,8 +76,8 @@ module.exports = {
         { $pull: { user: userId } },
         { upsert: true }        
       );
-      console.log("Left group :(");
-      res.redirect(`/profile`);
+      console.log("Left groupchat :(");
+      res.redirect(`/onboarding`);
     } catch (err) {
       console.log(err);
     }

@@ -9,7 +9,10 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const mainRoutes = require("./routes/main");
-const postRoutes = require("./routes/posts");
+const connectionRoutes = require("./routes/connections");
+const eventRoutes = require("./routes/events");
+const groupChatRoutes = require("./routes/groupChats");
+const messageRoutes = require("./routes/messages");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -55,7 +58,10 @@ app.use(flash());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
-app.use("/post", postRoutes);
+app.use("/connections", connectionRoutes);
+app.use("/events", eventRoutes);
+app.use("/groupChats", groupChatRoutes);
+app.use("/messages", messageRoutes);
 
 
 //Server Running

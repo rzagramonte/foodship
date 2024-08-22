@@ -1,21 +1,12 @@
 const Event = require("../models/Event");
 
 module.exports = {
-  getUserEvents: async (req, res) => { 
-    console.log(req.user)
-    try {
-      const events = await Event.find({ user: req.user.id });
-      res.render("userEvents.ejs", { events: events, user: req.user });
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  getGroupEvents: async (req, res) => { 
+  getEvents: async (req, res) => { 
     console.log(req.user)
     try {
       const events = await Event.find({ ground: req.group.id });
       //Sending post data from mongodb and user data to ejs template
-      res.render("groupEvent.ejs", { events: events, group: req.group });
+      res.render("events.ejs", { events: events, group: req.group });
     } catch (err) {
       console.log(err);
     }
@@ -41,12 +32,7 @@ module.exports = {
     }
   },
   editEvent: async (req, res) => {
-    try {
-      await Event.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $inc: { likes: 1 },
-        }
+
         try {
           const { eventId } = req.params;
           const { newDate, newLocation } = req.body;
@@ -64,17 +50,11 @@ module.exports = {
           );
       
           console.log("Event updated successfully!");
-          res.redirect(`/events/${eventId}`);
+          res.redirect(`/event/${eventId}`);
         } catch (err) {
           console.log(err);
           res.status(500).send("Server error");
         }
-      );
-      console.log("Likes +1");
-      res.redirect(`/event/${req.params.id}`);
-    } catch (err) {
-      console.log(err);
-    }
   },
   deleteEvent: async (req, res) => {
     try {
@@ -83,9 +63,9 @@ module.exports = {
       // Delete event from db
       await Event.remove({ _id: req.params.id });
       console.log("Deleted Event");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     }
   },
 };

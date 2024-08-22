@@ -5,12 +5,12 @@ module.exports = {
   getMessages: async (req, res) => {
     try {
         const messages = await Message.find().sort({ createdAt: "desc" }).lean();
-        res.render("chat.ejs", { messages: messages });
+        res.render("groupChat.ejs", { messages: messages });
       } catch (err) {
         console.log(err);
       }
   },
-  sendMessage: async (req, res) => {
+  createMessage: async (req, res) => {
     try {
       const result = await cloudinary.uploader.upload(req.file.path);
       const { groupId, senderId, content, contentType } = req.body;
@@ -23,7 +23,7 @@ module.exports = {
         group: groupId,
       });
       console.log("Message has been sent!");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
       console.log(err);
     }
@@ -59,9 +59,9 @@ module.exports = {
       await cloudinary.uploader.destroy(message.cloudinaryId);
       await Message.remove({ _id: req.params.id });
       console.log("Deleted Message");
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     } catch (err) {
-      res.redirect("/chat");
+      res.redirect("/groupChat");
     }
   },
 };
