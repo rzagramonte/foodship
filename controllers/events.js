@@ -5,8 +5,7 @@ module.exports = {
     console.log(req.user)
     try {
       const events = await Event.find({ ground: req.group.id });
-      //Sending post data from mongodb and user data to ejs template
-      res.render("events.ejs", { user, events: events, group: req.group });
+      res.render("events.ejs", { user:req.user, events: events, group: req.group });
     } catch (err) {
       console.log(err);
     }

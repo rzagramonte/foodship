@@ -25,13 +25,15 @@
     <header class="container">
       <% if (user) { %>
         <div class="text-start">
-          <nav class="navbar navbar-expand-lg bg-body-tertiary">
+          <nav class="navbar navbar-expand-lg bg-body-tertiary ">
             <div class="container-fluid">
-              <a href="/profile" class="navbar-brand"><img class="logo" src="/imgs/logo-no-background_1.png" alt="logo"></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
+              <div class="container-fluid">
+                <a href="/profile" class="navbar-brand"><img class="logo" src="/imgs/logo-no-background_1.png" alt="logo"></a>
+              </div>
+
+
               <div class="collapse navbar-collapse" id="navbarNav">
+
                 <ul class="navbar-nav">
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -47,40 +49,59 @@
                   </li>
                 </ul>
               </div>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
           </div>
           <form action="/login" method="post" class="container-fluid justify-content-end">
             <button type="submit" class="btn btn-sm btn-outline-secondary" type="button">Login</button>
           </form>
           </nav>
+
         </div>
       <% } else { %>
-        <div class="text-start">
-          <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-              <a href="/profile" class="navbar-brand"><img class="logo" src="/imgs/logo-no-background_1.png" alt="logo"></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Learn</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Safety</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Support</a>
-                  </li>
-                </ul>
-              </div>
-          </div>
-          <form action="/login" method="post" class="container-fluid justify-content-end">
-            <button type="submit" class="btn btn-sm btn-outline-secondary" type="button">Login</button>
-          </form>
+        <div class="container">
+          <nav class="navbar navbar-expand-lg d-flex align-items-center justify-content-between">
+
+              
+                <a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="logo img-fluid" src="/imgs/logo-no-background_2.svg" alt="logo"></a>
+
+
+                <button class="navbar-toggler"
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav"
+                >
+                <span class="navbar-toggler-icon" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"></span>
+                </button>
+
+
+                <div class="collapse navbar-collapse justify-content-end"  id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Safety</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Support</a>
+                    </li>
+
+                    <li class="nav-item d-lg-none">
+                      
+                    </li>
+                  </ul>
+
+
+                </div>
+                <form action="/login" method="post" class=" d-lg-flex align-items-center ms-3">
+                  <button type="submit" class="btn btn-sm btn-outline-secondary">Login</button>
+              </form>
+
           </nav>
         </div>
       <% } %>

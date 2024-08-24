@@ -5,7 +5,7 @@ module.exports = {
   getMessages: async (req, res) => {
     try {
         const messages = await Message.find().sort({ createdAt: "desc" }).lean();
-        res.render("groupChat.ejs", { user, messages: messages });
+        res.render("groupChat.ejs", { user:req.user, messages: messages });
       } catch (err) {
         console.log(err);
       }
