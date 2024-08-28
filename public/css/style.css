@@ -1,19 +1,11 @@
 /* CSS file or within a <style> tag in your HTML/EJS */
-.logo {
-    width: 50%; /* Default size */
-    
-    height: auto;
-  }
-  
-  @media (max-width: 768px) {
-    .logo {
-      width: 30%; /* Adjust for smaller screens */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .logo {
-      width: 40%; /* Adjust for even smaller screens */
-    }
-  }
+
+
+  .offcanvas-fullscreen {
+    width: 100%!important;
+    height: 100%!important;
+    max-width: none!important;
+    top: 0!important;
+}
+
   

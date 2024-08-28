@@ -60,7 +60,7 @@ exports.getSignup = (req, res) => {
   if (req.user) {
     return res.redirect("/profile");
   }
-  res.render("signup", {
+  res.render("signup", { user:req.user,
     title: "Create Account",
   });
 };
