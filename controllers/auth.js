@@ -8,6 +8,7 @@ exports.getLogin = (req, res) => {
   }
   res.render("login", {
     title: "Login",
+    user: req.user,
   });
 };
 
@@ -17,7 +18,7 @@ exports.postLogin = (req, res, next) => {
     validationErrors.push({ msg: "Please enter a valid email address." });
   if (validator.isEmpty(req.body.password))
     validationErrors.push({ msg: "Password cannot be blank." });
-
+console.log(req.body.email)
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
     return res.redirect("/login");
@@ -65,8 +66,9 @@ exports.getSignup = (req, res) => {
   });
 };
 
-exports.postSignup = (req, res, next) => {
-  const validationErrors = [];
+exports.postSignup = async (req, res, next) => {
+  try {
+    const validationErrors = [];
   if (!validator.isEmail(req.body.email))
     validationErrors.push({ msg: "Please enter a valid email address." });
   if (!validator.isLength(req.body.password, { min: 8 }))
@@ -90,29 +92,25 @@ exports.postSignup = (req, res, next) => {
     password: req.body.password,
   });
 
-  User.findOne(
-    { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
-    (err, existingUser) => {
-      if (err) {
-        return next(err);
-      }
-      if (existingUser) {
-        req.flash("errors", {
-          msg: "Account with that email address or username already exists.",
-        });
-        return res.redirect("../signup");
-      }
-      user.save((err) => {
-        if (err) {
-          return next(err);
-        }
-        req.logIn(user, (err) => {
-          if (err) {
-            return next(err);
-          }
-          res.redirect("/profile");
-        });
-      });
-    }
-  );
+  const existingUser = await User.findOne({ $or: [{ email: req.body.email }, { userName: req.body.userName }] });
+  if (existingUser) {
+    req.flash("errors", {
+      msg: "Account with that email address or username already exists.",
+    });
+    return res.redirect("../signup");
+  }
+  const savedUser = await user.save().exec();
+
+  req.logIn(savedUser, (err) => {
+      if (err) return next(err);
+      if (savedUser) res.redirect("/profile");
+    });
+  
+    
+  } catch (error) {
+    
+  }
+  
+
+
 };

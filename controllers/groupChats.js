@@ -5,8 +5,8 @@ module.exports = {
   getGroupChats: async (req, res) => { 
     console.log(req.user)
     try {
-      const groups = await Group.find({ user: req.user.id });
-      res.render("profile.ejs", { groups: groups, user: req.user });
+      const groupChats = await Group.find({ user: req.user.id });
+      res.render("profile.ejs", { groupChats: groupChats, user: req.user });
     } catch (err) {
       console.log(err);
     }
@@ -20,10 +20,10 @@ module.exports = {
     }
   },
   createGroupChat: async (req, res) => {
-    //math.random, limit six, some interest match
+    //math.random, limit six, some() interest match
     //find group with highest interest match, if group exists and members length is under 6, add user to group, else create new group
     try {
-      const {members, preferences} = request.body;
+      const {members, preferences} = req.body;
 
       await Group.create({
         members,

@@ -8,4 +8,37 @@
     top: 0!important;
 }
 
+.bg-primary{
+  background-color: #E9E2DA!important;
+  
+}
+
+
+/* custom.css */
+
+:root {
+  --primary: #000e5b!important;       /* Midnight Blue */
+  --secondary: #6F605B!important;     /* Earthy Brown */
+  --success: #004d4d!important;       /* Teal Blue */
+  --danger: #d9534f!important;        /* Rose Red */
+  --warning: #f0ad4e!important;       /* Soft Yellow */
+  --info: #5bc0de!important;          /* Sky Blue */
+  --light: #E9E2DA!important;         /* Morning Mist */
+  --dark: #000e5b!important;          /* Midnight Blue */
+}
+
+/* Apply colors to Bootstrap components */
+.btn-primary {
+  background-color: var(--primary)!important;
+  border-color: var(--primary)!important;
+}
+
+.btn-secondary {
+  background-color: var(--secondary)!important;
+  border-color: var(--secondary)!important;
+}
+
+/* Add similar rules for other Bootstrap components */
+
+
   

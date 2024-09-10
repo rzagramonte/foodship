@@ -21,50 +21,85 @@
     />
     <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body>
+  <body class="bg-primary">
     <header class="container">
       <% if (user) { %>
-        <div class="text-start">
-          <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+
+          <nav class="navbar sticky-top navbar-expand-md d-flex align-items-center justify-content-between py-3">
             <div class="container-fluid">
-              <div class="container-fluid">
-                <a href="/profile" class="navbar-brand"><img src="/imgs/logo-no-background_2.svg" alt="logo" width="30" height="24" class="d-inline-block"></a>
-              </div>
+              
+                <a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="100" src="/imgs/logo-no-background.svg" alt="logo"></a>
 
 
-              <div class="collapse navbar-collapse" id="navbarNav">
+                <button class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasNavbar" 
+                aria-controls="offcanvasNavbar" 
+                aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
 
-                <ul class="navbar-nav">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Learn</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Safety</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Support</a>
-                  </li>
-                </ul>
-              </div>
-              <button class="navbar-toggler container-fluid justify-content-start" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-          </div>
-          <form action="/login" method="post" class="container-fluid justify-content-end">
-            <button type="submit" class="btn btn-sm btn-outline-secondary" type="button">Login</button>
-          </form>
+
+
+                <div class="collapse navbar-collapse justify-content-end">
+                  <ul class="navbar-nav">
+
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">New Chat</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Safety</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Settings</a>
+                    </li>
+                  </ul>
+
+  <a href="/logout" class="btn btn-sm btn-outline-secondary">Logout</a>
+
+
+                   
+                </div>
+
+
+
+            </div>
           </nav>
+          <div class="offcanvas offcanvas-end offcanvas-fullscreen" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                  
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="40" src="/imgs/logo-no-background_2.png" alt="logo"></a></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Learn</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Safety</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Support</a>
+                </li>
+              </ul>
+              <form action="/login" method="post" class=" d-lg-flex align-items-center ms-1">
+                <button type="submit" class="btn btn-sm btn-outline-secondary">Login</button>
+             </form>
+           </div>
 
         </div>
+      
       <% } else { %>
 
           <nav class="navbar sticky-top navbar-expand-md d-flex align-items-center justify-content-between py-3">
             <div class="container-fluid">
               
-                <a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="40" src="/imgs/logo-no-background_2.svg" alt="logo"></a>
+                <a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="70" src="/imgs/logo-no-background.svg" alt="logo"></a>
 
 
                 <button class="navbar-toggler" 
@@ -93,9 +128,9 @@
                       <a class="nav-link" href="#">Support</a>
                     </li>
                   </ul>
-                  <form action="/login" method="post" class=" d-lg-flex align-items-center ms-1">
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Login</button>
-                </form>
+
+                    <a href="/login" class="btn btn-sm btn-outline-secondary">Login</a>
+
                 </div>
 
 
@@ -105,14 +140,12 @@
           <div class="offcanvas offcanvas-end offcanvas-fullscreen" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                   
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="40" src="/imgs/logo-no-background_2.svg" alt="logo"></a></h5>
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><a href="/profile" class="navbar-brand d-flex align-items-center me-auto"><img class="navbar-brand d-inline-block" height="40" src="/imgs/logo-no-background.svg" alt="logo"></a></h5>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">Home</a>
-                </li>
+
                 <li class="nav-item">
                   <a class="nav-link" href="#">Learn</a>
                 </li>

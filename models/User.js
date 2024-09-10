@@ -6,8 +6,8 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   bio: { type: String },
-  profilePic : { type: String, required: true },
-  cloudinaryId: { type: String, required: true },
+  profilePic : { type: String },
+  cloudinaryId: { type: String },
   interests: [{ type: String }],
   location: {type: String},
   groupChat: { type: mongoose.Schema.Types.ObjectId, ref: "GroupChat" }
