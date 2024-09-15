@@ -45,15 +45,24 @@ console.log(req.body.email)
   })(req, res, next);
 };
 
-exports.logout = (req, res) => {
-  req.logout(() => {
-    console.log('User has logged out.')
-  })
-  req.session.destroy((err) => {
-    if (err)
-      console.log("Error : Failed to destroy the session during logout.", err);
-    req.user = null;
-    res.redirect("/");
+exports.logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);  // Handle any potential errors from req.logout()
+    }
+
+    console.log('User has logged out.');
+
+    // Destroy session only after successful logout
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("Error: Failed to destroy the session during logout.", err);
+        return next(err);  // Handle the session destroy error
+      }
+
+      req.user = null;  // Ensure user is set to null after logout
+      res.redirect("/");  // Redirect to the home page after logout
+    });
   });
 };
 
@@ -103,14 +112,11 @@ exports.postSignup = async (req, res, next) => {
 
   req.logIn(savedUser, (err) => {
       if (err) return next(err);
-      if (savedUser) res.redirect("/profile");
+      if (savedUser) res.redirect(req.session.returnTo || "/profile");
     });
   
     
-  } catch (error) {
-    
+  } catch (err) {
+    console.log(err)
   }
-  
-
-
 };

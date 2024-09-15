@@ -1,10 +1,10 @@
 {
-	"masterPicture": "assets/foodship-favicon/favicon-32x32.png",
+	"masterPicture": "/imgs/favicon-32x32.png",
 	"iconsPath": "/",
 	"design": {
 		"ios": {
 			"pictureAspect": "backgroundAndMargin",
-			"backgroundColor": "#556970",
+			"backgroundColor": "#e9e2da",
 			"margin": "14%",
 			"assets": {
 				"ios6AndPriorIcons": false,
@@ -15,13 +15,13 @@
 		},
 		"desktopBrowser": {
 			"design": "background",
-			"backgroundColor": "#556970",
-			"backgroundRadius": 1,
-			"imageScale": 0.8
+			"backgroundColor": "#e9e2da",
+			"backgroundRadius": 0.3,
+			"imageScale": 0.9
 		},
 		"windows": {
-			"pictureAspect": "whiteSilhouette",
-			"backgroundColor": "#00aba9",
+			"pictureAspect": "noChange",
+			"backgroundColor": "#e9e2da",
 			"onConflict": "override",
 			"assets": {
 				"windows80Ie10Tile": false,
@@ -36,10 +36,9 @@
 		"androidChrome": {
 			"pictureAspect": "backgroundAndMargin",
 			"margin": "17%",
-			"backgroundColor": "#556970",
-			"themeColor": "#556970",
+			"backgroundColor": "#e9e2da",
+			"themeColor": "#e9e2da",
 			"manifest": {
-				"name": "Foodship",
 				"display": "standalone",
 				"orientation": "notSet",
 				"onConflict": "override",
@@ -52,7 +51,7 @@
 		},
 		"safariPinnedTab": {
 			"pictureAspect": "silhouette",
-			"themeColor": "#00000"
+			"themeColor": "#E9E2DA"
 		}
 	},
 	"settings": {
