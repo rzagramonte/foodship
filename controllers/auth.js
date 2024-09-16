@@ -108,7 +108,7 @@ exports.postSignup = async (req, res, next) => {
     });
     return res.redirect("../signup");
   }
-  const savedUser = await user.save().exec();
+  const savedUser = await user.save();
 
   req.logIn(savedUser, (err) => {
       if (err) return next(err);

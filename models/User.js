@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
   profilePic : { type: String },
   cloudinaryId: { type: String },
   interests: [{ type: String }],
+  foodPreferences: [{ type: String }],
   location: {type: String},
   groupChat: { type: mongoose.Schema.Types.ObjectId, ref: "GroupChat" }
 });
