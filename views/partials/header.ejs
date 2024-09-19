@@ -12,7 +12,10 @@
     <link rel="mask-icon" href="/imgs/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#556970">
     <meta name="theme-color" content="#556970">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -53,13 +56,13 @@
             <% } else { %>
               <ul class="navbar-nav">
                 <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="#">Learn</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/safety">Safety</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Support</a>
                 </li>
               </ul>
               <a href="/login" class="btn btn-sm btn-outline-secondary">Login</a>
@@ -96,13 +99,13 @@
           <% } else { %>
             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
               <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="#">Learn</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/safety">Safety</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Support</a>
               </li>
             </ul>
             <a href="/login" class="btn btn-sm btn-outline-secondary">Login</a>
