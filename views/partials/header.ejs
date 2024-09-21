@@ -2,29 +2,90 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Foodship</title>
-    <link rel="apple-touch-icon" sizes="120x120" href="/imgs/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/imgs/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/imgs/favicon-16x16.png">
-    <link rel="manifest" href="/imgs/site.webmanifest">
-    <link rel="mask-icon" href="/imgs/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#556970">
-    <meta name="theme-color" content="#556970">
-    <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
     <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="/imgs/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/imgs/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/imgs/favicon-16x16.png"
+    />
+    <link
+      rel="manifest"
+      href="/imgs/site.webmanifest"
+    />
+    <link
+      rel="mask-icon"
+      href="/imgs/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <meta
+      name="msapplication-TileColor"
+      content="#556970"
+    />
+    <meta
+      name="theme-color"
+      content="#556970"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+    /> -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
       integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="/css/style.css"
+    />
   </head>
-  <body class="bg-primary">
+  <body class="container bg-body-tertiary min-vh-100 d-flex flex-column <%= landingPage ? 'landing-bg' : '' %>">
+    <!-- <header>
+      <nav>
+        <ul>
+          <li>          <a href="/profile" class="navbar-brand d-flex align-items-center me-auto">
+            <img class="navbar-brand d-inline-block" height="100" src="/imgs/logo-no-background.svg" alt="logo">
+          </a></li>
+        </ul>
+        <ul>
+          <li >
+            <a href="#">About</a>
+          </li>
+          <li >
+            <a href="#">Learn</a>
+          </li>
+          <li >
+            <a href="/safety">Safety</a>
+          </li>
+          <li>
+            <a href="/login" >Login</a>
+          </li>
+        </ul>
+      </nav>
+
+    </header> -->
     <header class="container">
       <nav class="navbar sticky-top navbar-expand-md d-flex align-items-center justify-content-between py-3">
         <div class="container-fluid">
@@ -49,7 +110,7 @@
                   <a class="nav-link" href="/safety">Safety</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Settings</a>
+                  <a class="nav-link" href="/onboarding">Settings</a>
                 </li>
               </ul>
               <a href="/logout" class="btn btn-sm btn-outline-secondary">Logout</a>
@@ -59,13 +120,24 @@
                   <a class="nav-link" href="#">About</a>
                 </li>
                 <li class="nav-item">
+                  <!-- Why choose us -->
                   <a class="nav-link" href="#">Learn</a>
                 </li>
                 <li class="nav-item">
+                  <!-- Meetup safety, data safety -->
                   <a class="nav-link" href="/safety">Safety</a>
                 </li>
+                <li class="nav-item">
+                  <!-- Meetup safety, data safety -->
+                  <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                  <!-- Meetup safety, data safety -->
+                  <a class="nav-link" href="/register">Register</a>
+                </li>
               </ul>
-              <a href="/login" class="btn btn-sm btn-outline-secondary">Login</a>
+              <!-- <a href="/login" class="btn btn-sm btn-outline-secondary">Login</a>
+              <a href="/signup" class="btn btn-sm btn-outline-primrary">Register</a> -->
             <% } %>
           </div>
         </div>

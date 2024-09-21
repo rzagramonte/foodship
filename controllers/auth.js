@@ -112,7 +112,7 @@ exports.postSignup = async (req, res, next) => {
 
   req.logIn(savedUser, (err) => {
       if (err) return next(err);
-      if (savedUser) res.redirect(req.session.returnTo || "/profile");
+      if (savedUser) res.redirect(req.session.returnTo || "/onboarding");
     });
   
     

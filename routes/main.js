@@ -7,12 +7,15 @@ const safetyController = require("../controllers/safety");
 const learnController = require("../controllers/learn");
 const supportController = require("../controllers/support");
 const settingsController = require("../controllers/settings");
+const onboardingController = require("../controllers/onboarding");
 const { ensureAuth } = require("../middleware/auth");
 
 //Main Routes 
 router.get("/", homeController.getIndex);
+router.get("/onboarding", ensureAuth, onboardingController.getOptions);
 router.get("/profile", ensureAuth, groupChatsController.getGroupChats);
 router.get("/safety", safetyController.getSafety);
+
 /*
 router.get("/learn", learnController.getLearn);
 router.get("/support", supportController.getSafety);
