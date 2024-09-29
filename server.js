@@ -47,13 +47,12 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      clientPromise: mongoose.connection.asPromise(),
- 
+      mongoUrl: process.env.DB_STRING, // Use your MongoDB connection string directly here
       collectionName: 'sessions',
-      
-    })
+    }),
   })
 );
+
 
 // Passport middleware
 app.use(passport.initialize());
