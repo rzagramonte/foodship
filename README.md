@@ -1,5 +1,5 @@
 # foodship
-foodship brings the concept of connecting friends over food to life, featuring a compelling landing page, sections that showcase its mission and community, and interactive features like user-friendly group formation and meetup scheduling. It also includes information on how FoodShip works, its core values, and how to join the community.
+foodship brings the concept of connecting friends over food to life, featuring a compelling landing page, sections that showcase its mission and community, and interactive features like user-friendly group formation and meetup scheduling. It also includes information on how foodship works, its core values, and how to join the community.
 
 ![landing page of foodship](https://u.cubeupload.com/rzagramonte/foodship.png)
 
