@@ -15,4 +15,4 @@ In the future optimization phase, I will be focused on improving the website's p
 
 ## Lessons Learned:
 
-Developing foodship was an enriching experience that deepened my understanding of creating responsive web designs. I delved into the intricacies of ensuring a seamless user experience across various devices, employing techniques such as media queries, flexible layouts, and grid. This project allowed me to refine my skills in crafting applications that adapt and perform optimally, catering to a diverse audience and enhancing accessibility.
+Building foodship taught me valuable lessons in integrating front-end design with back-end functionality. I gained experience in creating user-friendly interfaces while managing dynamic features, such as forming groups and scheduling meetups. This project enhanced my understanding of building a full-stack application that balances performance with interactivity, ensuring the platform is both functional and intuitive for users.
