@@ -9,7 +9,7 @@ exports.getLogin = (req, res) => {
   res.render("login", {
     title: "Login",
     user: req.user,
-    landingPage: true,
+    landingPage: false,
   });
 };
 
@@ -48,9 +48,7 @@ console.log(req.body.email)
 
 exports.logout = (req, res, next) => {
   req.logout((err) => {
-    if (err) {
-      return next(err);  // Handle any potential errors from req.logout()
-    }
+    if (err)  next(err);  // Handle any potential errors from req.logout()
 
     console.log('User has logged out.');
 
@@ -71,8 +69,10 @@ exports.getSignup = (req, res) => {
   if (req.user) {
     return res.redirect("/profile");
   }
-  res.render("signup", { user:req.user,
+  res.render("signup", { 
+    user:req.user,
     title: "Create Account",
+    landingPage: false,
   });
 };
 

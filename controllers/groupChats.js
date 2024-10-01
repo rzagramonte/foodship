@@ -3,7 +3,6 @@ const Group = require("../models/GroupChat");
 
 module.exports = {
   getGroupChats: async (req, res) => { 
-    console.log(req.user)
     try {
       const groupChats = await Group.find({ user: req.user.id,  });
       res.render("profile.ejs", { groupChats: groupChats, user: req.user, landingPage: false });
@@ -14,7 +13,7 @@ module.exports = {
   getGroupChat: async (req, res) => {
     try {
       const group = await Group.findById(req.params.id);
-      res.render("groupChat.ejs", { group: group, user: req.user});
+      res.render("groupChat.ejs", { group: group, user: req.user, landingPage: false});
     } catch (err) {
       console.log(err);
     }
