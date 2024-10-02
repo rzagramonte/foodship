@@ -54,13 +54,13 @@
   --bs-body-font-size: 1rem !important;
   --bs-body-font-weight: 400 !important;
   --bs-body-line-height: 1.5 !important;
-  --bs-body-color: #BFD9D7 !important;
-  --bs-body-color-rgb: 191, 217, 215 !important;
-  --bs-body-bg: #353745 !important;
-  --bs-body-bg-rgb: 53, 55, 69 !important;
+  --bs-body-color: #BFD9D7 !important; /* Mint */
+  --bs-body-color-rgb: 191, 217, 215 !important; /* Mint */
+  --bs-body-bg: #353745 !important; /* Charcoal */
+  --bs-body-bg-rgb: 53, 55, 69 !important; /* Charcoal */
   --bs-emphasis-color: #000 !important;
   --bs-emphasis-color-rgb: 0, 0, 0 !important;
-  --bs-secondary-color: rgba(174, 145, 82, 0.75) !important;
+  --bs-secondary-color: #ae9152bf !important;
   --bs-secondary-color-rgb: 174, 145, 82 !important;  
   --bs-secondary-bg: #e9ecef !important;
   --bs-secondary-bg-rgb: 233, 236, 239 !important;
@@ -107,17 +107,17 @@
 }
 
 .btn-primary{
-  --bs-btn-color:#353745;
-  --bs-btn-bg:#AE9152;
-  --bs-btn-border-color:#AE9152;
-  --bs-btn-hover-color:#353745;
-  --bs-btn-hover-bg:#987239;
-  --bs-btn-hover-border-color:#987239;
-  --bs-btn-focus-shadow-rgb:174,145,82; /* Adjusted to match #AE9152 */
-  --bs-btn-active-color:#353745; /* Adjusted for a better match */
-  --bs-btn-active-bg:#AE9152; /* Matching active background to your palette */
-  --bs-btn-active-border-color:#AE9152; /* Matching active border to your palette */
-  --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125); /* Kept this the same for a subtle shadow */
+  --bs-btn-color:#353745 !important; /* Charcoal */
+  --bs-btn-bg:#AE9152 !important; /* Gold */
+  --bs-btn-border-color:#AE9152 !important; /* Gold */
+  --bs-btn-hover-color:#353745 !important; /* Charcoal */
+  --bs-btn-hover-bg:#987239 !important; /* Olive Gold */
+  --bs-btn-hover-border-color:#987239 !important; /* Olive Gold */
+  --bs-btn-focus-shadow-rgb:174,145,82 !important; /* Gold */
+  --bs-btn-active-color:#353745 !important; /* Charcoal */
+  --bs-btn-active-bg:#AE9152 !important; /* Gold */
+  --bs-btn-active-border-color:#AE9152 !important; /* Gold */
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.5) !important;
   --bs-btn-disabled-color:#fff;
   --bs-btn-disabled-bg:#0d6efd;
   --bs-btn-disabled-border-color:#0d6efd
