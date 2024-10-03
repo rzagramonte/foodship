@@ -1,50 +1,37 @@
 <%- include('partials/header') -%>
 <div class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
+  <h1>Food Preferences</h1>
+  <% for(var i=0; i<foodPreferences.length; i++) {%>
   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
-
+    
+    <input type="checkbox" class="btn-check" id="btncheck<%=i%>" autocomplete="off">
+    <label class="btn btn-outline-primary" for="btncheck<%=i%>"><%=foodPreferences[i].foodPreference%></label>
   </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 2</label>
+  <% } %>
+  <h1>Interests</h1>
+  <% for(var i=0; i<interests.length; i++) {%>
+    <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+      
+      <input type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" autocomplete="off">
+      <label class="btn btn-outline-primary" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
+    </div>
+    <% } %>
 
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 3</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 2</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 3</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 2</label>
-
-  </div>
-  <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-    <label class="btn btn-outline-primary" for="btncheck1">Checkbox 3</label>
-
-  </div>
+    <form action="/post/createPost" enctype="multipart/form-data" method="POST">
+      <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" name="title">
+      </div>
+      <div class="mb-3">
+        <label for="caption" class="form-label">Caption</label>
+        <textarea class="form-control" id="caption" name="caption"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="imgUpload" class="form-label">Image</label>
+        <input type="file" class="form-control" id="imageUpload" name="file">
+      </div>
+      <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+    </form>
   </div>
 
 <%- include('partials/footer') -%>

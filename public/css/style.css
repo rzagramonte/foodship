@@ -21,30 +21,30 @@
   --bs-danger-rgb: 220, 20, 60 !important; /* Crimson */
   --bs-light-rgb: 191, 217, 215 !important; /* Mint */
   --bs-dark-rgb: 33, 37, 41 !important; /* Dark */  
-  --bs-primary-text-emphasis: #052c65 !important;
-  --bs-secondary-text-emphasis: #2b2f32 !important;
-  --bs-success-text-emphasis: #0a3622 !important;
-  --bs-info-text-emphasis: #055160 !important;
-  --bs-warning-text-emphasis: #664d03 !important;
-  --bs-danger-text-emphasis: #58151c !important;
-  --bs-light-text-emphasis: #495057 !important;
-  --bs-dark-text-emphasis: #495057 !important;
-  --bs-primary-bg-subtle: #cfe2ff !important;
-  --bs-secondary-bg-subtle: #e2e3e5 !important;
-  --bs-success-bg-subtle: #d1e7dd !important;
-  --bs-info-bg-subtle: #cff4fc !important;
-  --bs-warning-bg-subtle: #fff3cd !important;
-  --bs-danger-bg-subtle: #f8d7da !important;
-  --bs-light-bg-subtle: #fcfcfd !important;
-  --bs-dark-bg-subtle: #ced4da !important;
-  --bs-primary-border-subtle: #9ec5fe !important;
-  --bs-secondary-border-subtle: #c4c8cb !important;
-  --bs-success-border-subtle: #a3cfbb !important;
-  --bs-info-border-subtle: #9eeaf9 !important;
-  --bs-warning-border-subtle: #ffe69c !important;
-  --bs-danger-border-subtle: #f1aeb5 !important;
-  --bs-light-border-subtle: #e9ecef !important;
-  --bs-dark-border-subtle: #adb5bd !important;
+  --bs-primary-text-emphasis: #8A7245 !important;  /* Darker gold */
+  --bs-secondary-text-emphasis: #2B2D34 !important;  /* Darker charcoal */
+  --bs-success-text-emphasis: #68C6A2 !important;  /* Darker aqua green */
+  --bs-info-text-emphasis: #3DB8BC !important;  /* Darker aqua blue */
+  --bs-warning-text-emphasis: #B38F3F !important;  /* Darker warning gold */
+  --bs-danger-text-emphasis: #A50F2E !important;  /* Darker crimson */
+  --bs-light-text-emphasis: #97B2AF !important;  /* Darker mint */
+  --bs-dark-text-emphasis: #2A2B2E !important;  /* Darker charcoal */
+  --bs-primary-bg-subtle: #d6c7a4 !important;  /* Lighter  Gold */
+  --bs-secondary-bg-subtle: #5c6570 !important;  /* Lighter Charcoal  */
+  --bs-success-bg-subtle: #a3e0d5 !important;  /* Lighter Aqua Green  */
+  --bs-info-bg-subtle: #82e0e4 !important;  /* Lighter Aqua Blue  */
+  --bs-warning-bg-subtle: #f6e3a2 !important;  /* Lighter Updated warning color */
+  --bs-danger-bg-subtle: #f8b7bd !important;  /* Lighter Crimson for danger */
+  --bs-light-bg-subtle: #d9eeeb !important;  /* Lighter Mint */
+  --bs-dark-bg-subtle: #7b8285 !important;  /* Lighter Charcoal  */
+  --bs-primary-border-subtle: #d6c7a4 !important;  /* Lighter than Gold */
+  --bs-secondary-border-subtle: #5c6570 !important;  /* Lighter than Charcoal */
+  --bs-success-border-subtle: #a3e0d5 !important;  /* Lighter than Aqua Green */
+  --bs-info-border-subtle: #82e0e4 !important;  /* Lighter than Aqua Blue */
+  --bs-warning-border-subtle: #f6e3a2 !important;  /* Lighter than Updated warning color */
+  --bs-danger-border-subtle: #f8b7bd !important;  /* Lighter than Crimson for danger */
+  --bs-light-border-subtle: #d9eeeb !important;  /* Lighter than Mint */
+  --bs-dark-border-subtle: #7b8285 !important;  /* Lighter than Charcoal */  
   --bs-white-rgb: 255, 255, 255 !important;
   --bs-black-rgb: 0, 0, 0 !important;
   --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
