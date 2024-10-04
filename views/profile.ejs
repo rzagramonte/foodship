@@ -1,16 +1,9 @@
 <%- include('partials/header') -%>
 <main class="container">
   <div class="row mt-5 ">
-      <div class="col-6">
-          <div>
-              <p><strong>User Name</strong>: <%= user.userName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/logout" class=" btn btn-primary">Logout</a>
-          </div>
 
-      </div>
       <% if (groupChats.length) { %>
-      <div class="col-6">
+      <div class="col-3">
         <ul class="row list-unstyled">
         <% for(var i=0; i<groupChats.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
@@ -27,11 +20,35 @@
       </div>
       <% } else { %>
         <div class="container">
-          <p>You have no chats... :(</p>
+          <a href="/groupChat/createGroupChat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"> </i>new group chat</a>
         </div>
         
-        <% } %>
+      <% } %>
+
+      <div class="col-12 mt-5">
+          
+        <img src="<%=user.profilePic%>" alt="user's profile picture"> 
+      </div>
+
+
+    </div>
+  </div>
+  <div class="row d-flex justify-content-start">
+    <div class="col col-md-9 col-lg-7 col-xl-6">
+      <div class="d-flex align-items-center bg-dark rounded p-3">
+        <img src="/imgs/gabriel-sample.jpg" 
+             alt="User Profile" class="img-fluid rounded-circle d-inline-block" height="40">
+        <div class="ms-3">
+          <h5 class="mb-0"><%= user.userName %></h5>
+        </div>
+      </div>
     </div>
   </div>
 </main>
+
+
+
+
+
+
 <%- include('partials/footer') -%>
