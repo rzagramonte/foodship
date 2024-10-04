@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
-
 const MongoStore = require("connect-mongo");
 const methodOverride = require("method-override");
 const flash = require("express-flash");
@@ -62,6 +61,9 @@ app.use(flash());
 
 //Setup Routes For Which The Server Is Listening
 app.use("/", mainRoutes);
+app.use("/about", mainRoutes);
+app.use("/learn", mainRoutes);
+app.use("/safety", mainRoutes);
 app.use("/connections", connectionRoutes);
 app.use("/events", eventRoutes);
 app.use("/groupChats", groupChatRoutes);

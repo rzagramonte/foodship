@@ -1,5 +1,5 @@
 <%- include('partials/header') -%>
-<div class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
+<main class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
   <h1>Food Preferences</h1>
   <% for(var i=0; i<foodPreferences.length; i++) {%>
   <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
@@ -32,6 +32,6 @@
       </div>
       <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
     </form>
-  </div>
+  </main>
 
 <%- include('partials/footer') -%>
