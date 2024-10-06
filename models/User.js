@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
+  userStatus: { type: String, enum: ['online', 'idle', 'dnd', 'invisible'], default: 'online'},
   bio: { type: String },
   profilePic : { type: String },
   cloudinaryId: { type: String },

@@ -1,54 +1,36 @@
 <%- include('partials/header') -%>
-<main class="container">
-  <div class="row mt-5 ">
 
-      <% if (groupChats.length) { %>
-      <div class="col-3">
-        <ul class="row list-unstyled">
-        <% for(var i=0; i<groupChats.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5">
-            <a href="/groupChat/<%= groupChats[i]._id%>">
-              <h2><%= groupChats[i].title%></h2>
-              <img class="img-fluid" src="<%= groupChats[i].image%>">
-            </a>
-          </li>
+<main class="container mt-5 px-5">
+  <div class="row group-chat">
+    <div class="col-3 d-flex h-100 d-flex flex-column">
+      <div class="container flex-grow-1">
+        <span class="small-caps">group chats</span>
+        <a href="/groupChat/createGroupChat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i></a>
+        <% if (groupChats.length) { %>
+          <ul class="row list-unstyled">
+            <% for(var i=0; i<groupChats.length; i++) {%>
+              <li class="col-6 justify-content-between mt-5">
+                <a href="/groupChat/<%= groupChats[i]._id%>">
+                  <h2><%= groupChats[i].title%></h2>
+                  <img class="img-fluid" src="<%= groupChats[i].image%>">
+                </a>
+              </li>
+            <% } %>
+          </ul>
         <% } %>
-        </ul>
-        <div class="row justify-content-center mt-5">
-          <a class="btn btn-primary" href="/feed">Return to Feed</a>
-        </div>  
       </div>
-      <% } else { %>
-        <div class="container">
-          <a href="/groupChat/createGroupChat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"> </i>new group chat</a>
-        </div>
-        
-      <% } %>
-
-      <div class="col-12 mt-5">
-          
-        <img src="<%=user.profilePic%>" alt="user's profile picture"> 
+      <div class="d-flex text-body-secondary pt-3">
+        <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 me-2 rounded" width="32" height="32">
+        <p class="pb-3 mb-0 small lh-sm">
+          <strong class="d-block ">@<%=user.userName%></strong>
+          <%= user.userStatus%>
+          </p>
       </div>
-
-
     </div>
-  </div>
-  <div class="row d-flex justify-content-start">
-    <div class="col col-md-9 col-lg-7 col-xl-6">
-      <div class="d-flex align-items-center bg-dark rounded p-3">
-        <img src="/imgs/gabriel-sample.jpg" 
-             alt="User Profile" class="img-fluid rounded-circle d-inline-block" height="40">
-        <div class="ms-3">
-          <h5 class="mb-0"><%= user.userName %></h5>
-        </div>
-      </div>
+    <div class="col-md-9">
+      <!-- Larger column content here -->
     </div>
   </div>
 </main>
-
-
-
-
-
 
 <%- include('partials/footer') -%>

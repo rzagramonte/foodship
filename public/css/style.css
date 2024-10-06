@@ -163,5 +163,7 @@
   font-variant: small-caps;
 }
 
-
+.group-chat{
+  height: 75vh !important;
+}
 
