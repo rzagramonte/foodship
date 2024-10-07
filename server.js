@@ -8,10 +8,14 @@ const methodOverride = require("method-override");
 const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
+const { Server } = require("socket.io");
+const http = require('http');
+const server = http.createServer(app);
+const io = new Server(server);
 const mainRoutes = require("./routes/main");
 const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
-const groupChatRoutes = require("./routes/groupChats");
+const groupChatRoutes = require("./routes/chat");
 const messageRoutes = require("./routes/messages");
 
 //Use .env file in config folder
@@ -52,6 +56,16 @@ app.use(
   })
 );
 
+// Set up Socket.IO connection
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  
+  // Handle socket events here
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -66,11 +80,10 @@ app.use("/learn", mainRoutes);
 app.use("/safety", mainRoutes);
 app.use("/connections", connectionRoutes);
 app.use("/events", eventRoutes);
-app.use("/groupChats", groupChatRoutes);
+app.use("/chat", groupChatRoutes);
 app.use("/messages", messageRoutes);
 
-
 //Server Running
-app.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(`Server is running on ${process.env.PORT}, you better catch it!`);
 });

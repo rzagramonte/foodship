@@ -4,9 +4,9 @@ const upload = require("../middleware/multer");
 const chatController = require("../controllers/chat");
 const { ensureAuth } = require("../middleware/auth");
 
-//Events routes
-
-router.get("/:id", ensureAuth, chatController.getChat);
+//Group chat Routes
+//:id
+router.get("/", ensureAuth, chatController.getChat);
 router.post("/createChat", chatController.createChat);
 router.put("/updateGroupName/:id", chatController.updateGroupName);
 router.put("/updateGroupPic/:id", upload.single("file"), chatController.updateGroupPic);

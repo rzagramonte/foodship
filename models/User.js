@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema({
   interests: [{ type: String }],
   foodPreferences: [{ type: String }],
   location: {type: String},
-  groupChat: { type: mongoose.Schema.Types.ObjectId, ref: "GroupChat" }
+  chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" }
 });
 
 // Password hash middleware.

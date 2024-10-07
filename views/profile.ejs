@@ -1,25 +1,25 @@
 <%- include('partials/header') -%>
 
 <main class="container mt-5 px-5">
-  <div class="row group-chat">
+  <div class="container-fluid row group-chat">
     <div class="col-3 d-flex h-100 d-flex flex-column">
-      <div class="container flex-grow-1">
+      <div class="container flex-grow-1 p-1">
         <span class="small-caps">group chats</span>
-        <a href="/groupChat/createGroupChat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i></a>
+        <a href="/chat/createChat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i></a>
         <% if (groupChats.length) { %>
           <ul class="row list-unstyled">
-            <% for(var i=0; i<groupChats.length; i++) {%>
+            <% for(var i=0; i<chats.length; i++) {%>
               <li class="col-6 justify-content-between mt-5">
-                <a href="/groupChat/<%= groupChats[i]._id%>">
+                <a href="/chat/<%= chats[i]._id%>">
                   <h2><%= groupChats[i].title%></h2>
-                  <img class="img-fluid" src="<%= groupChats[i].image%>">
+                  <img class="img-fluid" src="<%= chats[i].image%>">
                 </a>
               </li>
             <% } %>
           </ul>
         <% } %>
       </div>
-      <div class="d-flex text-body-secondary pt-3">
+      <div class="d-flex text-body-secondary p-1">
         <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 me-2 rounded" width="32" height="32">
         <p class="pb-3 mb-0 small lh-sm">
           <strong class="d-block ">@<%=user.userName%></strong>

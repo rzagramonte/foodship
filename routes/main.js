@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth");
 const homeController = require("../controllers/home");
-const groupChatsController = require("../controllers/groupChats");
+const chatController = require("../controllers/chat");
 const onboardingController = require("../controllers/onboarding");
 const { ensureAuth } = require("../middleware/auth");
 
@@ -12,7 +12,7 @@ router.get("/about", homeController.getAbout);
 router.get("/learn", homeController.getLearn);
 router.get("/safety", homeController.getSafety);
 router.get("/onboarding", ensureAuth, onboardingController.getAllOptions);
-router.get("/profile", ensureAuth, groupChatsController.getGroupChats);
+router.get("/profile", ensureAuth, chatController.getChats);
 
 //Routes for user login/signup
 router.get("/login", authController.getLogin);
