@@ -15,7 +15,7 @@ const io = new Server(server);
 const mainRoutes = require("./routes/main");
 const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
-const groupChatRoutes = require("./routes/chat");
+const chatRoutes = require("./routes/chat");
 const messageRoutes = require("./routes/messages");
 
 //Use .env file in config folder
@@ -60,6 +60,12 @@ app.use(
 io.on('connection', (socket) => {
   console.log('a user connected');
   
+  // Listen for 'chat message' events from the client
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);  // Log the message in the server
+    io.emit('chat message', msg);  // Send the message to all clients
+  });
+
   // Handle socket events here
   socket.on('disconnect', () => {
     console.log('user disconnected');
@@ -80,7 +86,7 @@ app.use("/learn", mainRoutes);
 app.use("/safety", mainRoutes);
 app.use("/connections", connectionRoutes);
 app.use("/events", eventRoutes);
-app.use("/chat", groupChatRoutes);
+app.use("/chat", chatRoutes);
 app.use("/messages", messageRoutes);
 
 //Server Running
