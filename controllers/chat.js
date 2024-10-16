@@ -21,7 +21,7 @@ module.exports = {
       console.log(err);
     }
   },
-  createChat: async (req, res) => {
+  postChat: async (req, res) => {
     //math.random, limit six, some() interest match
     //find group with highest interest match, if group exists and members length is under 6, add user to group, else create new group
     try {
@@ -37,7 +37,7 @@ module.exports = {
       console.log(err);
     }
   },
-  updateGroupName: async (req, res) => {
+  putGroupName: async (req, res) => {
     try {
       const { chatId } = req.params;
       const { name } = req.body;
@@ -53,7 +53,7 @@ module.exports = {
       console.log(err);
     }
   },
-  updateGroupPic: async (req, res) => {
+  putGroupPic: async (req, res) => {
     try {
       const { chatId } = req.params;
       const { secure_url, public_id } = await cloudinary.uploader.upload(req.file.path);
@@ -70,7 +70,7 @@ module.exports = {
       console.log(err);
     }
   },
-  leaveChat: async (req, res) => {
+  deleteChat: async (req, res) => {
     try {
       const { chatId, userId } = req.params;
       await Chat.findByIdAndUpdate(

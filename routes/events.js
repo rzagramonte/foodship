@@ -7,8 +7,8 @@ const { ensureAuth } = require("../middleware/auth");
 //Events routes
 
 router.get("/:id", ensureAuth, chatController.getChat);
-router.post("/createChat", chatController.createChat);
-router.put("/updateGroupName/:id", chatController.updateGroupName);
+router.post("/createChat", chatController.postChat);
+router.put("/updateGroupName/:id", chatController.putGroupName);
 router.put("/updateGroupPic/:id", upload.single("file"), chatController.updateGroupPic);
 router.delete("/leaveChat/:id", chatController.leaveChat);
 

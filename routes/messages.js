@@ -6,8 +6,8 @@ const { ensureAuth } = require("../middleware/auth");
 
 //Message Routes
 router.get("/messages", ensureAuth, messagesController.getMessages);
-router.post("/createMessage", upload.single("file"), messagesController.createMessage);
-router.put("/likeMessage/:id", messagesController.likeMessage);
+router.post("/createMessage", upload.single("file"), messagesController.postMessage);
+router.put("/likeMessage/:id", messagesController.putMessage);
 router.delete("/deleteMessage/:id", messagesController.deleteMessage);
 
 module.exports = router;

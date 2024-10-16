@@ -18,7 +18,7 @@ module.exports = {
       console.log(err);
     }
   },
-  createEvent: async (req, res) => {
+  postEvent: async (req, res) => {
     try {
       await Event.create({
         date: req.body.date,
@@ -30,7 +30,7 @@ module.exports = {
       console.log(err);
     }
   },
-  editEvent: async (req, res) => {
+  putEvent: async (req, res) => {
 
         try {
           const { eventId } = req.params;
