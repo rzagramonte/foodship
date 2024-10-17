@@ -5,9 +5,9 @@ const messagesController = require("../controllers/messages");
 const { ensureAuth } = require("../middleware/auth");
 
 //Message Routes
-router.get("/messages", ensureAuth, messagesController.getMessages);
-router.post("/createMessage", upload.single("file"), messagesController.postMessage);
-router.patch("/likeMessage/:id", messagesController.patchMessage);
-router.delete("/deleteMessage/:id", messagesController.deleteMessage);
+router.get("/:chatId", ensureAuth, messagesController.getMessages);
+router.post("/", upload.single("file"), messagesController.postMessage);
+router.patch("/:messageId", messagesController.patchMessage);
+router.delete("/:messageId", messagesController.deleteMessage);
 
 module.exports = router;

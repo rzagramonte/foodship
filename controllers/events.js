@@ -63,7 +63,7 @@ module.exports = {
       // Delete event by id
       await Event.findByIdAndDelete(req.params.id);
       console.log("Deleted Event");
-      res.redirect("/chat");
+      res.redirect(`/chat/${req.params.chatId}`);
     } catch (err) {
       console.error("Error deleting event:", err);
       res.redirect(`/chat/${req.params.chatId}`);

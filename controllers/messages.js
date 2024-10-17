@@ -11,6 +11,7 @@ module.exports = {
       res.render("chat.ejs", { user: req.user, messages: messages });
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Error getting all messages" });
     }
   },
   postMessage: async (req, res) => {
@@ -29,44 +30,46 @@ module.exports = {
       res.status(201).json(newMessage);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ error: 'Error sending message' });
+      res.status(500).json({ error: "Error sending message" });
     }
   },
   //add or remove like from message
   patchMessage: async (req, res) => {
     try {
-      const messageID = req.body.messageIDFromEJSFile;
-      const userID = req.user.id;
-      const message = await Message.findOne({ _id: message, likedBy: userID });
+      const messageId = req.body.messageIdFromEJSFile;
+      const userId = req.user.id;
+      const message = await Message.findOne({ _id: messageId, likedBy: userId });
       if (message) {
         await Message.findOneAndUpdate(
-          { _id: messageID, likedBy: userID },
-          { $pull: { likedBy: userID }, $inc: { likes: -1 } }
+          { _id: messageId, likedBy: userId },
+          { $pull: { likedBy: userId }, $inc: { likes: -1 } }
         );
-        console.log("User has already liked the message");
-        res.status(400).json({ error: "User has already liked the message" });
+        console.log("User has unliked the message");
+        res.status(200).json("User has unliked the message");
         return;
       }
       await Message.findOneAndUpdate(
-        { _id: messageID },
-        { $push: { likedBy: userID }, $inc: { likes: 1 } },
+        { _id: messageId },
+        { $push: { likedBy: userId }, $inc: { likes: 1 } },
         { upsert: true }
       );
       console.log("Marked Like");
-      res.json("Marked Like");
+      res.status(200).json("Marked Like");
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Error processing like" });
     }
   },
   deleteMessage: async (req, res) => {
     try {
       let message = await Message.findById({ _id: req.params.id });
       await cloudinary.uploader.destroy(message.cloudinaryId);
-      await Message.remove({ _id: req.params.id });
-      console.log("Deleted Message");
-      res.redirect("/groupChat");
+      await Message.deleteOne({ _id: req.params.id });
+      console.log("Message has been deleted!");
+      res.status(204).send();
     } catch (err) {
-      res.redirect("/groupChat");
+      console.log(err);
+      res.status(500).json({ error: "Error deleting message" });
     }
   },
 };
