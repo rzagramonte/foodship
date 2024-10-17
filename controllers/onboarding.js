@@ -1,9 +1,8 @@
 const Interest = require("../models/Interest");
 const FoodPreference = require("../models/FoodPreference");
-const User = require("../models/User");
 
 module.exports = {
-  getAllOptions: async (req, res) => { 
+  getPreferences: async (req, res) => { 
     try {
       const interests = await Interest.find();
       const foodPreferences = await FoodPreference.find();

@@ -37,7 +37,7 @@ module.exports = {
       console.log(err);
     }
   },
-  putGroupName: async (req, res) => {
+  patchGroupName: async (req, res) => {
     try {
       const { chatId } = req.params;
       const { name } = req.body;
@@ -53,7 +53,7 @@ module.exports = {
       console.log(err);
     }
   },
-  putGroupPic: async (req, res) => {
+  patchGroupPic: async (req, res) => {
     try {
       const { chatId } = req.params;
       const { secure_url, public_id } = await cloudinary.uploader.upload(req.file.path);

@@ -32,23 +32,24 @@ module.exports = {
       res.status(500).json({ error: 'Error sending message' });
     }
   },
-  putMessage: async (req, res) => {
+  //add or remove like from message
+  patchMessage: async (req, res) => {
     try {
-      const messageId = req.body.messageIdFromJSFile;
-      const userId = req.user.id;
-      const message = await Message.findOne({ _id: message, likedBy: userId });
+      const messageID = req.body.messageIDFromEJSFile;
+      const userID = req.user.id;
+      const message = await Message.findOne({ _id: message, likedBy: userID });
       if (message) {
         await Message.findOneAndUpdate(
-          { _id: messageId, likedBy: userId },
-          { $pull: { likedBy: userId }, $inc: { likes: -1 } }
+          { _id: messageID, likedBy: userID },
+          { $pull: { likedBy: userID }, $inc: { likes: -1 } }
         );
         console.log("User has already liked the message");
         res.status(400).json({ error: "User has already liked the message" });
         return;
       }
       await Message.findOneAndUpdate(
-        { _id: messageId },
-        { $push: { likedBy: userId }, $inc: { likes: 1 } },
+        { _id: messageID },
+        { $push: { likedBy: userID }, $inc: { likes: 1 } },
         { upsert: true }
       );
       console.log("Marked Like");

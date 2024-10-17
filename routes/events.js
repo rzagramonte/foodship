@@ -1,15 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../middleware/multer");
-const chatController = require("../controllers/chat");
+const eventsController = require("../controllers/events");
 const { ensureAuth } = require("../middleware/auth");
 
 //Events routes
-
-router.get("/:id", ensureAuth, chatController.getChat);
-router.post("/createChat", chatController.postChat);
-router.put("/updateGroupName/:id", chatController.putGroupName);
-router.put("/updateGroupPic/:id", upload.single("file"), chatController.updateGroupPic);
-router.delete("/leaveChat/:id", chatController.leaveChat);
+router.get("/", ensureAuth, eventsController.getEvents);
+router.get("/:id", ensureAuth, eventsController.getEvent);
+router.post("/createEvent", eventsController.postEvent);
+router.patch("/updateEvent/:id", eventsController.patchEvent);
+router.delete("/deleteEvent/:id", eventsController.deleteEvent);
 
 module.exports = router;
