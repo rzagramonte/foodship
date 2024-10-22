@@ -11,11 +11,9 @@ const MessageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
   },
   image: {
-    type: String, 
-    required: true,
+    type: String,
   },
   cloudinaryId: { 
     type: String, 
@@ -28,12 +26,23 @@ const MessageSchema = new mongoose.Schema({
   },
   likes: {
     type: Number,
-    required: true,
+    default: 0,
   },
   createdAt: {
     type: Date,
     default: Date.now, 
   },
+});
+
+// Pre-save hook to enforce content or image requirement based on contentType
+MessageSchema.pre('save', function(next) {
+  if (this.contentType === 'text' && !this.content) {
+    return next(new Error('Text messages must have content'));
+  }
+  if (this.contentType === 'image' && !this.image) {
+    return next(new Error('Image messages must have an image'));
+  }
+  next();
 });
 
 module.exports = mongoose.model("Message", MessageSchema);
