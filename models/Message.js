@@ -35,14 +35,16 @@ const MessageSchema = new mongoose.Schema({
 });
 
 // Pre-save hook to enforce content or image requirement based on contentType
-MessageSchema.pre('save', function(next) {
-  if (this.contentType === 'text' && !this.content) {
-    return next(new Error('Text messages must have content'));
+MessageSchema.pre('save', async function(next) {
+  try {
+    await this.populate('senderId');
+    this.userName = this.senderId.userName;
+    if (this.contentType === 'text' && !this.content) return next(new Error('Text messages must have content'));
+    if (this.contentType === 'image' && !this.image) return next(new Error('Image messages must have an image'));
+    next();
+  } catch (error) {
+    next(error);
   }
-  if (this.contentType === 'image' && !this.image) {
-    return next(new Error('Image messages must have an image'));
-  }
-  next();
 });
 
 module.exports = mongoose.model("Message", MessageSchema);
