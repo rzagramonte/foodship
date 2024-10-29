@@ -1,9 +1,6 @@
 <%- include('partials/header') -%>
 <main class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
-  
-  
-
-    <form action="/onboarding" method="POST">
+    <form action="/preferences/update" method="PATCH">
       <h1>Food Preferences</h1>
       <% for(var i=0; i<foodPreferences.length; i++) {%>
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">

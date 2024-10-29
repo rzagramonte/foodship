@@ -13,9 +13,10 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server);
 const mainRoutes = require("./routes/main");
+const userRoutes = require("./routes/user")
 const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
-const chatRoutes = require("./routes/chat");
+const chatRoutes = require("./routes/chats");
 const messageRoutes = require("./routes/messages");
 
 //Use .env file in config folder
@@ -84,6 +85,7 @@ app.use("/", mainRoutes);
 app.use("/about", mainRoutes);
 app.use("/learn", mainRoutes);
 app.use("/safety", mainRoutes);
+app.use("/user", userRoutes);
 app.use("/connections", connectionRoutes);
 app.use("/events", eventRoutes);
 app.use("/chat", chatRoutes);
