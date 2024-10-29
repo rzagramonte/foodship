@@ -3,22 +3,22 @@ const mongoose = require("mongoose");
 const ChatSchema = new mongoose.Schema({
   groupName: { 
     type: String,
-    required: true,
   },
   groupImage: {
     type: String,
-    required: true,
   },
   cloudinaryId: {
     type: String,
-    required: true,
   },
   members: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User", 
   }],
-  preferences: [{ 
-    type: String 
+  foodPreferences: [{
+    type: String,
+  }],
+  interests: [{ 
+    type: String, 
   }],
   messages: [{
     type: mongoose.Schema.Types.ObjectId,

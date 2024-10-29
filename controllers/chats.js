@@ -22,17 +22,38 @@ module.exports = {
     }
   },
   postChat: async (req, res) => {
-    //math.random, limit six, some() interest match
-    //find group with highest interest match, if group exists and members length is under 6, add user to group, else create new group
     try {
-      const {members, preferences} = req.body;
-
-      await Chat.create({
-        members,
-        preferences
+      const {interests, foodPreferences, userId} = req.body;
+      //add the user interests and foodPreferences to the user doc as well
+      const chatMatch = await Chat.findOne({
+        $and: [
+          { $expr: { $lt: [{ $size: "$members" }, 6] } }, // Ensures less than 6 members
+          {
+            members: {
+              $elemMatch: {
+                interests: { $in: interests }, // Matches at least one interest
+                foodPreferences: { $in: foodPreferences } // Matches at least one food preference
+              }
+            }
+          }
+        ]
       });
-      console.log("Chat has been added!");
-      res.redirect("/chat");
+     if(chatMatch){
+      // Add the userId to the members array
+      chatMatch.members.push(userId);
+      // Save the updated chat document
+      await chatMatch.save();
+      console.log("User has been added to the chat!");
+      res.redirect(`chat/${chatMatch._id}`);
+     }else{
+      await Chat.create({
+        member: [userId],
+        foodPreference:[...foodPreferences],
+        interests: [...interests]
+      });
+      console.log("Chat has been created!");
+      res.redirect(`chat/${chatMatch._id}`);
+     }
     } catch (err) {
       console.log(err);
     }
