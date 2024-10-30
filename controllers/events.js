@@ -29,7 +29,7 @@ module.exports = {
         location: result.secure_url,
       });
       console.log("Event has been created!");
-      res.redirect("/groupChat");
+      res.redirect(`/chat/${chatId}`);
     } catch (err) {
       console.log(err);
     }

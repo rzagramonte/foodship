@@ -5,31 +5,30 @@ const UserSchema = new mongoose.Schema({
   userName: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  userStatus: { type: String, enum: ['online', 'idle', 'dnd', 'invisible'], default: 'online'},
+  userStatus: {
+    type: String,
+    enum: ["online", "idle", "dnd", "invisible"],
+    default: "online",
+  },
   bio: { type: String },
-  profilePic : { type: String },
+  profilePic: { type: String },
   cloudinaryId: { type: String },
-  interests: [{ type: String }],
-  foodPreferences: [{ type: String }],
-  location: {type: String},
-  chatIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }]
+  preferences: {
+    interests: [{ type: String }],
+    foodPreferences: [{ type: String }],
+  },
+  location: { type: String },
+  chatIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
 });
 
 // Password hash middleware.
-
 UserSchema.pre("save", function save(next) {
   const user = this;
-  if (!user.isModified("password")) {
-    return next();
-  }
+  if (!user.isModified("password")) return next();
   bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
+    if (err) return next(err);
     bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       user.password = hash;
       next();
     });
@@ -37,7 +36,6 @@ UserSchema.pre("save", function save(next) {
 });
 
 // Helper method for validating user's password.
-
 UserSchema.methods.comparePassword = function comparePassword(
   candidatePassword,
   cb
