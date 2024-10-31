@@ -31,9 +31,13 @@ when onboarding is submitted, you're patching user doc with new values for inter
   patchPreferences: async (req, res) => {
     try {
       const { userId } = req.params;
-      const { preferences } = req.body;
+      const { foodPreferences, interests } = req.body;
       // Find the group and update the name
-      await User.findByIdAndUpdate(userId, { preferences }, { new: true });
+      await User.findByIdAndUpdate(
+        userId,
+        { preferences: { foodPreferences, interests } },
+        { new: true }
+      );
       console.log("Preferences have been updated!");
       res.redirect("/profile");
     } catch (err) {
