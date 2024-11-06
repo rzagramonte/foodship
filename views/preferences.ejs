@@ -1,22 +1,24 @@
 <%- include('partials/header') -%>
 
 <main class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
-    <form action="/preferences/update" method="PATCH">
+    <form action="/user/update/<%=user._id%>?_method=PATCH" method="POST">
+      <!-- <input type="hidden" name="_method" value="PATCH"> -->
+      
       <h1>Food Preferences</h1>
-      <% for(var i=0; i<foodPreferences.length; i++) {%>
+      <% for(let i=0; i<foodPreferences.length; i++) {%>
         <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-          <input <%= userFoodPreferences.includes(foodPreferences[i].foodPreference) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i%>" name="foodPreferences">
+          <input <%= userFoodPreferences.includes(foodPreferences[i].foodPreference) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i%>" name="foodPreferences" value="<%= foodPreferences[i].foodPreference %>">
           <label class="btn btn-outline-primary" for="btncheck<%=i%>"><%=foodPreferences[i].foodPreference%></label>
         </div>
         <% } %>
         <h1>Interests</h1>
-        <% for(var i=0; i<interests.length; i++) {%>
+        <% for(let i=0; i<interests.length; i++) {%>
           <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-            <input <%= userInterests.includes(interests[i].interest) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" name="interests">
+            <input <%= userInterests.includes(interests[i].interest) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" name="interests" value="<%= interests[i].interest %>">
             <label class="btn btn-outline-primary" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
           </div>
           <% } %>
-      <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </main>
 
