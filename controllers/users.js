@@ -7,13 +7,11 @@ module.exports = {
     try {
       const interests = await Interest.find();
       const foodPreferences = await FoodPreference.find();
-      const { preferences = { interests: [], foodPreferences: [] } } = req.body;
+      const user = req.user;
       res.render("preferences.ejs", {
         interests,
         foodPreferences,
-        userInterests: preferences.interests,
-        userFoodPreferences: preferences.foodPreferences,
-        user: req.user,
+        user,
         landingPage: false,
       });
     } catch (err) {
@@ -47,14 +45,16 @@ when onboarding is submitted, you're patching user doc with new values for inter
       res.status(500).send("Server error. Please try again later.");
     }
   },
+  //do i really need a delete preferences?
   deletePreferences: async (req, res) => {
     try {
       const interests = await Interest.find();
       const foodPreferences = await FoodPreference.find();
+      const user = req.user;
       res.render("preferences.ejs", {
         interests: interests,
         foodPreferences: foodPreferences,
-        user: req.user,
+        user,
         landingPage: false,
       });
     } catch (err) {
