@@ -16,8 +16,17 @@
             <label class="btn btn-outline-primary" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
           </div>
           <% } %>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+          <div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+
+    </form >
+  <!-- Clear All Preferences Form (PUT) -->
+  <form action="/user/delete/<%= user._id %>?_method=PUT" method="POST">
+    <div>
+      <button type="submit" class="btn btn-danger">Clear All</button>
+    </div>
+  </form>
   </main>
 
 <%- include('partials/footer') -%>

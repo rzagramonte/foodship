@@ -6,6 +6,6 @@ const { ensureAuth } = require("../middleware/auth");
 //Main Routes
 router.get("/:id", ensureAuth, userController.getPreferences);
 router.patch("/update/:id", ensureAuth, userController.patchPreferences);
-router.delete("/delete/:id", ensureAuth, userController.deletePreferences);
+router.put("/delete/:id", ensureAuth, userController.putPreferences);
 
 module.exports = router;

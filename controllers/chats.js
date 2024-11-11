@@ -6,7 +6,7 @@ module.exports = {
     try {
       const chats = await Chat.find({ members: req.user.id });
       res.render("profile.ejs", {
-        chats: chats,
+        chats,
         user: req.user,
         landingPage: false,
       });
@@ -16,9 +16,9 @@ module.exports = {
   },
   getChat: async (req, res) => {
     try {
-      //const group = await Group.findById(req.params.id);
+      const chat = await Chat.findById(req.params.id);
       res.render("chat.ejs", {
-        //group: group,
+        chat,
         user: req.user,
         landingPage: false,
       });

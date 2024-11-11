@@ -28,8 +28,6 @@ when onboarding is submitted, you're patching user doc with new values for inter
 */
   patchPreferences: async (req, res) => {
     try {
-      console.log('Body:', req.body);
-      console.log('Params:', req.params);
       const { id } = req.params;
       const { foodPreferences, interests } = req.body;
       // Find the group and update the name
@@ -45,18 +43,18 @@ when onboarding is submitted, you're patching user doc with new values for inter
       res.status(500).send("Server error. Please try again later.");
     }
   },
-  //do i really need a delete preferences?
-  deletePreferences: async (req, res) => {
+  //do i really need a delete preferences? - no
+  //clears all preferences on user's acct
+  putPreferences: async (req, res) => {
+    const { id } = req.params;
     try {
-      const interests = await Interest.find();
-      const foodPreferences = await FoodPreference.find();
-      const user = req.user;
-      res.render("preferences.ejs", {
-        interests: interests,
-        foodPreferences: foodPreferences,
-        user,
-        landingPage: false,
-      });
+      await User.findByIdAndUpdate(
+        id,
+        { $set: {preferences: { interests: [], foodPreferences: [] } }},
+        { new: true } // Return the updated document
+      );
+      console.log("Preferences have been cleared!");
+      res.redirect(`/user/${id}`);
     } catch (err) {
       console.log("Error deleting preferences:", err);
       res.status(500).send("Server error. Please try again later.");
