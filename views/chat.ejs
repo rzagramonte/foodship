@@ -1,3 +1,4 @@
+<% if (chat) { %>
 <div class="mt-auto">
   <ul
     id="messages"
@@ -19,3 +20,7 @@
     </button>
   </div>
 </form>
+<% } else { %>
+  <p>Please select a chat.</p>
+
+<% } %>

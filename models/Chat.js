@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const ChatSchema = new mongoose.Schema({
+  members: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", 
+  }],
   groupName: { 
     type: String,
   },
@@ -10,10 +14,6 @@ const ChatSchema = new mongoose.Schema({
   cloudinaryId: {
     type: String,
   },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", 
-  }],
   foodPreferences: [{
     type: String,
   }],
@@ -32,6 +32,11 @@ const ChatSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+// Middleware to set a default groupName if not provided
+ChatSchema.pre("save", function () {
+  if (!this.groupName && this.members.length > 0) this.groupName = `${this.members.join(", ")}`;
 });
 
 module.exports = mongoose.model("Chat", ChatSchema);

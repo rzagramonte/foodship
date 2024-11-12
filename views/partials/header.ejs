@@ -25,7 +25,13 @@
           <% if (user) { %>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/chat/createChat/<%=user._id%>"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i></a>
+              <form action="/chat/createChat/<%=user._id%>" method="POST">
+                <input hidden type="submit" id="create-chat">
+                <label class="nav-link" for="create-chat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i>
+                </label>
+                <a  href=">"></i></a>
+              </form>
+
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/safety">safety</a>

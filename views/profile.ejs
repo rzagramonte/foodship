@@ -10,7 +10,7 @@
             <% for(var i=0; i<chats.length; i++) {%>
               <li class="col-6 justify-content-between mt-5">
                 <a href="/chat/<%= chats[i]._id%>">
-                  <h2><%= groupChats[i].title%></h2>
+                  <h2><%= chats[i].title%></h2>
                   <img class="img-fluid" src="<%= chats[i].image%>">
                 </a>
               </li>

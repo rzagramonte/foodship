@@ -1,12 +1,15 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
+const User = require("../models/User");
 
 module.exports = {
   getChats: async (req, res) => {
     try {
       const chats = await Chat.find({ members: req.user.id });
+      let chat;
       res.render("profile.ejs", {
         chats,
+        chat,
         user: req.user,
         landingPage: false,
       });
@@ -28,7 +31,9 @@ module.exports = {
   },
   postChat: async (req, res) => {
     try {
-      const { interests, foodPreferences, userId } = req.body;
+      const { preferences } = req.user;
+      const { id } = req.params;
+      console.log("1:", req.user, "2:", id)
       //add the user interests and foodPreferences to the user doc as well
       const chatMatch = await Chat.findOne({
         $and: [
@@ -36,28 +41,34 @@ module.exports = {
           {
             members: {
               $elemMatch: {
-                interests: { $in: interests }, // Matches at least one interest
-                foodPreferences: { $in: foodPreferences }, // Matches at least one food preference
+                interests: { $in: preferences.interests }, // Matches at least one interest
+                foodPreferences: { $in: preferences.foodPreferences }, // Matches at least one food preference
               },
             },
           },
         ],
       });
+      console.log("chatMatch:", chatMatch)
       if (chatMatch) {
         // Add the userId to the members array
-        chatMatch.members.push(userId);
+        chatMatch.members.push(id);
         // Save the updated chat document
         await chatMatch.save();
         console.log("User has been added to the chat!");
-        res.redirect(`chat/${chatMatch._id}`);
+        res.redirect(`chat/${chatMatch.id}`);
       } else {
-        await Chat.create({
-          member: [userId],
-          foodPreference: [...foodPreferences],
-          interests: [...interests],
+        const chat = await Chat.create({
+          members: [id],
+          foodPreference: preferences.foodPreferences,
+          interests: preferences.interests,
         });
+        await User.findByIdAndUpdate(id, {$push: {chatIds: chat.id}});
         console.log("Chat has been created!");
-        res.redirect(`chat/${chatMatch._id}`);
+        res.render("chat.ejs", {
+          chat,
+          user: req.user,
+          landingPage: false,
+        });
       }
     } catch (err) {
       console.log(err);
