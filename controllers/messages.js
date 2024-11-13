@@ -8,7 +8,7 @@ module.exports = {
       const messages = await Message.find({ chatId })
         .sort({ createdAt: "asc" })
         .lean();
-      res.render("chat.ejs", { user: req.user, messages: messages });
+      res.render("profile.ejs", { user: req.user, messages: messages });
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Error getting all messages" });

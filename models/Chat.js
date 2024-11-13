@@ -37,17 +37,18 @@ const ChatSchema = new mongoose.Schema({
 
 // Middleware to set a default groupName if not provided
 ChatSchema.pre("save", async function () {
-  if (!this.groupName) {
+  const chat = this;
+  if (!chat.groupName) {
     try {
       // Map through member IDs and fetch userNames
       const userNames = await Promise.all(
-        this.members.map(async (userId) => {
+        chat.members.map(async (userId) => {
           const user = await User.findById(userId);
           return user.userName;
         })
       );
       // Set groupName as a comma-separated list of user names
-      this.groupName = userNames.join(", ");
+      chat.groupName = userNames.join(", ");
     } catch (error) {
       console.error("Error setting groupName in pre-save hook:", error);
     }

@@ -20,10 +20,12 @@ module.exports = {
   },
   getChat: async (req, res) => {
     try {
+      const chats = await Chat.find({ members: req.user.id });
       const chat = await Chat.findById(req.params.id);
-      res.render("chat.ejs", {
+      res.render("profile.ejs", {
         chat,
         user: req.user,
+        chats,
         landingPage: false,
       });
     } catch (err) {
@@ -34,8 +36,7 @@ module.exports = {
     try {
       const { preferences } = req.user;
       const { id } = req.params;
-      console.log("1:", req.user, "2:", id)
-      //add the user interests and foodPreferences to the user doc as well
+      const chats = await Chat.find({ members: req.user.id });
       const chatMatch = await Chat.findOne({
         $and: [
           { $expr: { $lt: [{ $size: "$members" }, 6] } }, // Ensures less than 6 members
@@ -65,9 +66,10 @@ module.exports = {
         });
         await User.findByIdAndUpdate(id, {$push: {chatIds: chat.id}});
         console.log("Chat has been created!");
-        res.render("chat.ejs", {
+        res.render("profile.ejs", {
           chat,
           user: req.user,
+          chats,
           landingPage: false,
         });
       }

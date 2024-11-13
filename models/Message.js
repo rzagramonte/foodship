@@ -41,9 +41,8 @@ MessageSchema.pre('save', async function(next) {
     this.userName = this.senderId.userName;
     if (this.contentType === 'text' && !this.content) return next(new Error('Text messages must have content'));
     if (this.contentType === 'image' && !this.image) return next(new Error('Image messages must have an image'));
-    next();
   } catch (error) {
-    next(error);
+    console.log("Message error: ", error);
   }
 });
 
