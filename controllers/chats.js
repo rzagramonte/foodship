@@ -6,6 +6,7 @@ module.exports = {
   getChats: async (req, res) => {
     try {
       const chats = await Chat.find({ members: req.user.id });
+      console.log(chats)
       let chat;
       res.render("profile.ejs", {
         chats,
