@@ -17,7 +17,10 @@ const UserSchema = new mongoose.Schema({
     interests: [{ type: String }],
     foodPreferences: [{ type: String }],
   },
-  location: { type: String },
+  location: {
+    city: { type: String },
+    state: { type: String },
+    zip: { type: Number }},
   chatIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
 });
 
