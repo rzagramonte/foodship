@@ -6,14 +6,16 @@
       <div class="container flex-grow-1 p-1">
         <span class="small-caps">group chats</span>
         <% if (chats.length) { %>
-          <ul class="row list-unstyled">
+          <ul class=" list-unstyled">
             <% for(var i=0; i<chats.length; i++) {%>
-              <li class="col-6 justify-content-between mt-5">
-                <a href="/chat/<%= chats[i]._id%>">
+              <a href="/chat/<%= chats[i]._id%>">
+                <li class="col-6 justify-content-between mt-5">
+               
                   <span><%= chats[i].groupName%></span>
                   <img class="img-fluid" src="<%= chats[i].image%>">
-                </a>
-              </li>
+                
+                </li>
+            </a>
             <% } %>
           </ul>
         <% } %>

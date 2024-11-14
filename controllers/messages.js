@@ -16,12 +16,12 @@ module.exports = {
   },
   postMessage: async (req, res) => {
     try {
-      const result = await cloudinary.uploader.upload(req.file.path);
+      const imgUrl = await cloudinary.uploader.upload(req.file.path);
       const { chatId, senderId, content, contentType } = req.body;
       const newMessage = await Message.create({
-        content: contentType === "text" ? content : undefined,
-        image: contentType === "image" ? result.secure_url : undefined,
-        cloudinaryId: result.public_id,
+        content: contentType === "text" ? content : null,
+        image: contentType === "image" ? imgUrl.secure_url : null,
+        cloudinaryId: imgUrl.public_id,
         likes: 0,
         sender: senderId,
         chat: chatId,

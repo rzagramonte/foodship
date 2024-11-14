@@ -6,7 +6,6 @@ module.exports = {
   getChats: async (req, res) => {
     try {
       const chats = await Chat.find({ members: req.user.id });
-      console.log(chats)
       let chat;
       res.render("profile.ejs", {
         chats,
@@ -39,18 +38,20 @@ module.exports = {
       const chats = await Chat.find({ members: req.user.id });
       const chatMatch = await Chat.findOne({
         $and: [
-          { $expr: { $lt: [{ $size: "$members" }, 6] } }, // Ensures less than 6 members
+          // Ensures less than 6 members
+          { $expr: { $lt: [{ $size: "$members" }, 6] } }, 
           {
             members: {
               $elemMatch: {
-                interests: { $in: preferences.interests }, // Matches at least one interest
-                foodPreferences: { $in: preferences.foodPreferences }, // Matches at least one food preference
+                // Matches at least one interest
+                interests: { $in: preferences.interests },
+                // Matches at least one food preference
+                foodPreferences: { $in: preferences.foodPreferences },
               },
             },
           },
         ],
       });
-      console.log("chatMatch:", chatMatch)
       if (chatMatch) {
         // Add the userId to the members array
         chatMatch.members.push(id);
