@@ -6,7 +6,7 @@ const { ensureAuth } = require("../middleware/auth");
 
 //Message Routes
 router.get("/:chatId", ensureAuth, messagesController.getMessages);
-router.post("/", upload.single("file"), messagesController.postMessage);
+router.post("/send", upload.single("file"), messagesController.postMessage);
 router.patch("/edit/:messageId", messagesController.patchMessage);
 router.delete("/delete/:messageId", messagesController.deleteMessage);
 

@@ -22,9 +22,9 @@ module.exports = {
       const chats = await Chat.find({ members: req.user.id });
       const chat = await Chat.findById(req.params.id);
       res.render("profile.ejs", {
+        chats,
         chat,
         user: req.user,
-        chats,
         landingPage: false,
       });
     } catch (err) {
