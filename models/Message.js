@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
 const MessageSchema = new mongoose.Schema({
-  chatId: { 
+  chatId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chat',
+    ref: "Chat",
   },
   senderId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
   },
   content: {
     type: String,
@@ -15,13 +15,12 @@ const MessageSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  cloudinaryId: { 
-    type: String, 
-    required: true,
+  cloudinaryId: {
+    type: String,
   },
   contentType: {
-    type: String, 
-    enum: ['text', 'image'], 
+    type: String,
+    enum: ["text", "image"],
     required: true,
   },
   likes: {
@@ -30,17 +29,24 @@ const MessageSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now, 
+    default: Date.now,
   },
 });
 
 // Pre-save hook to enforce content or image requirement based on contentType
-MessageSchema.pre('save', async function(next) {
+MessageSchema.pre("save", async function (next) {
   try {
-    await this.populate('senderId');
-    this.userName = this.senderId.userName;
-    if (this.contentType === 'text' && !this.content) return next(new Error('Text messages must have content'));
-    if (this.contentType === 'image' && !this.image) return next(new Error('Image messages must have an image'));
+    await this.populate({
+      path: "senderId",
+      select: "userName", // Specify `userName` to reduce data load
+    });
+    this.userName = this.senderId?.userName;
+
+    // Validate content based on contentType
+    if (this.contentType === "text" && !this.content)
+      return next(new Error("Text messages must have content"));
+    if (this.contentType === "image" && !this.image)
+      return next(new Error("Image messages must have an image"));
   } catch (error) {
     console.log("Message error: ", error);
   }

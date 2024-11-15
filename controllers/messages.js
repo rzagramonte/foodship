@@ -16,15 +16,19 @@ module.exports = {
   },
   postMessage: async (req, res) => {
     try {
-      const imgUrl = await cloudinary.uploader.upload(req.file.path);
+      console.log("req.body:", req.body); // Logs form data (chatId, senderId, content, contentType)
+      console.log("req.file:", req.file); // Logs uploaded file details if any
+
+      let imgUrl;
+      if (req.file) imgUrl = await cloudinary.uploader.upload(req.file.path);
       const { chatId, senderId, content, contentType } = req.body;
       const newMessage = await Message.create({
-        content: contentType === "text" ? content : null,
-        image: contentType === "image" ? imgUrl.secure_url : null,
-        cloudinaryId: imgUrl.public_id,
-        likes: 0,
-        sender: senderId,
-        chat: chatId,
+        chatId,
+        senderId,
+        content: contentType == "text" ? content : null,
+        image: contentType == "image" ? imgUrl?.secure_url : null,
+        cloudinaryId: imgUrl?.public_id,
+        contentType,
       });
       console.log("Message has been saved!");
       res.status(201).json(newMessage);
