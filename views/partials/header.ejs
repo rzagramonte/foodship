@@ -25,7 +25,7 @@
           <% if (user) { %>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <form action="/chat/createChat/<%=user._id%>" method="POST">
+              <form action="/chat/createChat" method="POST">
                 <input hidden type="submit" id="create-chat">
                 <label class="nav-link" for="create-chat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i>
                 </label>
@@ -82,7 +82,7 @@
         <% if (user) { %>
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link" href="/chat/createChat/<%=user._id%>"><i class="fa-solid fa-edit fa-xs" style="color: #BFD9D7;"></i></i></a>
+            <a class="nav-link" href="/chat/createChat"><i class="fa-solid fa-edit fa-xs" style="color: #BFD9D7;"></i></i></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/safety">safety</a>
