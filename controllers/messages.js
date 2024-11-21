@@ -16,9 +16,6 @@ module.exports = {
   },
   postMessage: async (req, res) => {
     try {
-      console.log("req.body:", req.body); // Logs form data (chatId, senderId, content, contentType)
-      console.log("req.file:", req.file); // Logs uploaded file details if any
-
       let imgUrl;
       if (req.file) imgUrl = await cloudinary.uploader.upload(req.file.path);
       const { chatId, senderId, content, contentType } = req.body;

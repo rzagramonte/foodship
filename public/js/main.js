@@ -43,12 +43,14 @@ form.addEventListener("submit", async (e) => {
 });
 
 socket.on("chat message", (msg) => {
-  console.log(msg)
+  console.log("OVER HERE: ", msg)
   const item = document.createElement("li");
   if (msg.contentType === "image") {
     // Display image or link to image
     const img = document.createElement("img");
-    img.src = `/uploads/${msg.filename}`; // Assuming server-side file handling
+    img.src = msg.image; // Assuming server-side file handling
+    img.alt = "User uploaded image";  // Alt text for the image
+    img.height = 200;
     item.appendChild(img);
   } else {
     item.textContent = msg.content;
