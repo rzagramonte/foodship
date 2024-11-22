@@ -41,20 +41,74 @@ form.addEventListener("submit", async (e) => {
     console.error("Failed to save message: ", error);
   }
 });
-
+/*
 socket.on("chat message", (msg) => {
-  console.log("OVER HERE: ", msg)
   const item = document.createElement("li");
   if (msg.contentType === "image") {
     // Display image or link to image
+    const imgDiv = document.createElement("div");
     const img = document.createElement("img");
+    imgDiv.className = "image-container"
     img.src = msg.image; // Assuming server-side file handling
     img.alt = "User uploaded image";  // Alt text for the image
-    img.height = 200;
-    item.appendChild(img);
+    img.className = "image-message";
+    item.appendChild(imgDiv).appendChild(img);
   } else {
     item.textContent = msg.content;
   }
   messages.appendChild(item);
   window.scrollTo(0, document.body.scrollHeight);
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const images = document.querySelectorAll('.message-image');
+
+  images.forEach(img => {
+    // Add class once the image is loaded
+    if (img.complete) {
+      setAspectRatioClass(img);
+    } else {
+      img.onload = () => setAspectRatioClass(img);
+    }
+  });
+
+  function setAspectRatioClass(img) {
+    if (img.naturalWidth > img.naturalHeight) {
+      img.classList.add('landscape');
+    } else {
+      img.classList.add('portrait');
+    }
+  }
+});
+
+*/
+
+socket.on("chat message", (msg) => {
+  const item = document.createElement("li");
+
+  if (msg.contentType === "image") {
+    const img = document.createElement("img");
+    img.src = msg.image;
+    img.alt = "User uploaded image";
+    img.className = "message-image";
+
+    img.onload = () => {
+      setAspectRatioClass(img);
+    };
+
+    item.appendChild(img);
+  } else {
+    item.textContent = msg.content;
+  }
+
+  messages.appendChild(item);
+  window.scrollTo(0, document.body.scrollHeight);
+});
+
+function setAspectRatioClass(img) {
+  if (img.naturalWidth > img.naturalHeight) {
+    img.classList.add('landscape');
+  } else {
+    img.classList.add('portrait');
+  }
+}

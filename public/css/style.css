@@ -166,10 +166,32 @@
   height: 75vh !important;
 }
 
-#messages>li{
+#messages > ul{
+  overflow: scroll;
+}
+
+#messages li{
   display: flex;
   justify-content: end;
+  margin: 1em;
 }
+
+.message-image {
+  display: block; /* Ensures proper layout */
+  max-width: 100%; /* Prevents images from overflowing */
+  height: auto; /* Maintains the aspect ratio */
+  border-radius: 10px;
+}
+
+.landscape {
+  max-height: 300px; /* Example maximum height */
+}
+
+.portrait {
+  max-height: 534px; /* Example maximum width */
+}
+
+
 /* #form { 
   background: rgba(0, 0, 0, 0.15); 
   padding: 0.25rem; 
