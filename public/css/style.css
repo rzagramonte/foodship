@@ -166,21 +166,17 @@
   height: 75vh !important;
 }
 
-#chatbox{
-  overflow: scroll;
-}
-
 #messages li{
+  display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1em;
 }
 
 #messages li, #messages span{
   display: flex;
-  justify-content: end;
+  justify-content: start;
 
 }
-
-
 
 .message-image {
   display: block; /* Ensures proper layout */

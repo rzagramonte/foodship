@@ -44,33 +44,25 @@ form.addEventListener("submit", async (e) => {
 
 socket.on("chat message", (msg) => {
   console.log(msg)
-  const item = document.createElement("li");
-  const userName = document.createElement("span");
+  const message = document.createElement("li");
+  const messageDetails = document.createElement("span");
   if (msg.contentType === "image") {
     const img = document.createElement("img");
     img.src = msg.image;
     img.alt = "User uploaded image";
-    img.className = "message-image";
-
+    message.style.display = 'none';
     img.onload = () => {
-      setAspectRatioClass(img);
+      img.className = `message-image ${img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait'}`;
+      message.style.display = 'block';
     };
-
-    item.appendChild(img);
+    message.appendChild(img);
   } else {
-    item.textContent = msg.content;
+    message.textContent = msg.content;
   }
-  userName.textContent = msg.senderId.userName;
-  messages.appendChild(userName);
-  messages.appendChild(item);
+  messageDetails.textContent = `${msg.senderId.userName} ${new Date(msg.createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric',})}`;
+  messages.appendChild(messageDetails);
+  messages.appendChild(message);
   
-  window.scrollTo(0, document.body.scrollHeight);
+  const chatbox = document.getElementById("chatbox");
+  chatbox.scrollTo(0, chatbox.scrollHeight);
 });
-
-function setAspectRatioClass(img) {
-  if (img.naturalWidth > img.naturalHeight) {
-    img.classList.add('landscape');
-  } else {
-    img.classList.add('portrait');
-  }
-}
