@@ -1,4 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
+const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 module.exports = {
@@ -27,6 +28,7 @@ module.exports = {
         cloudinaryId: imgUrl?.public_id,
         contentType,
       });
+      await Chat.findByIdAndUpdate(chatId, { $push: { messages: newMessage } });
       console.log("Message has been saved!");
       res.status(201).json(newMessage);
     } catch (err) {

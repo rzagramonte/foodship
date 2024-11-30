@@ -21,6 +21,7 @@ module.exports = {
     try {
       const chats = await Chat.find({ members: req.user.id });
       const chat = await Chat.findById(req.params.id);
+      console.log('chat: ', chat, 'chats: ', chats)
       res.render("profile.ejs", {
         chats,
         chat,

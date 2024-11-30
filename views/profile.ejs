@@ -7,7 +7,7 @@
         <span class="small-caps">group chats</span>
         <% if (chats.length) { %>
           <ul class=" list-unstyled">
-            <% for(var i=0; i<chats.length; i++) {%>
+            <% for(let i=0; i<chats.length; i++) {%>
               <a href="/chat/<%= chats[i]._id%>">
                 <li class="col-6 justify-content-between mt-5">
                

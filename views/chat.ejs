@@ -1,6 +1,12 @@
 <% if (chat) { %>
-<div class="mt-auto overflow-scroll" id="chatbox">
-  <ul id="messages" class="list-unstyled"></ul>
+<div class="mt-auto" id="chatbox">
+  <ul id="messages" class=" list-unstyled">
+    <% for(let i=0; i<chat.messages.length; i++) {%>
+      <li>
+        <%chat.messages[i]%>
+      </li>
+    <% } %>
+  </ul>
 </div>
 
 <form
