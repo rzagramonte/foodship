@@ -4,18 +4,27 @@ const form = document.getElementById("form");
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
-const img = document.getElementById("messageImage");
+const images = document.querySelectorAll(".message-image");
 const chatId = form.dataset.chatId;
 const senderId = form.dataset.senderId;
 const chatbox = document.getElementById("chatbox");
 
 chatbox.scrollTo(0, chatbox.scrollHeight);
 
-img.addEventListener("load", () => {
-  img.className = `message-image ${img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait'}`;
-})
+images.forEach((img) => {
+  img.addEventListener("load", () => {
+    img.naturalWidth > img.naturalHeight
+      ? img.classList.add("landscape")
+      : img.classList.add("portrait");
+  });
 
-if (img.complete) { img.dispatchEvent(new Event('load')) }
+  // If the image is already loaded (this happens when the image is cached)
+  if (img.complete) {
+    img.naturalWidth > img.naturalHeight
+      ? img.classList.add("landscape")
+      : img.classList.add("portrait");
+  }
+});
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -53,26 +62,36 @@ form.addEventListener("submit", async (e) => {
 });
 
 socket.on("chat message", (msg) => {
-  console.log(msg)
+  console.log(msg);
   const message = document.createElement("li");
   const messageDetails = document.createElement("span");
   if (msg.contentType === "image") {
     const img = document.createElement("img");
     img.src = msg.image;
     img.alt = "User uploaded image";
-    message.style.display = 'none';
+    message.style.display = "none";
     img.onload = () => {
-      img.className = `message-image ${img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait'}`;
-      message.style.display = 'block';
+      img.className = `message-image ${
+        img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"
+      }`;
+      message.style.display = "block";
     };
     message.appendChild(img);
   } else {
     message.textContent = msg.content;
   }
-  messageDetails.textContent = `${msg.senderId.userName} ${new Date(msg.createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric',})}`;
+  messageDetails.textContent = `${msg.senderId.userName} ${new Date(
+    msg.createdAt
+  ).toLocaleString(undefined, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })}`;
   messages.appendChild(messageDetails);
   messages.appendChild(message);
-  
+
   const chatbox = document.getElementById("chatbox");
   chatbox.scrollTo(0, chatbox.scrollHeight);
 });
