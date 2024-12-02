@@ -36,11 +36,11 @@ const MessageSchema = new mongoose.Schema({
 // Pre-save hook to enforce content or image requirement based on contentType
 MessageSchema.pre("save", async function (next) {
   try {
-    await this.populate({
+    const user = await this.populate({
       path: "senderId",
       select: "userName", // Specify `userName` to reduce data load
     });
-    this.userName = this.senderId?.userName;
+    this.userName = user?.userName;
 
     // Validate content based on contentType
     if (this.contentType === "text" && !this.content)

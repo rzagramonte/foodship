@@ -6,7 +6,7 @@ module.exports = {
   getMessages: async (req, res) => {
     const { chatId } = req.params;
     try {
-      const messages = await Message.find({ chatId })
+      const messages = await Message.find({ chatId }).populate("user")
         .sort({ createdAt: "asc" })
         .lean();
       res.render("profile.ejs", { user: req.user, messages: messages });

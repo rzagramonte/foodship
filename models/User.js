@@ -14,8 +14,8 @@ const UserSchema = new mongoose.Schema({
   profilePic: { type: String },
   cloudinaryId: { type: String },
   preferences: {
-    interests: [{ type: String }],
     foodPreferences: [{ type: String }],
+    interests: [{ type: String }],
   },
   location: {
     city: { type: String },

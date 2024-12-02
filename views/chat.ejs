@@ -1,9 +1,17 @@
 <% if (chat) { %>
-<div class="mt-auto" id="chatbox">
-  <ul id="messages" class=" list-unstyled">
+<div class="mt-auto chatbox" id="chatbox">
+  <ul id="messages" class="messages list-unstyled">
     <% for(let i=0; i<chat.messages.length; i++) {%>
+      <span><%= message[i].senderId.userName %> <%= new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %>
+      </span>
       <li>
-        <%chat.messages[i]%>
+
+        <% if (chat.messages[i].content) { %>
+          <%= chat.messages[i].content %>
+        <% } else if (chat.messages[i].image) { %>
+          <img id="messageImage" src="<%= chat.messages[i].image %>" alt="User uploaded image">
+        <% } %>
+        
       </li>
     <% } %>
   </ul>

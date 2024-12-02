@@ -4,8 +4,18 @@ const form = document.getElementById("form");
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
+const img = document.getElementById("messageImage");
 const chatId = form.dataset.chatId;
 const senderId = form.dataset.senderId;
+const chatbox = document.getElementById("chatbox");
+
+chatbox.scrollTo(0, chatbox.scrollHeight);
+
+img.addEventListener("load", () => {
+  img.className = `message-image ${img.naturalWidth > img.naturalHeight ? 'landscape' : 'portrait'}`;
+})
+
+if (img.complete) { img.dispatchEvent(new Event('load')) }
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();

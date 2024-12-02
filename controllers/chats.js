@@ -1,15 +1,15 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
-const User = require("../models/User");
+const Message = require("../models/Message");
 
 module.exports = {
   getChats: async (req, res) => {
     try {
-      const chats = await Chat.find({ members: req.user.id });
+      const chats = await Chat.find({ members: req.user.id }).populate("members");
       let chat;
       res.render("profile.ejs", {
         chats,
-        chat,
+        chat: null,
         user: req.user,
         landingPage: false,
       });
@@ -19,12 +19,13 @@ module.exports = {
   },
   getChat: async (req, res) => {
     try {
-      const chats = await Chat.find({ members: req.user.id });
-      const chat = await Chat.findById(req.params.id);
-      console.log('chat: ', chat, 'chats: ', chats)
+      const chats = await Chat.find({ members: req.user.id }).populate("members");
+      const chat = await Chat.findById(req.params.id).populate("messages");
+      let message = await Promise.all(chat.messages.map( m=> Message.findById(m._id).populate("senderId")));
       res.render("profile.ejs", {
         chats,
         chat,
+        message,
         user: req.user,
         landingPage: false,
       });
@@ -63,7 +64,7 @@ module.exports = {
       } else {
         const chat = await Chat.create({
           members: [id],
-          foodPreference: preferences.foodPreferences,
+          foodPreferences: preferences.foodPreferences,
           interests: preferences.interests,
         });
         await User.findByIdAndUpdate(id, {$push: {chatIds: chat.id}});

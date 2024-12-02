@@ -1,6 +1,7 @@
 const Interest = require("../models/Interest");
 const FoodPreference = require("../models/FoodPreference");
 const User = require("../models/User");
+const Chat = require("../models/Chat");
 
 module.exports = {
   getPreferences: async (req, res) => {
@@ -25,6 +26,7 @@ if new user (no chats/matched group), onboarding should take you to your profile
 new chat should take existing user to new matched chat (for mvp) and to prompt('would you like to update any of your preferences before finding a new group?') -> if yes, take to onboarding->new chat, else take to new chat
 when onboarding is submitted, you're patching user doc with new values for interest and foodPreferences & if (no existing chats) redirect to profile w new chat else profile no new chat
 */
+  // TODO: Handle edge case where food preferences are removed (e.g., pizza removed from all users)
   patchPreferences: async (req, res) => {
     try {
       const { id } = req.params;
@@ -32,10 +34,26 @@ when onboarding is submitted, you're patching user doc with new values for inter
       // Find the group and update the name
       await User.findByIdAndUpdate(
         id,
-        { preferences: { foodPreferences, interests } },
+        {
+          $set: {
+            preferences: {
+              interests: interests,
+              foodPreferences: foodPreferences,
+            },
+          },
+        },
         { new: true }
       );
-      console.log("Preferences have been updated!");
+      await Chat.updateMany(
+        { members: id },
+        {
+          $addToSet: {
+            foodPreferences: { $each: foodPreferences },
+            interests: { $each: interests },
+          }
+        },
+        { new: true }
+      );
       res.redirect("/profile");
     } catch (err) {
       console.log("Error patching preferences:", err);
@@ -49,7 +67,7 @@ when onboarding is submitted, you're patching user doc with new values for inter
     try {
       await User.findByIdAndUpdate(
         id,
-        { $set: {preferences: { interests: [], foodPreferences: [] } }},
+        { $set: { preferences: { interests: [], foodPreferences: [] } } },
         { new: true } // Return the updated document
       );
       console.log("Preferences have been cleared!");
