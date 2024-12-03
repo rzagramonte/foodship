@@ -9,9 +9,9 @@ const flash = require("express-flash");
 const logger = require("morgan");
 const connectDB = require("./config/database");
 const { Server } = require("socket.io");
-const http = require('http');
-const server = http.createServer(app);
-const io = new Server(server);
+const { createServer } = require("http");
+const server = createServer(app);
+const io = new Server(server, { connectionStateRecovery: {} });
 const mainRoutes = require("./routes/main");
 const userRoutes = require("./routes/user")
 const connectionRoutes = require("./routes/connections");
@@ -52,24 +52,33 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.DB_STRING, // Use your MongoDB connection string directly here
-      collectionName: 'sessions',
+      collectionName: "sessions",
     }),
   })
 );
 
-// Set up Socket.IO connection
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  
-  // Listen for 'chat message' events from the client
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);  // Log the message in the server
-    io.emit('chat message', msg);  // Send the message to all clients
+// Set up Socket.IO connection chatIds
+io.on("connection", (socket) => {
+
+  socket.on("connection", (chatId) => {
+    socket.join(chatId);
+    console.log(`User joined group: ${chatId}`);
+  });
+
+  socket.on("chat message", ({ chatId, content, contentType, imgUrl }) => {
+    const message = {
+      senderId: socket.id,
+      content: contentType == "text" ? content : null,
+      image: contentType == "image" ? imgUrl?.secure_url : null,
+      cloudinaryId: imgUrl?.public_id,
+      contentType,
+    };
+    io.to(chatId).emit("chat message", message);
   });
 
   // Handle socket events here
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
+  socket.on("disconnection", () => {
+    console.log("user disconnected from group");
   });
 });
 

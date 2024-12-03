@@ -1,15 +1,17 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const Message = require("../models/Message");
+const User = require("../models/User");
 
 module.exports = {
   getChats: async (req, res) => {
     try {
       const chats = await Chat.find({ members: req.user.id }).populate("members");
+      console.log(chats)
       let chat;
       res.render("profile.ejs", {
         chats,
-        chat: null,
+        chat,
         user: req.user,
         landingPage: false,
       });
@@ -67,7 +69,7 @@ module.exports = {
           foodPreferences: preferences.foodPreferences,
           interests: preferences.interests,
         });
-        await User.findByIdAndUpdate(id, {$push: {chatIds: chat.id}});
+        await User.findByIdAndUpdate(id, {$push: {members: chat.id}});
         console.log("Chat has been created!");
         res.render("profile.ejs", {
           chat,

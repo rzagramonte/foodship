@@ -21,7 +21,6 @@ const MessageSchema = new mongoose.Schema({
   contentType: {
     type: String,
     enum: ["text", "image"],
-    required: true,
   },
   likes: {
     type: Number,

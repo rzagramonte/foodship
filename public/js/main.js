@@ -1,15 +1,14 @@
 const socket = io();
-
 const form = document.getElementById("form");
+const chatId = form.dataset.chatId;
+const senderId = form.dataset.senderId;
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
+const chatBox = document.getElementById("chatbox");
 const images = document.querySelectorAll(".message-image");
-const chatId = form.dataset.chatId;
-const senderId = form.dataset.senderId;
-const chatbox = document.getElementById("chatbox");
 
-chatbox.scrollTo(0, chatbox.scrollHeight);
+chatBox.scrollTo(0, chatBox.scrollHeight);
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
@@ -25,6 +24,15 @@ images.forEach((img) => {
       : img.classList.add("portrait");
   }
 });
+
+// Emit an event to join the room when the page loads
+socket.emit('connection', chatId);
+
+/*
+socket.join(groupId);
+io.to(groupId).emit('chat message', message);
+socket.emit('chat message', { groupId, content });
+*/
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -92,6 +100,8 @@ socket.on("chat message", (msg) => {
   messages.appendChild(messageDetails);
   messages.appendChild(message);
 
-  const chatbox = document.getElementById("chatbox");
-  chatbox.scrollTo(0, chatbox.scrollHeight);
+  const chatBox = document.getElementById("chatBox");
+  chatBox.scrollTo(0, chatBox.scrollHeight);
 });
+
+
