@@ -18,7 +18,6 @@ const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
 const chatRoutes = require("./routes/chats");
 const messageRoutes = require("./routes/messages");
-const { postMessage } = require("./controllers/messages");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -28,6 +27,8 @@ require("./config/passport")(passport);
 
 //Connect To Database
 connectDB();
+
+app.set('io', io);
 
 //Using EJS for views
 app.set("view engine", "ejs");
@@ -60,44 +61,24 @@ app.use(
 
 // Set up Socket.IO connection chatIds
 io.on("connection", (socket) => {
-  socket.on("connection", (chatId) => {
-    socket.join(chatId);
-    console.log(`User joined group: ${chatId}`);
+  console.log("User connected");
+
+  // Join a specific room based on the chatId
+  socket.on("join chat", (chatId) => {
+    socket.join(chatId);  // Joining the room using the chatId
+    console.log(`User joined chat room: ${chatId}`);
   });
 
-  socket.on("chat message", async (messagePayload) => {
-    try {
-      // Simulate req and res objects
-      const req = { body: messagePayload };
-      let savedMessage;
-
-      const res = {
-        status: (code) => ({
-          json: (data) => {
-            if (code === 201) {
-              savedMessage = data; // Capture the message to emit later
-            } else {
-              console.error("Failed to save message:", data);
-            }
-          },
-        }),
-      };
-
-      // Call postMessage with the simulated req and res
-      await postMessage(req, res);
-
-      // Emit the saved message after it's been processed
-      if (savedMessage) {
-        io.to(messagePayload.chatId).emit("chat message", savedMessage);
-      }
-    } catch (error) {
-      console.error("Error handling WebSocket message:", error);
-    }
+  // Listen for the message and broadcast to the specific chat room
+  socket.on("chat message", (msg, chatId) => {
+    // Emit the message to the specific room (chatId)
+    io.to(chatId).emit("chat message", msg);
+    console.log(`Message sent to chat room: ${chatId}`);
   });
 
-  // Handle socket events here
-  socket.on("disconnection", () => {
-    console.log("User disconnected from group");
+  // Handle disconnect
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
   });
 });
 

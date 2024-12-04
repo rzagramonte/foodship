@@ -2,11 +2,15 @@ const socket = io();
 const form = document.getElementById("form");
 const chatId = form.dataset.chatId;
 const senderId = form.dataset.senderId;
+const userName = form.dataset.userName;
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
 const chatBox = document.getElementById("chat-box");
 const images = document.querySelectorAll(".message-image");
+
+// Emit an event to join the room when the page loads
+socket.emit("join chat", chatId);
 
 chatBox.scrollTo(0, chatBox.scrollHeight);
 
@@ -25,9 +29,6 @@ images.forEach((img) => {
   }
 });
 
-// Emit an event to join the room when the page loads
-socket.emit('connection', chatId);
-
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -39,6 +40,7 @@ form.addEventListener("submit", async (e) => {
     formData.append("content", input.value || fileInput.files[0].name); // Text message content
     formData.append("contentType", fileInput.files[0] ? "image" : "text");
     formData.append("senderId", senderId); // Sender ID
+    formData.append("userName", userName); // userName
 
     if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
 
@@ -51,8 +53,7 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Failed to send message");
 
     const savedMessage = await response.json();
-    console.log(savedMessage)
-    socket.emit("chat message", savedMessage);
+    socket.emit("chat message", savedMessage, chatId);
 
     input.value = "";
     fileInput.value = "";
@@ -83,7 +84,7 @@ socket.on("chat message", (msg) => {
   } else {
     message.textContent = msg.content;
   }
-  messageDetails.textContent = `${msg.user.userName} ${new Date(
+  messageDetails.textContent = `${msg.senderId.userName} ${new Date(
     msg.createdAt
   ).toLocaleString(undefined, {
     year: "numeric",

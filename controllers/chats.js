@@ -6,7 +6,10 @@ const User = require("../models/User");
 module.exports = {
   getChats: async (req, res) => {
     try {
-      const chats = await Chat.find({members: req.user.id}).populate({path: "members", select: "userName"});
+      const chats = await Chat.find({ members: req.user.id }).populate({
+        path: "members",
+        select: "userName",
+      });
       let chat;
       res.render("profile.ejs", {
         chats,
@@ -20,18 +23,19 @@ module.exports = {
   },
   postChat: async (req, res) => {
     try {
-      const { id, preferences } = req.user;
-      const chats = await Chat.find({ members: id});
+      const { id, preferences, userName } = req.user;
+      const chats = await Chat.find({ members: req.user.id }).populate({
+        path: "members",
+        select: "userName",
+      });
       const chatMatch = await Chat.findOne({
         $and: [
           // Ensures less than 6 members
-          { $expr: { $lt: [{ $size: "$members" }, 6] } }, 
+          { $expr: { $lt: [{ $size: "$members" }, 6] } },
           {
             members: {
               $elemMatch: {
-                // Matches at least one interest
                 interests: { $in: preferences.interests },
-                // Matches at least one food preference
                 foodPreferences: { $in: preferences.foodPreferences },
               },
             },
@@ -51,12 +55,13 @@ module.exports = {
           foodPreferences: preferences.foodPreferences,
           interests: preferences.interests,
         });
-        await User.findByIdAndUpdate(id, {$push: {members: chat.id}});
+        await User.findByIdAndUpdate(id, { $push: { members: chat.id } });
         console.log("Chat has been created!");
         res.render("profile.ejs", {
           chatId: chat.id,
           chat,
           user: req.user,
+          userName,
           chats,
           senderId: req.user._id.toString(),
           landingPage: false,

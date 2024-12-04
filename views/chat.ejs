@@ -2,7 +2,7 @@
 <div class="mt-auto chat-box" id="chat-box">
   <ul id="messages" class="messages list-unstyled">
     <% for(let i=0; i<chat.length; i++) {%>
-      <span><%= chat[i].senderId.userName %> <%= new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %>
+      <span><%= chat[i].senderId.userName || userName%> <%= new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %>
       </span>
       <li>
 
@@ -24,7 +24,8 @@
   enctype="multipart/form-data"
   method="POST"
   data-chat-id="<%= chatId %>"
-  data-sender-id="<%= senderId %>">
+  data-sender-id="<%= senderId %>"
+  data-user-name="<%= userName %>">
   <div class="input-group">
     <input
       id="input"
