@@ -5,7 +5,7 @@ const senderId = form.dataset.senderId;
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
-const chatBox = document.getElementById("chatbox");
+const chatBox = document.getElementById("chat-box");
 const images = document.querySelectorAll(".message-image");
 
 chatBox.scrollTo(0, chatBox.scrollHeight);
@@ -28,12 +28,6 @@ images.forEach((img) => {
 // Emit an event to join the room when the page loads
 socket.emit('connection', chatId);
 
-/*
-socket.join(groupId);
-io.to(groupId).emit('chat message', message);
-socket.emit('chat message', { groupId, content });
-*/
-
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -41,10 +35,10 @@ form.addEventListener("submit", async (e) => {
     if (!input.value && !fileInput.files[0]) return;
 
     const formData = new FormData();
-    formData.append("content", input.value || fileInput.files[0].name); // Text message content
     formData.append("chatId", chatId); // Chat ID
-    formData.append("senderId", senderId); // Sender ID
+    formData.append("content", input.value || fileInput.files[0].name); // Text message content
     formData.append("contentType", fileInput.files[0] ? "image" : "text");
+    formData.append("senderId", senderId); // Sender ID
 
     if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
 
@@ -57,7 +51,7 @@ form.addEventListener("submit", async (e) => {
     if (!response.ok) throw new Error("Failed to send message");
 
     const savedMessage = await response.json();
-
+    console.log(savedMessage)
     socket.emit("chat message", savedMessage);
 
     input.value = "";
@@ -70,9 +64,10 @@ form.addEventListener("submit", async (e) => {
 });
 
 socket.on("chat message", (msg) => {
-  console.log(msg);
+
   const message = document.createElement("li");
   const messageDetails = document.createElement("span");
+
   if (msg.contentType === "image") {
     const img = document.createElement("img");
     img.src = msg.image;
@@ -88,7 +83,7 @@ socket.on("chat message", (msg) => {
   } else {
     message.textContent = msg.content;
   }
-  messageDetails.textContent = `${msg.senderId.userName} ${new Date(
+  messageDetails.textContent = `${msg.user.userName} ${new Date(
     msg.createdAt
   ).toLocaleString(undefined, {
     year: "numeric",
@@ -100,8 +95,6 @@ socket.on("chat message", (msg) => {
   messages.appendChild(messageDetails);
   messages.appendChild(message);
 
-  const chatBox = document.getElementById("chatBox");
+  const chatBox = document.getElementById("chat-box");
   chatBox.scrollTo(0, chatBox.scrollHeight);
 });
-
-

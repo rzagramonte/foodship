@@ -1,15 +1,15 @@
 <% if (chat) { %>
-<div class="mt-auto chatbox" id="chatbox">
+<div class="mt-auto chat-box" id="chat-box">
   <ul id="messages" class="messages list-unstyled">
-    <% for(let i=0; i<chat.messages.length; i++) {%>
-      <span><%= message[i].senderId.userName %> <%= new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %>
+    <% for(let i=0; i<chat.length; i++) {%>
+      <span><%= chat[i].senderId.userName %> <%= new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %>
       </span>
       <li>
 
-        <% if (chat.messages[i].content) { %>
-          <%= chat.messages[i].content %>
+        <% if (chat[i].content) { %>
+          <%= chat[i].content %>
         <% } else  { %>
-          <img class = "message-image" src="<%= chat.messages[i].image %>" alt="User uploaded image">
+          <img class = "message-image" src="<%= chat[i].image %>" alt="User uploaded image">
         <% } %>
         
       </li>
@@ -23,8 +23,8 @@
   action="/messages/send"
   enctype="multipart/form-data"
   method="POST"
-  data-chat-id="<%= chat._id %>"
-  data-sender-id="<%= user._id %>">
+  data-chat-id="<%= chatId %>"
+  data-sender-id="<%= senderId %>">
   <div class="input-group">
     <input
       id="input"
@@ -38,6 +38,6 @@
   </div>
 </form>
 <% } else { %>
-<p>Please select a chat.</p>
+<p class="container mt-5">Please select a chat.</p>
 
 <% } %>

@@ -71,9 +71,9 @@
   --bs-heading-color: inherit !important;
   --bs-link-color: #0d6efd !important;
   --bs-link-color-rgb: 13, 110, 253 !important;
-  --bs-link-decoration: underline !important;
-  --bs-link-hover-color: #0a58ca !important;
-  --bs-link-hover-color-rgb: 10, 88, 202 !important;
+  --bs-link-decoration: none !important;
+  --bs-link-hover-color: #BFD9D7 !important;
+  --bs-link-hover-color-rgb: 191, 217, 215 !important;
   --bs-code-color: #d63384 !important;
   --bs-highlight-color: #212529 !important;
   --bs-highlight-bg: #fff3cd !important;
@@ -135,6 +135,10 @@
   --bs-navbar-hover-color:rgba(var(--bs-secondary-color-rgb), 0.8) !important;
 }
 
+.link-primary:focus,.link-primary:hover{
+  color:RGBA(191, 217, 215,var(--bs-link-opacity,1))!important;
+}
+
 .main {
   min-height: 75vh !important;
   position: relative !important;
@@ -166,7 +170,11 @@
   height: 75vh !important;
 }
 
-.chatbox, .group-chat-list{
+.group-chat-list{
+  height: 65vh !important;
+}
+
+.chat-box, .group-chat-list{
   overflow-y: scroll;
   scrollbar-color: #353745 #353745;
 }

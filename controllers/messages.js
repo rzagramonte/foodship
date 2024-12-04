@@ -3,23 +3,35 @@ const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 module.exports = {
+  //get all messages of a specific chat
   getMessages: async (req, res) => {
     const { chatId } = req.params;
+    const { id } = req.user;
     try {
-      const messages = await Message.find({ chatId }).populate("user")
-        .sort({ createdAt: "asc" })
-        .lean();
-      res.render("profile.ejs", { user: req.user, messages: messages });
+      const chat = await Message.find({ chatId })
+        .populate({path: "senderId", select: "userName"})
+        .sort({ createdAt: "asc" });
+      console.log(chat)
+      const chats = await Chat.find({members: id}).populate({path: "members", select: "userName"});
+      res.render("profile.ejs", {
+        user: req.user,
+        senderId: req.user._id.toString(),
+        chatId,
+        chat,
+        chats,
+        landingPage: false,
+      });
     } catch (err) {
       console.log(err);
       res.status(500).json({ error: "Error getting all messages" });
     }
   },
-  postMessage: async (req, res) => {
+  postMessage: async (req,res) => {
     try {
       let imgUrl;
       if (req.file) imgUrl = await cloudinary.uploader.upload(req.file.path);
-      const { chatId, senderId, content, contentType } = req.body;
+      const { chatId, content, contentType, senderId } = req.body;
+      console.log(req.body)
       const newMessage = await Message.create({
         chatId,
         senderId,
@@ -41,7 +53,10 @@ module.exports = {
     try {
       const messageId = req.body.messageIdFromEJSFile;
       const userId = req.user.id;
-      const message = await Message.findOne({ _id: messageId, likedBy: userId });
+      const message = await Message.findOne({
+        _id: messageId,
+        likedBy: userId,
+      });
       if (message) {
         await Message.findOneAndUpdate(
           { _id: messageId, likedBy: userId },

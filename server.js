@@ -13,11 +13,12 @@ const { createServer } = require("http");
 const server = createServer(app);
 const io = new Server(server, { connectionStateRecovery: {} });
 const mainRoutes = require("./routes/main");
-const userRoutes = require("./routes/user")
+const userRoutes = require("./routes/user");
 const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
 const chatRoutes = require("./routes/chats");
 const messageRoutes = require("./routes/messages");
+const { postMessage } = require("./controllers/messages");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -59,26 +60,44 @@ app.use(
 
 // Set up Socket.IO connection chatIds
 io.on("connection", (socket) => {
-
   socket.on("connection", (chatId) => {
     socket.join(chatId);
     console.log(`User joined group: ${chatId}`);
   });
 
-  socket.on("chat message", ({ chatId, content, contentType, imgUrl }) => {
-    const message = {
-      senderId: socket.id,
-      content: contentType == "text" ? content : null,
-      image: contentType == "image" ? imgUrl?.secure_url : null,
-      cloudinaryId: imgUrl?.public_id,
-      contentType,
-    };
-    io.to(chatId).emit("chat message", message);
+  socket.on("chat message", async (messagePayload) => {
+    try {
+      // Simulate req and res objects
+      const req = { body: messagePayload };
+      let savedMessage;
+
+      const res = {
+        status: (code) => ({
+          json: (data) => {
+            if (code === 201) {
+              savedMessage = data; // Capture the message to emit later
+            } else {
+              console.error("Failed to save message:", data);
+            }
+          },
+        }),
+      };
+
+      // Call postMessage with the simulated req and res
+      await postMessage(req, res);
+
+      // Emit the saved message after it's been processed
+      if (savedMessage) {
+        io.to(messagePayload.chatId).emit("chat message", savedMessage);
+      }
+    } catch (error) {
+      console.error("Error handling WebSocket message:", error);
+    }
   });
 
   // Handle socket events here
   socket.on("disconnection", () => {
-    console.log("user disconnected from group");
+    console.log("User disconnected from group");
   });
 });
 
