@@ -28,7 +28,7 @@ require("./config/passport")(passport);
 //Connect To Database
 connectDB();
 
-app.set('io', io);
+app.set("io", io);
 
 //Using EJS for views
 app.set("view engine", "ejs");
@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
 
   // Join a specific room based on the chatId
   socket.on("join chat", (chatId) => {
-    socket.join(chatId);  // Joining the room using the chatId
+    socket.join(chatId); // Joining the room using the chatId
     console.log(`User joined chat room: ${chatId}`);
   });
 

@@ -32,24 +32,20 @@ module.exports = {
         $and: [
           // Ensures less than 6 members
           { $expr: { $lt: [{ $size: "$members" }, 6] } },
-          {
-            members: {
-              $elemMatch: {
-                interests: { $in: preferences.interests },
-                foodPreferences: { $in: preferences.foodPreferences },
-              },
-            },
-          },
+          { members: { $ne: req.user.id } }
+          //{ 'members.preferences.interests': { $in: preferences.interests } }, // Match interests
+      //{ 'members.preferences.foodPreferences': { $in: preferences.foodPreferences } }, // Match food preferences
         ],
       });
-      if (chatMatch) {
+      console.log(chatMatch)
+      if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
         chatMatch.members.push(id);
         // Save the updated chat document
         await chatMatch.save();
         console.log("User has been added to the chat!");
-        res.redirect(`chat/${chatMatch.id}`);
-      } else {
+        res.redirect(`/messages/${chatMatch.id}`);
+      } /*else {
         const chat = await Chat.create({
           members: [id],
           foodPreferences: preferences.foodPreferences,
@@ -66,7 +62,7 @@ module.exports = {
           senderId: req.user._id.toString(),
           landingPage: false,
         });
-      }
+      }*/
     } catch (err) {
       console.log(err);
     }

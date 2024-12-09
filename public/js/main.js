@@ -67,7 +67,8 @@ form.addEventListener("submit", async (e) => {
 socket.on("chat message", (msg) => {
 
   const message = document.createElement("li");
-  const messageDetails = document.createElement("span");
+  const userName = document.createElement("span");
+  const createdAt = document.createElement("span");
 
   if (msg.contentType === "image") {
     const img = document.createElement("img");
@@ -84,7 +85,8 @@ socket.on("chat message", (msg) => {
   } else {
     message.textContent = msg.content;
   }
-  messageDetails.textContent = `${msg.senderId.userName} ${new Date(
+  userName.textContent = `${msg.senderId.userName} `;
+  createdAt.textContent = `${new Date(
     msg.createdAt
   ).toLocaleString(undefined, {
     year: "numeric",
@@ -92,8 +94,11 @@ socket.on("chat message", (msg) => {
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  })}`;
-  messages.appendChild(messageDetails);
+  })}`
+  createdAt.className = "createdAt"
+  message.className = "content"
+  messages.appendChild(userName);
+  messages.appendChild(createdAt);
   messages.appendChild(message);
 
   const chatBox = document.getElementById("chat-box");
