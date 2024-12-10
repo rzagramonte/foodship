@@ -172,6 +172,7 @@
 
 .group-chat-list{
   height: 65vh !important;
+  text-overflow: ellipsis;
 }
 
 .group-card:visited{

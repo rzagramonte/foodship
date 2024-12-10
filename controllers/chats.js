@@ -27,16 +27,17 @@ module.exports = {
       const chats = await Chat.find({ members: req.user.id }).populate({
         path: "members",
         select: "userName",
+        select: "preferences"
       });
       const chatMatch = await Chat.findOne({
         $and: [
           // Ensures less than 6 members
           { $expr: { $lt: [{ $size: "$members" }, 6] } },
-          { members: { $ne: req.user.id } }
-          //{ 'members.preferences.interests': { $in: preferences.interests } }, // Match interests
-      //{ 'members.preferences.foodPreferences': { $in: preferences.foodPreferences } }, // Match food preferences
+          { members: { $ne: req.user.id } },
+          { foodPreferences: { $in: preferences.foodPreferences } },
+          { interests: { $in: preferences.interests } }
         ],
-      });
+      }).sort({ matchScore: -1 });
       console.log(chatMatch)
       if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
@@ -45,7 +46,7 @@ module.exports = {
         await chatMatch.save();
         console.log("User has been added to the chat!");
         res.redirect(`/messages/${chatMatch.id}`);
-      } /*else {
+      } else {
         const chat = await Chat.create({
           members: [id],
           foodPreferences: preferences.foodPreferences,
@@ -53,16 +54,8 @@ module.exports = {
         });
         await User.findByIdAndUpdate(id, { $push: { members: chat.id } });
         console.log("Chat has been created!");
-        res.render("profile.ejs", {
-          chatId: chat.id,
-          chat,
-          user: req.user,
-          userName,
-          chats,
-          senderId: req.user._id.toString(),
-          landingPage: false,
-        });
-      }*/
+        res.redirect(`/messages/${chat.id}`);
+      }
     } catch (err) {
       console.log(err);
     }

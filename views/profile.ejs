@@ -5,13 +5,11 @@
     <div class="col-3 d-flex flex-column  ">
       <div class="container flex-grow-1 p-1">
         <span class="small-caps me-2">group chats</span>
-
         <form class="new-chat" action="/chat/createChat" method="POST">
           <input hidden type="submit" id="create-chat">
           <label class="nav-link" for="create-chat"><i class="fa-solid fa-edit" style="color: #BFD9D7;"></i>
           </label>
         </form>
-
         <div class="group-chat-list mb-3">
           <% if (chats.length) { %>
           <ul class="list-unstyled">
@@ -26,7 +24,6 @@
                   <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
                 </div>
               </li>
-
             </a>
             <% } %>
           </ul>
