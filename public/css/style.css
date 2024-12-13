@@ -162,17 +162,34 @@
   color: var(--bs-light) !important;
 }
 
+.group-card{
+  background-color: #2F313E;
+}
+
+.user-card{
+  background-color: #292A2F;
+
+  
+}
+
+.group-name{
+  display: inline !important;
+  width: fit-content !important;
+  background-color: #292A2F;
+  color: #AE9152;
+  
+}
+
 .small-caps {
   font-variant: small-caps;
 }
 
-.group-chat{
-  height: 75vh !important;
-}
-
 .group-chat-list{
-  height: 65vh !important;
+  height: 67vh !important;
   text-overflow: ellipsis;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-color: #353745 #2F313E;
 }
 
 .group-card:visited{
@@ -188,7 +205,8 @@
   display: inline-block;
 }
 
-.chat-box, .group-chat-list{
+.chat-box{
+  height: 67vh !important;
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-color: #5c6570 #353745;

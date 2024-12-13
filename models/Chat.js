@@ -8,6 +8,12 @@ const ChatSchema = new mongoose.Schema({
   }],
   groupName: { 
     type: String,
+    require: true,
+    //default: this.members.join(', '),
+  },
+  groupNameSet: {
+    type: Boolean,
+    default: false,
   },
   groupImage: {
     type: String,

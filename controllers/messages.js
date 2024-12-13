@@ -9,11 +9,13 @@ module.exports = {
     const { chatId } = req.params;
     const { id, userName } = req.user;
     try {
-      const chat = await Message.find({ chatId })
+      const chat = await Message.find({chatId} )
         .populate({path: "senderId", select: "userName"})
         .sort({ createdAt: "asc" });
+      const group = await Chat.findById(chatId).populate({path: "members", select: "userName"});
       const chats = await Chat.find({members: id}).populate({path: "members", select: "userName"});
       res.render("profile.ejs", {
+        group,
         user: req.user,
         userName,
         senderId: req.user._id.toString(),

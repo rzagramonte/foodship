@@ -8,6 +8,9 @@ const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
 const chatBox = document.getElementById("chat-box");
 const images = document.querySelectorAll(".message-image");
+const groupNameSpan = document.getElementById('group-name-span');
+const groupNameInput = document.getElementById('group-name-input');
+const groupNameForm = document.getElementById('group-name');
 
 // Emit an event to join the room when the page loads
 socket.emit("join chat", chatId);
@@ -103,4 +106,13 @@ socket.on("chat message", (msg) => {
 
   const chatBox = document.getElementById("chat-box");
   chatBox.scrollTo(0, chatBox.scrollHeight);
+});
+
+// Update the hidden input with the span's content on form submit
+groupNameSpan.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevent creating a new line in the span
+    groupNameInput.value = groupNameSpan.innerText.trim(); // Update the input value
+    groupNameForm.submit(); // Submit the form
+  }
 });

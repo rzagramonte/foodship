@@ -1,6 +1,5 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
-const Message = require("../models/Message");
 const User = require("../models/User");
 
 module.exports = {
@@ -24,11 +23,6 @@ module.exports = {
   postChat: async (req, res) => {
     try {
       const { id, preferences, userName } = req.user;
-      const chats = await Chat.find({ members: req.user.id }).populate({
-        path: "members",
-        select: "userName",
-        select: "preferences"
-      });
       const chatMatch = await Chat.findOne({
         $and: [
           // Ensures less than 6 members
@@ -38,16 +32,17 @@ module.exports = {
           { interests: { $in: preferences.interests } }
         ],
       }).sort({ matchScore: -1 });
-      console.log(chatMatch)
       if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
         chatMatch.members.push(id);
+        if(!groupNameSet) chatMatch.groupName.concat(`, ${userName}`);
         // Save the updated chat document
         await chatMatch.save();
         console.log("User has been added to the chat!");
         res.redirect(`/messages/${chatMatch.id}`);
       } else {
         const chat = await Chat.create({
+          groupName: userName,
           members: [id],
           foodPreferences: preferences.foodPreferences,
           interests: preferences.interests,
@@ -62,12 +57,12 @@ module.exports = {
   },
   patchGroupName: async (req, res) => {
     try {
-      const { chatId } = req.params;
-      const { name } = req.body;
+      const { id } = req.params;
+      const { groupName } = req.body;
       // Find the group and update the name
-      await Group.findByIdAndUpdate(chatId, { name }, { new: true });
+      await Chat.findByIdAndUpdate(id, { groupName,  groupNameSet: true}, { new: true });
       console.log("Chat name has been updated!");
-      res.redirect("/chat");
+      res.redirect(`/messages/${id}`);
     } catch (err) {
       console.log(err);
     }
