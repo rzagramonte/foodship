@@ -8,9 +8,9 @@ const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
 const chatBox = document.getElementById("chat-box");
 const images = document.querySelectorAll(".message-image");
-const groupNameSpan = document.getElementById('group-name-span');
-const groupNameInput = document.getElementById('group-name-input');
-const groupNameForm = document.getElementById('group-name');
+const groupNameSpan = document.getElementById("group-name-span");
+const groupNameInput = document.getElementById("group-name-input");
+const groupNameForm = document.getElementById("group-name");
 
 // Emit an event to join the room when the page loads
 socket.emit("join chat", chatId);
@@ -46,7 +46,6 @@ form.addEventListener("submit", async (e) => {
     formData.append("userName", userName); // userName
 
     if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
-
     // Save the message to the database
     const response = await fetch("/messages/send", {
       method: "POST",
@@ -68,7 +67,6 @@ form.addEventListener("submit", async (e) => {
 });
 
 socket.on("chat message", (msg) => {
-
   const message = document.createElement("li");
   const userName = document.createElement("span");
   const createdAt = document.createElement("span");
@@ -89,17 +87,15 @@ socket.on("chat message", (msg) => {
     message.textContent = msg.content;
   }
   userName.textContent = `${msg.senderId.userName} `;
-  createdAt.textContent = `${new Date(
-    msg.createdAt
-  ).toLocaleString(undefined, {
+  createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
     year: "numeric",
     month: "numeric",
     day: "numeric",
     hour: "numeric",
     minute: "numeric",
-  })}`
-  createdAt.className = "createdAt"
-  message.className = "content"
+  })}`;
+  createdAt.className = "createdAt";
+  message.className = "content";
   messages.appendChild(userName);
   messages.appendChild(createdAt);
   messages.appendChild(message);
@@ -108,11 +104,46 @@ socket.on("chat message", (msg) => {
   chatBox.scrollTo(0, chatBox.scrollHeight);
 });
 
+/*
 // Update the hidden input with the span's content on form submit
-groupNameSpan.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
+groupNameSpan.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
     event.preventDefault(); // Prevent creating a new line in the span
     groupNameInput.value = groupNameSpan.innerText.trim(); // Update the input value
     groupNameForm.submit(); // Submit the form
   }
+});
+*/
+groupNameSpan.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // Prevent creating a new line in the span
+    try {
+      groupNameInput.value = groupNameSpan.innerText.trim(); // Update the input value
+
+      const chatId = groupNameForm.dataset.chatId;
+      const formData = new FormData();
+      formData.append("chatId", chatId); // Chat ID
+      formData.append("groupName", groupNameInput.value); // group name input
+      
+      // Save the message to the database
+      const response = await fetch(`/chat/updateGroupName/${chatId}`, {
+        method: "PATCH",
+        body: formData,
+      });
+  
+      if (!response.ok) throw new Error("Failed to update group name");
+  
+      const savedGroupName = await response.json();
+      socket.emit("group name", savedGroupName, chatId);
+  
+      console.log("Group name updated!");
+    } catch (error) {
+      console.error("Failed to update group name: ", error);
+    }
+  }
+
+});
+
+socket.on("group name", (name) => {
+  groupNameSpan.textContent = name;
 });

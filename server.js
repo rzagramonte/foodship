@@ -76,6 +76,12 @@ io.on("connection", (socket) => {
     console.log(`Message sent to chat room: ${chatId}`);
   });
 
+  socket.on("group name", (name, chatId) => {
+    // Emit the message to the specific room (chatId)
+    io.to(chatId).emit("group name", name);
+    console.log(`Group name updated for chat room: ${chatId}`);
+  });
+
   // Handle disconnect
   socket.on("disconnect", () => {
     console.log("User disconnected");

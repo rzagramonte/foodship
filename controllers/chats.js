@@ -55,16 +55,18 @@ module.exports = {
       console.log(err);
     }
   },
-  patchGroupName: async (req, res) => {
+  patchGroupName: (io) => async (req, res) => {
+    console.log(req)
     try {
-      const { id } = req.params;
-      const { groupName } = req.body;
-      // Find the group and update the name
-      await Chat.findByIdAndUpdate(id, { groupName,  groupNameSet: true}, { new: true });
-      console.log("Chat name has been updated!");
-      res.redirect(`/messages/${id}`);
+      const { groupName, chatId } = req.body;
+      const updatedGroupName = await Chat.findByIdAndUpdate(chatId, { groupName,  groupNameSet: true}, { new: true }); // Find the group and update the name
+      console.log(updatedGroupName)
+      console.log("Group name has been updated!");
+      //res.redirect(`/messages/${id}`);
+      res.status(201).json(updatedGroupName);
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Error updating group name" });
     }
   },
   patchGroupPic: async (req, res) => {
