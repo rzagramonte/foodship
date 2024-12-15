@@ -34,8 +34,9 @@ module.exports = {
       }).sort({ matchScore: -1 });
       if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
+        //push the chatId into the users chatIds
         chatMatch.members.push(id);
-        if(!groupNameSet) chatMatch.groupName.concat(`, ${userName}`);
+        if(!chatMatch.groupNameSet) chatMatch.groupName.concat(`, ${userName}`);
         // Save the updated chat document
         await chatMatch.save();
         console.log("User has been added to the chat!");
@@ -56,17 +57,16 @@ module.exports = {
     }
   },
   patchGroupName: (io) => async (req, res) => {
-    console.log(req)
     try {
-      const { groupName, chatId } = req.body;
+      const chatId = req.params.id
+      const { groupName } = req.body;
+      //console.log(groupName)
       const updatedGroupName = await Chat.findByIdAndUpdate(chatId, { groupName,  groupNameSet: true}, { new: true }); // Find the group and update the name
-      console.log(updatedGroupName)
       console.log("Group name has been updated!");
-      //res.redirect(`/messages/${id}`);
-      res.status(201).json(updatedGroupName);
+      res.status(201).json(groupName);
     } catch (err) {
       console.log(err);
-      res.status(500).json({ error: "Error updating group name" });
+      res.status(500).json({ error: "Error updating group name", err });
     }
   },
   patchGroupPic: async (req, res) => {

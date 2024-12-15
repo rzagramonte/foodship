@@ -192,10 +192,6 @@
   scrollbar-color: #353745 #2F313E;
 }
 
-.group-card:visited{
-  background-color: #5c6570;
-}
-
 .member-length, .createdAt{
   font-size: .7rem;
   color: #97B2AF;

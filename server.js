@@ -78,7 +78,7 @@ io.on("connection", (socket) => {
 
   socket.on("group name", (name, chatId) => {
     // Emit the message to the specific room (chatId)
-    io.to(chatId).emit("group name", name);
+    io.to(chatId).emit("group name", name, chatId);
     console.log(`Group name updated for chat room: ${chatId}`);
   });
 
