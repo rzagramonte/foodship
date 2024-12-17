@@ -69,46 +69,52 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-socket.on("chat message", (msg) => {
-  const message = document.createElement("li");
-  const userName = document.createElement("span");
-  const createdAt = document.createElement("span");
+socket.on("chat message", (msg, chatId) => {
+  const divElement = document.querySelector(`div[data-chat-id="${chatId}"]`);
+  if (divElement) {
+    const message = document.createElement("li");
+    const userName = document.createElement("span");
+    const createdAt = document.createElement("span");
 
-  if (msg.contentType === "image") {
-    const img = document.createElement("img");
-    img.src = msg.image;
-    img.alt = "User uploaded image";
-    message.style.display = "none";
-    img.onload = () => {
-      img.className = `message-image ${
-        img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"
-      }`;
-      message.style.display = "block";
-    };
-    message.appendChild(img);
-  } else {
-    message.textContent = msg.content;
+    if (msg.contentType === "image") {
+      const img = document.createElement("img");
+      img.src = msg.image;
+      img.alt = "User uploaded image";
+      message.style.display = "none";
+      img.onload = () => {
+        img.className = `message-image ${
+          img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"
+        }`;
+        message.style.display = "block";
+      };
+      message.appendChild(img);
+    } else {
+      message.textContent = msg.content;
+    }
+    userName.textContent = `${msg.senderId.userName} `;
+    createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(
+      undefined,
+      {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      }
+    )}`;
+    createdAt.className = "createdAt";
+    message.className = "content";
+    messages.appendChild(userName);
+    messages.appendChild(createdAt);
+    messages.appendChild(message);
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.scrollTo(0, chatBox.scrollHeight);
   }
-  userName.textContent = `${msg.senderId.userName} `;
-  createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  })}`;
-  createdAt.className = "createdAt";
-  message.className = "content";
-  messages.appendChild(userName);
-  messages.appendChild(createdAt);
-  messages.appendChild(message);
-
-  const chatBox = document.getElementById("chat-box");
-  chatBox.scrollTo(0, chatBox.scrollHeight);
 });
 
-groupNameSpan.addEventListener("keydown", async (e) => {
-  if (e.key === "Enter") {
+const onGroupNameUpdate = async (e) => {
+  if (e.key === "Enter" || e.type == "blur") {
     e.preventDefault(); // Prevent creating a new line in the span
     try {
       groupNameInput.value = groupNameSpan.innerText.trim(); // Update the input value
@@ -131,9 +137,20 @@ groupNameSpan.addEventListener("keydown", async (e) => {
       console.error("Failed to update group name: ", error);
     }
   }
-});
+};
+
+groupNameSpan.addEventListener("keydown", onGroupNameUpdate);
+groupNameSpan.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
   const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
-  if (liElement) {liElement.textContent= name; groupNameSpan.textContent = name; }
+  const groupNameSpan = document.querySelector(
+    `span[data-chat-id="${chatId}"]`
+  );
+  if (liElement) {
+    liElement.textContent = name;
+  }
+  if (groupNameSpan) {
+    groupNameSpan.textContent = name;
+  }
 });

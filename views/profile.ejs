@@ -20,7 +20,7 @@
             <!--make the this a lil cute box-->
             <div  >
               <a class="link-primary link-underline-opacity-0" href="/messages/<%= chats[i]._id%>">
-                <li class="mt-3 card-group-name d-inline-block" data-chat-id="<%= chatId %>">
+                <li class="mt-3 card-group-name d-inline-block" data-chat-id="<%= chats[i]._id %>">
                   <% if (chats[i].groupNameSet) { %>
                     <%= chats[i].groupName %>
                   <% } else { %>

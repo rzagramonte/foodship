@@ -39,6 +39,7 @@ module.exports = {
         if(!chatMatch.groupNameSet) chatMatch.groupName.concat(`, ${userName}`);
         // Save the updated chat document
         await chatMatch.save();
+        await User.findByIdAndUpdate(id, { $push: { chatIds: chatMatch.id } });
         console.log("User has been added to the chat!");
         res.redirect(`/messages/${chatMatch.id}`);
       } else {
@@ -48,7 +49,7 @@ module.exports = {
           foodPreferences: preferences.foodPreferences,
           interests: preferences.interests,
         });
-        await User.findByIdAndUpdate(id, { $push: { members: chat.id } });
+        await User.findByIdAndUpdate(id, { $push: { chatIds: chat.id } });
         console.log("Chat has been created!");
         res.redirect(`/messages/${chat.id}`);
       }

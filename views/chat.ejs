@@ -9,7 +9,7 @@
   </form>
 </div>
 
-<div class="container chat-box" id="chat-box">
+<div class="container chat-box" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled">
     <% for(let i=0; i<chat.length; i++) {%>
     <span class="userName"><%=chat[i].senderId.userName || userName%></span>

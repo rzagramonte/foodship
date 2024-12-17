@@ -63,6 +63,7 @@ app.use(
 io.on("connection", (socket) => {
   console.log("User connected");
 
+  
   // Join a specific room based on the chatId
   socket.on("join chat", (chatId) => {
     socket.join(chatId); // Joining the room using the chatId
@@ -72,13 +73,13 @@ io.on("connection", (socket) => {
   // Listen for the message and broadcast to the specific chat room
   socket.on("chat message", (msg, chatId) => {
     // Emit the message to the specific room (chatId)
-    io.to(chatId).emit("chat message", msg);
+    io.emit("chat message", msg, chatId);
     console.log(`Message sent to chat room: ${chatId}`);
   });
 
   socket.on("group name", (name, chatId) => {
     // Emit the message to the specific room (chatId)
-    io.to(chatId).emit("group name", name, chatId);
+    io.emit("group name", name, chatId);
     console.log(`Group name updated for chat room: ${chatId}`);
   });
 
