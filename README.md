@@ -5,9 +5,9 @@ foodship brings the concept of connecting friends over food to life, featuring a
 
 ## How It's Made:
 
-**Tech used:** HTML, CSS, SCSS, JavaScript, Bootstrap, Node.js, Express.js, Passport, and MongoDB
+**Tech used:** HTML, CSS, SCSS, JavaScript, Bootstrap, Node.js, Express.js, Passport, Socket.io, and MongoDB
 
-I developed foodship's platform with a focus on simplicity and community-building. The responsive design ensures that users can access the site seamlessly across devices, with bootstrap managing styles for a clean, modern look. JavaScript and backend technologies like Node.js and MongoDB were employed to create interactive features, such as group creation and event scheduling.
+I developed foodship's platform with a focus on simplicity and community-building. The responsive design ensures that users can access the site seamlessly across devices, with bootstrap managing styles for a clean, modern look. JavaScript and backend technologies like Node.js and MongoDB were employed to create interactive features, such as group creation and event scheduling. I used Socket.io to handle real-time messaging and related real-time data updates.
 
 ## Optimizations
 
