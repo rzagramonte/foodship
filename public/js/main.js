@@ -1,8 +1,8 @@
 const socket = io();
 const form = document.getElementById("form");
-const chatId = form.dataset.chatId;
-const senderId = form.dataset.senderId;
-const userName = form.dataset.userName;
+const chatId = form?.dataset.chatId;
+const senderId = form?.dataset.chatId;
+const userName = form?.dataset.chatId;
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
@@ -12,11 +12,13 @@ const groupNameSpan = document.getElementById("group-name-span");
 const groupNameInput = document.getElementById("group-name-input");
 const groupNameForm = document.getElementById("group-name");
 const cardGroupName = document.getElementById("card-group-name");
+const newChatMemberForm = document.getElementById("new-chat");
+const newMemberPreferencesForm = document.getElementById("preferences");
 
 // Emit an event to join the room when the page loads
 socket.emit("join chat", chatId);
 
-chatBox.scrollTo(0, chatBox.scrollHeight);
+chatBox?.scrollTo(0, chatBox.scrollHeight);
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
@@ -33,7 +35,7 @@ images.forEach((img) => {
   }
 });
 
-form.addEventListener("submit", async (e) => {
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   try {
@@ -139,8 +141,8 @@ const onGroupNameUpdate = async (e) => {
   }
 };
 
-groupNameSpan.addEventListener("keydown", onGroupNameUpdate);
-groupNameSpan.addEventListener("blur", onGroupNameUpdate);
+groupNameSpan?.addEventListener("keydown", onGroupNameUpdate);
+groupNameSpan?.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
   const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
@@ -152,5 +154,78 @@ socket.on("group name", (name, chatId) => {
   }
   if (groupNameSpan) {
     groupNameSpan.textContent = name;
+  }
+});
+
+const newMember = async (e) => {
+  try {
+    const form = document.getElementById("preferences") || document.getElementById("new-chat");
+    const userName = form.dataset.userName;
+
+    const response = await fetch("/messages/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Ensure this header is set for JSON
+      },
+      body: JSON.stringify({
+        chatId,
+        senderId: "system",
+        content: `${userName} has joined the group`,
+      }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update group name");
+
+    const savedSystemMessage = await response.json();
+    socket.emit("new member groupName", userName, chatId);
+    socket.emit("new member", savedSystemMessage, userName, chatId);
+
+    console.log("New member has joined the group");
+  } catch (error) {
+    console.error("Failed to send/save new member message for the group: ", error);
+  }
+};
+
+newChatMemberForm?.addEventListener("submit", e=>{
+  e.preventDefault();
+  setTimeout(newMember, 0)
+});
+newMemberPreferencesForm?.addEventListener("submit", e=>{
+  e.preventDefault();
+  setTimeout(newMember, 0)}
+);
+
+socket.on("new member groupName", (member, chatId) => {
+  const liElement = document.querySelector(
+    `li[class*="${groupNameSet - false}"]`
+  );
+  if (liElement.getAttribute("data-chat-id") == chatId)
+    liElement.textContent += `, ${member}`;
+  if (groupNameSpan.getAttribute("data-chat-id") == chatId)
+    groupNameSpan.textContent += `, ${member}`;
+});
+
+socket.on("new member message", (systemMessage, member, chatId) => {
+  if (chatBox.getAttribute("data-chat-id") == chatId) {
+    //for message
+    const message = document.createElement("li");
+    const createdAt = document.createElement("span");
+
+    message.textContent = systemMessage;
+    createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(
+      undefined,
+      {
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      }
+    )}`;
+
+    createdAt.className = "createdAt";
+    message.className = "systemMessage";
+    messages.appendChild(createdAt);
+    messages.appendChild(message);
   }
 });

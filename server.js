@@ -63,7 +63,6 @@ app.use(
 io.on("connection", (socket) => {
   console.log("User connected");
 
-  
   // Join a specific room based on the chatId
   socket.on("join chat", (chatId) => {
     socket.join(chatId); // Joining the room using the chatId
@@ -81,6 +80,18 @@ io.on("connection", (socket) => {
     // Emit the message to the specific room (chatId)
     io.emit("group name", name, chatId);
     console.log(`Group name updated for chat room: ${chatId}`);
+  });
+
+  socket.on("new member groupName", (member, chatId) => {
+    // Emit the message to the specific room (chatId)
+    socket.broadcast.emit("new member", member, chatId);
+    console.log(`Group name to chat room ${chatId} has been updated to include ${member}`);
+  });
+
+  socket.on("new member message", (systemMessage, member, chatId) => {
+    // Emit the message to the specific room (chatId)
+    io.emit("new member message", systemMessage, member, chatId); // Broadcast join message
+    console.log(`${member} has joined chat room: ${chatId}`);
   });
 
   // Handle disconnect

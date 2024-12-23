@@ -8,11 +8,15 @@ module.exports = {
     try {
       const interests = await Interest.find();
       const foodPreferences = await FoodPreference.find();
-      const user = req.user;
+      const {userName} = req.user;
+      const user = req.user
+      const userId = req.params.id
       res.render("preferences.ejs", {
-        interests,
         foodPreferences,
+        interests,
         user,
+        userId,
+        userName,
         landingPage: false,
       });
     } catch (err) {
@@ -31,6 +35,7 @@ when onboarding is submitted, you're patching user doc with new values for inter
     try {
       const { id } = req.params;
       const { foodPreferences, interests } = req.body;
+      const userChats = await User.findById(id).lean();
       // Find the group and update the name
       await User.findByIdAndUpdate(
         id,
@@ -50,11 +55,15 @@ when onboarding is submitted, you're patching user doc with new values for inter
           $addToSet: {
             foodPreferences: { $each: foodPreferences },
             interests: { $each: interests },
-          }
+          },
         },
         { new: true }
       );
-      res.redirect("/profile");
+      if (userChats.chatIds) {
+        res.redirect("/profile");
+      } else {
+        res.redirect("/chat/createChat");
+      }
     } catch (err) {
       console.log("Error patching preferences:", err);
       res.status(500).send("Server error. Please try again later.");

@@ -1,7 +1,7 @@
 <%- include('partials/header') -%>
 
 <main class="d-flex flex-wrap justify-content-around vh-75 flex-grow-1">
-  <form class="container mt-5" action="/user/update/<%=user._id%>?_method=PATCH" method="POST">
+  <form class="container mt-5" id="preferences" action="/user/update/<%=userId%>?_method=PATCH" method="POST" data-user-name="<%= userName %>">
     <h1 class="py-3 text-center">Preferences</h1>
     <h2>Food</h2>
     <div class=" m-3 ">
@@ -26,7 +26,7 @@
     </div>
   </form>
   <!-- Clear All Preferences Form (PUT) -->
-  <form action="/user/delete/<%= user._id %>?_method=PUT" method="POST">
+  <form action="/user/delete/<%= userId %>?_method=PUT" method="POST" data-user-name="<%= userName %>">
     <div>
       <button type="submit" class="btn btn-danger">Clear All</button>
     </div>

@@ -20,7 +20,7 @@ module.exports = {
       console.log(err);
     }
   },
-  postChat: async (req, res) => {
+  postChat: (io) => async (req, res) => {
     try {
       const { id, preferences, userName } = req.user;
       const chatMatch = await Chat.findOne({
@@ -29,14 +29,15 @@ module.exports = {
           { $expr: { $lt: [{ $size: "$members" }, 6] } },
           { members: { $ne: req.user.id } },
           { foodPreferences: { $in: preferences.foodPreferences } },
-          { interests: { $in: preferences.interests } }
+          { interests: { $in: preferences.interests } },
         ],
       }).sort({ matchScore: -1 });
       if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
         //push the chatId into the users chatIds
         chatMatch.members.push(id);
-        if(!chatMatch.groupNameSet) chatMatch.groupName.concat(`, ${userName}`);
+        if (!chatMatch.groupNameSet)
+          chatMatch.groupName.concat(`, ${userName}`);
         // Save the updated chat document
         await chatMatch.save();
         await User.findByIdAndUpdate(id, { $push: { chatIds: chatMatch.id } });
@@ -51,18 +52,24 @@ module.exports = {
         });
         await User.findByIdAndUpdate(id, { $push: { chatIds: chat.id } });
         console.log("Chat has been created!");
+        //res.status(201).json(userName);
         res.redirect(`/messages/${chat.id}`);
       }
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Error updating group name", err });
     }
   },
   patchGroupName: (io) => async (req, res) => {
     try {
-      const chatId = req.params.id
+      const chatId = req.params.id;
       const { groupName } = req.body;
       //console.log(groupName)
-      const updatedGroupName = await Chat.findByIdAndUpdate(chatId, { groupName,  groupNameSet: true}, { new: true }); // Find the group and update the name
+      await Chat.findByIdAndUpdate(
+        chatId,
+        { groupName, groupNameSet: true },
+        { new: true }
+      ); // Find the group and update the name
       console.log("Group name has been updated!");
       res.status(201).json(groupName);
     } catch (err) {
