@@ -129,6 +129,11 @@
   --bs-btn-disabled-border-color:#0d6efd
 }
 
+.btn-secondary{
+  --bs-btn-color:#BFD9D7 !important; /* Mint */
+  --bs-btn-bg: #353745 !important; /* Charcoal */
+}
+
 .navbar{
   --bs-navbar-color:rgba(var(--bs-body-color-rgb)) !important;
   --bs-navbar-toggler-border-color:rgba(var(--bs-body-color-rgb), 0.15) !important;
@@ -168,7 +173,7 @@
 
 .user-card{
   background-color: #292A2F;
-
+  border-bottom-left-radius: 1rem
   
 }
 
@@ -179,18 +184,20 @@
   color: #AE9152;
   
 }
-
-.small-caps {
-  font-variant: small-caps;
+.group-chat{
+  border-color: #353745 !important; /* Charcoal */
+  border-width: thick !important;
 }
 
 .group-chat-list{
-  height: 67vh !important;
+  height: 60vh !important;
   text-overflow: ellipsis;
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-color: #353745 #2F313E;
 }
+
+
 
 .member-length, .createdAt{
   font-size: .7rem;
@@ -202,10 +209,10 @@
 }
 
 .chat-box{
-  height: 67vh !important;
+  height: 60vh !important;
   overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-color: #5c6570 #353745;
+  scrollbar-color: #353745 #2F313E;
 }
 
 /* For most modern browsers */
@@ -219,14 +226,10 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #353745; /* Your desired color for the track */
+  background-color: #2F313E; /* Your desired color for the track */
 }
 
-.content {
-  font-weight: lighter;
-  text-wrap: wrap;
-  margin-bottom: 1em;
-}
+
 
 .message-image {
   display: block; /* Ensures proper layout */

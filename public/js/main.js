@@ -1,8 +1,8 @@
 const socket = io();
 const form = document.getElementById("form");
 const chatId = form?.dataset.chatId;
-const senderId = form?.dataset.chatId;
-const userName = form?.dataset.chatId;
+const senderId = form?.dataset.senderId;
+const userName = form?.dataset.userName;
 const input = document.getElementById("input");
 const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
@@ -94,6 +94,7 @@ socket.on("chat message", (msg, chatId) => {
       message.textContent = msg.content;
     }
     userName.textContent = `${msg.senderId.userName} `;
+    userName.className = "userName text-primary";
     createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(
       undefined,
       {
@@ -105,7 +106,7 @@ socket.on("chat message", (msg, chatId) => {
       }
     )}`;
     createdAt.className = "createdAt";
-    message.className = "content";
+    message.className = "content text-wrap text-break mb-2 fw-light";
     messages.appendChild(userName);
     messages.appendChild(createdAt);
     messages.appendChild(message);

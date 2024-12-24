@@ -1,9 +1,9 @@
 <% if (chat) { %>
 <div class="d-flex justify-content-center mb-3">
-  <form  id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST" >
+  <form id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <span class="group-name p-2 rounded-4" id="group-name-span" data-chat-id="<%= chatId %>" contenteditable="true">
+    <span class="group-name p-2 rounded-bottom-4" id="group-name-span" data-chat-id="<%= chatId %>" contenteditable="true">
       <%= group.groupName || group.members.map(m => m.userName).join(', ') %>
     </span>
   </form>
@@ -12,9 +12,9 @@
 <div class="container chat-box" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled">
     <% for(let i=0; i<chat.length; i++) {%>
-    <span class="userName"><%=chat[i].senderId?.userName || userName || ""%></span>
+    <span class="userName text-primary"><%=chat[i].senderId?.userName || userName || ""%></span>
     <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
-    <li class="content">
+    <li class="content text-wrap text-break mb-2 fw-light">
       <% if (chat[i].content) { %>
       <%= chat[i].content %>
       <% } else  { %>
@@ -26,8 +26,22 @@
 </div>
 <form id="form" class="mb-2" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
   <div class="input-group">
-    <input id="input" autocomplete="off" type="text" name="content" class="form-control" placeholder="Type your message here..." />
-    <input type="file" name="file" id="fileInput" class="form-control" />
+
+    <div class="dropup-center dropup bg-secondary rounded-start">
+      <button class="btn btn-secondary  rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-solid fa-circle-plus fa-xl style=" color: #BFD9D7;"></i>
+      </button>
+      <ul class="dropdown-menu btn btn-primary ">
+        <li class="d-flex justify-content-center">
+          <label for="fileInput">
+            File Upload
+          </label>
+          <input hidden type="file" name="file" id="fileInput"  />
+        </li>
+
+      </ul>
+    </div>
+    <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light" placeholder="Message <%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <button type="submit" class="btn btn-primary">Send</button>
   </div>
 </form>
