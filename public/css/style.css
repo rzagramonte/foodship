@@ -152,6 +152,10 @@
   background-color: #2F313E;
 }
 
+.group-name{
+  padding: 0.50em 1em !important;
+}
+
 .border-bottom{
   border-color: #292A2F !important;
 }
