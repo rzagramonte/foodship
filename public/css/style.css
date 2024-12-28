@@ -144,76 +144,35 @@
   color:RGBA(191, 217, 215,var(--bs-link-opacity,1))!important;
 }
 
-.main {
-  min-height: 75vh !important;
-  position: relative !important;
-  z-index: 1 !important;
-  padding: 20px !important;
-  border-radius: 10px !important;
-  text-align: center !important;
-}
-
 .landing-page {
-  background-image: url('../imgs/bg.jpg') !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  height: 100vh !important;
-  width: 100% !important;
-  position: relative !important;
-  top: 0 !important;
-  left: 0 !important; 
-  z-index: -1 !important;
-  color: var(--bs-light) !important;
+  background: url('../imgs/bg.jpg') no-repeat center/cover !important;
 }
 
-.group-card{
+.group-card {
   background-color: #2F313E;
+}
+
+.border-bottom{
+  border-color: #292A2F !important;
 }
 
 .user-card{
   background-color: #292A2F;
-  border-bottom-left-radius: 1rem
-  
 }
-
-.group-name{
-  display: inline !important;
-  width: fit-content !important;
-  background-color: #292A2F;
-  color: #AE9152;
-  
-}
-.group-chat{
-  border-color: #353745 !important; /* Charcoal */
-  border-width: thick !important;
-}
-
-.group-chat-list{
-  height: 60vh !important;
-  text-overflow: ellipsis;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scrollbar-color: #353745 #2F313E;
-}
-
-
 
 .member-length, .createdAt{
   font-size: .7rem;
   color: #97B2AF;
 }
 
-.new-chat{
-  display: inline-block;
+.group-chat-list{
+  scrollbar-color: #353745 #2F313E;
 }
 
 .chat-box{
-  height: 60vh !important;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  scrollbar-color: #353745 #2F313E;
+  scrollbar-color: #353745 #353745;
 }
+
 
 /* For most modern browsers */
 ::-webkit-scrollbar {
@@ -228,8 +187,6 @@
 ::-webkit-scrollbar-track {
   background-color: #2F313E; /* Your desired color for the track */
 }
-
-
 
 .message-image {
   display: block; /* Ensures proper layout */

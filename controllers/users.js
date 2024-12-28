@@ -17,6 +17,7 @@ module.exports = {
         user,
         userId,
         userName,
+        chats: false,
         landingPage: false,
       });
     } catch (err) {

@@ -1,13 +1,13 @@
 <%- include('partials/header') -%>
 
-<main class="container mt-5 px-5">
-  <div class="container row group-card rounded-bottom-4 rounded-start-4 rounded-top-4 p-0 ">
-    <div class="col-2 d-flex flex-column  group-card p-0 rounded-4">
-      <div class="container flex-grow-1 p-1">
-        <div class="p-2 d-flex justify-content-between border-bottom border-secondary">
-          <span class="me-2 ">GROUP CHATS</span>
-          <span class=" ms-auto">
-            <form class="new-chat" id="new-chat" action="/chat/createChat" method="POST" data-user-name="<%= user.userName %>">
+<main class="h-100">
+  <div class=" h-100 row m-0">
+    <div class="h-100 col-2 d-flex flex-column  group-card p-0">
+      <div class=" flex-grow-1 py-1">
+        <div class="px-3 py-2 d-flex justify-content-between border-bottom">
+          <span >GROUP CHATS</span>
+          <span class="ms-auto">
+            <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user-name="<%= user.userName %>">
               <input hidden type="submit" id="create-chat">
               <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm" style="color: #BFD9D7;"></i>
               </label>
@@ -16,15 +16,15 @@
 
         </div>
 
-        <div class="group-chat-list list-group p-2 pb-0">
+        <div class="group-chat-list p-2 pb-0 ">
           <% if (chats.length) { %>
-          <ul class="list-unstyled ">
+          <ul class="list-unstyled">
             <% for(let i=0; i<chats.length; i++) {%>
             <!--make the this a lil cute box-->
-            <div class="p-0">
+            <div class="p-2">
               <div class="d-flex">
-                <a class="link-primary link-underline-opacity-0" href="/messages/<%= chats[i]._id%>">
-                  <li class="col-12 mt-3 card-group-name  text-truncate <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
+                <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
+                  <li class="card-group-name  mt-3 text-truncate <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
                     <% if (chats[i].groupNameSet) { %>
                     <%= chats[i].groupName %>
                     <% } else { %>
@@ -50,12 +50,15 @@
           <% } %>
         </div>
       </div>
-      <div class="d-flex text-body-secondary p-2   user-card m-0 w-auto">
+      <div class="d-flex text-primary p-2  user-card m-0 w-auto">
         <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 me-2 rounded" width="32" height="32">
-        <p class="p-1 mb-0 small lh-sm">
+        <div class="p-1 mb-0 small lh-sm">
           <strong >@<%=user.userName%></strong>
-          <%= user.userStatus%>
-        </p>
+          <div class="text-light pt-1">
+            <%= user.userStatus%>
+          </div>
+          
+        </div>
         <a class="ms-auto" href="/user/<%=user._id%>">
           <div class="p-2"> <i class="fa-solid fa-gear" style="color: #BFD9D7;"></i></div>
         </a>
@@ -64,10 +67,10 @@
       </div>
     </div>
 
-    <div class="col-8 group-chat d-flex flex-column pt-1   border-start border-end">
+    <div class="col-8 d-flex flex-column p-0 h-100 ">
       <%- include('chat') -%>
     </div>
-    <div class="col-2 d-flex flex-column  group-card p-0 rounded-4 mb-2">
+    <div class="col-2 d-flex flex-column  group-card p-0 ">
       <%- include('members') -%>
     </div>
 </main>

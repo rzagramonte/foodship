@@ -8,7 +8,7 @@ const fileInput = document.getElementById("fileInput");
 const messages = document.getElementById("messages");
 const chatBox = document.getElementById("chat-box");
 const images = document.querySelectorAll(".message-image");
-const groupNameSpan = document.getElementById("group-name-span");
+const groupNameDiv = document.getElementById("group-name-div");
 const groupNameInput = document.getElementById("group-name-input");
 const groupNameForm = document.getElementById("group-name");
 const cardGroupName = document.getElementById("card-group-name");
@@ -120,7 +120,7 @@ const onGroupNameUpdate = async (e) => {
   if (e.key === "Enter" || e.type == "blur") {
     e.preventDefault(); // Prevent creating a new line in the span
     try {
-      groupNameInput.value = groupNameSpan.innerText.trim(); // Update the input value
+      groupNameInput.value = groupNameDiv.innerText.trim(); // Update the input value
 
       const response = await fetch(`/chat/updateGroupName/${chatId}`, {
         method: "PATCH",
@@ -134,7 +134,7 @@ const onGroupNameUpdate = async (e) => {
 
       const savedGroupName = await response.json();
       socket.emit("group name", savedGroupName, chatId);
-      groupNameSpan.blur();
+      groupNameDiv.blur();
       console.log("Group name updated!");
     } catch (error) {
       console.error("Failed to update group name: ", error);
@@ -142,19 +142,19 @@ const onGroupNameUpdate = async (e) => {
   }
 };
 
-groupNameSpan?.addEventListener("keydown", onGroupNameUpdate);
-groupNameSpan?.addEventListener("blur", onGroupNameUpdate);
+groupNameDiv?.addEventListener("keydown", onGroupNameUpdate);
+groupNameDiv?.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
   const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
-  const groupNameSpan = document.querySelector(
+  const groupNameDiv = document.querySelector(
     `span[data-chat-id="${chatId}"]`
   );
   if (liElement) {
     liElement.textContent = name;
   }
-  if (groupNameSpan) {
-    groupNameSpan.textContent = name;
+  if (groupNameDiv) {
+    groupNameDiv.textContent = name;
   }
 });
 
@@ -202,8 +202,8 @@ socket.on("new member groupName", (member, chatId) => {
   );
   if (liElement.getAttribute("data-chat-id") == chatId)
     liElement.textContent += `, ${member}`;
-  if (groupNameSpan.getAttribute("data-chat-id") == chatId)
-    groupNameSpan.textContent += `, ${member}`;
+  if (groupNameDiv.getAttribute("data-chat-id") == chatId)
+    groupNameDiv.textContent += `, ${member}`;
 });
 
 socket.on("new member message", (systemMessage, member, chatId) => {

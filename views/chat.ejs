@@ -1,17 +1,18 @@
 <% if (chat) { %>
-<div class="d-flex justify-content-center mb-3">
-  <form id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
+<div class="py-1">
+  <form class="border-bottom my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <span class="group-name p-2 rounded-bottom-4" id="group-name-span" data-chat-id="<%= chatId %>" contenteditable="true">
+    <div class="text-primary  px-3 py-2" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true">
       <%= group.groupName || group.members.map(m => m.userName).join(', ') %>
-    </span>
+    </div>
   </form>
 </div>
 
-<div class="container chat-box" id="chat-box" data-chat-id="<%= chatId %>">
-  <ul id="messages" class="messages list-unstyled">
+<div class="container chat-box overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
+  <ul id="messages" class="messages list-unstyled px-5">
     <% for(let i=0; i<chat.length; i++) {%>
+      
     <span class="userName text-primary"><%=chat[i].senderId?.userName || userName || ""%></span>
     <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
     <li class="content text-wrap text-break mb-2 fw-light">
@@ -24,7 +25,7 @@
     <% } %>
   </ul>
 </div>
-<form id="form" class="mb-2" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
+<form id="form" class="mb-2 px-3" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
   <div class="input-group">
 
     <div class="dropup-center dropup bg-secondary rounded-start">
