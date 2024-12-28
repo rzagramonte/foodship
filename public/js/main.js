@@ -146,15 +146,15 @@ groupNameDiv?.addEventListener("keydown", onGroupNameUpdate);
 groupNameDiv?.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
-  const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
-  const groupNameDiv = document.querySelector(
+  const liElement = document.querySelectorAll(`li[data-chat-id="${chatId}"]`);
+  const groupNameDiv = document.querySelectorAll(
     `span[data-chat-id="${chatId}"]`
   );
   if (liElement) {
-    liElement.textContent = name;
+    liElement.forEach(e=>e.textContent = name);
   }
   if (groupNameDiv) {
-    groupNameDiv.textContent = name;
+    groupNameDiv.forEach(e=>e.textContent = name);
   }
 });
 
