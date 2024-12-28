@@ -6,14 +6,14 @@ module.exports = {
   },
   //Renders about page
   getAbout: (req, res) => {
-    res.render("about.ejs", { landingPage: false, user:req.user });
+    res.render("about.ejs", { chats: false, landingPage: false, user:req.user });
   },
   //Renders learn page
   getLearn: (req, res) => {
-    res.render("learn.ejs", { landingPage: false, user:req.user });
+    res.render("learn.ejs", { chats: false, landingPage: false, user:req.user });
   },
   //Renders safety page
   getSafety: (req, res) => {
-    res.render("safety.ejs", { landingPage: false, user:req.user });
+    res.render("safety.ejs", { chats: false, landingPage: false, user:req.user });
   },
 };

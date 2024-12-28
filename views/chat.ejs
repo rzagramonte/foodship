@@ -1,5 +1,10 @@
 <% if (chat) { %>
-<div class="py-1">
+
+
+<div class="d-flex justify-content-between py-1 ">
+
+  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
+
   <form class="border-bottom my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
@@ -7,12 +12,17 @@
       <%= group.groupName || group.members.map(m => m.userName).join(', ') %>
     </div>
   </form>
+
+  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group" style="color: #BFD9D7;"></i></button>
+
 </div>
+
+
 
 <div class="container chat-box overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled px-5">
     <% for(let i=0; i<chat.length; i++) {%>
-      
+
     <span class="userName text-primary"><%=chat[i].senderId?.userName || userName || ""%></span>
     <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
     <li class="content text-wrap text-break mb-2 fw-light">
@@ -37,7 +47,7 @@
           <label for="fileInput">
             File Upload
           </label>
-          <input hidden type="file" name="file" id="fileInput"  />
+          <input hidden type="file" name="file" id="fileInput" />
         </li>
 
       </ul>
@@ -47,5 +57,9 @@
   </div>
 </form>
 <% } else { %>
-<p class="container mt-5">Please select a chat.</p>
+  <div class="d-flex">
+    <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
+    <p class="container mt-5">Please select a chat.</p>
+  </div>
+
 <% } %>
