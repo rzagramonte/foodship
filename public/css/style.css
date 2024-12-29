@@ -152,6 +152,10 @@
   background-color: #2F313E;
 }
 
+.group:hover{
+  display: inline-block !important;
+}
+
 .group-name{
   padding: 0.50em 1em !important;
 }
@@ -174,6 +178,7 @@
 }
 
 .chat-box{
+  height: 90vh !important;
   scrollbar-color: #353745 #353745;
 }
 

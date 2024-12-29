@@ -8,8 +8,6 @@ module.exports = {
   getMessages: async (req, res) => {
     const { chatId } = req.params;
     const { id, userName } = req.user;
-    console.log(req.user)
-
     try {
       const chat = await Message.find({chatId} )
         .populate({path: "senderId", select: "userName"})

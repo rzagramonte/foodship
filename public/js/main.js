@@ -147,20 +147,21 @@ groupNameDiv?.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
   const liElement = document.querySelectorAll(`li[data-chat-id="${chatId}"]`);
-  const groupNameDiv = document.querySelectorAll(
-    `span[data-chat-id="${chatId}"]`
+  const groupNameDiv = document.querySelector(
+    `div[data-chat-id="${chatId}"]`
   );
-  if (liElement) {
-    liElement.forEach(e=>e.textContent = name);
-  }
+
+  liElement?.forEach((e) => (e.textContent = name));
   if (groupNameDiv) {
-    groupNameDiv.forEach(e=>e.textContent = name);
+    groupNameDiv.textContent = name;  // Directly update the text of the single div
   }
 });
 
 const newMember = async (e) => {
   try {
-    const form = document.getElementById("preferences") || document.getElementById("new-chat");
+    const form =
+      document.getElementById("preferences") ||
+      document.getElementById("new-chat");
     const userName = form.dataset.userName;
 
     const response = await fetch("/messages/send", {
@@ -183,18 +184,21 @@ const newMember = async (e) => {
 
     console.log("New member has joined the group");
   } catch (error) {
-    console.error("Failed to send/save new member message for the group: ", error);
+    console.error(
+      "Failed to send/save new member message for the group: ",
+      error
+    );
   }
 };
 
-newChatMemberForm?.addEventListener("submit", e=>{
+newChatMemberForm?.addEventListener("submit", (e) => {
   e.preventDefault();
-  setTimeout(newMember, 0)
+  setTimeout(newMember, 0);
 });
-newMemberPreferencesForm?.addEventListener("submit", e=>{
+newMemberPreferencesForm?.addEventListener("submit", (e) => {
   e.preventDefault();
-  setTimeout(newMember, 0)}
-);
+  setTimeout(newMember, 0);
+});
 
 socket.on("new member groupName", (member, chatId) => {
   const liElement = document.querySelector(
