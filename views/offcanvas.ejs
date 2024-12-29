@@ -1,7 +1,7 @@
 <div class="offcanvas offcanvas-start group-card" tabindex="-1" id="offcanvasResponsive-groups" aria-labelledby="offcanvasResponsiveLabel">
-  <div class=" offcanvas-body d-flex flex-column  p-0">
-    <div class=" flex-grow-1 py-1">
-      <div class="px-3 py-2 d-flex justify-content-between border-bottom">
+  <div class="offcanvas-body d-flex flex-column p-0">
+    <div class="flex-grow-1 py-1">
+      <div class="d-flex justify-content-between px-3 py-2 border-bottom">
         <span>GROUP CHATS</span>
         <span class="mx-2">
           <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user-name="<%= user.userName %>">
@@ -18,9 +18,9 @@
           <% for(let i=0; i<chats.length; i++) {%>
           <!--make the this a lil cute box-->
           <div class="p-2">
-            <div class="d-flex">
+            <div class="d-flex group">
               <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
-                <li class="card-group-name  mt-3 text-truncate <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
+                <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
                   <% if (chats[i].groupNameSet) { %>
                   <%= chats[i].groupName %>
                   <% } else { %>
@@ -28,7 +28,7 @@
                   <% } %>
                 </li>
               </a>
-              <a class="ms-auto mt-3" href="/user/<%=user._id%>">
+              <a class="x-mark ms-auto mt-3" href="/user/<%=user._id%>">
                 <div class=""> <i class=" fa-solid fa-xmark" style="color: #BFD9D7;"></i></div>
               </a>
             </div>

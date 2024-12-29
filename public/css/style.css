@@ -152,8 +152,12 @@
   background-color: #2F313E;
 }
 
-.group:hover{
+.group:hover .x-mark {
   display: inline-block !important;
+}
+
+.x-mark {
+  display: none; /* Initially hide the .xmark */
 }
 
 .group-name{
