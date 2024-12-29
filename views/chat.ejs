@@ -1,10 +1,6 @@
 <% if (chat) { %>
-
-
 <div class="d-flex justify-content-between border-bottom border-bottom-xl-0">
-
   <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
-
   <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
@@ -12,17 +8,11 @@
       <%= group.groupName || group.members.map(m => m.userName).join(', ') %>
     </div>
   </form>
-
   <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group" style="color: #BFD9D7;"></i></button>
-
 </div>
-
-
-
 <div class="container chat-box overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled px-5">
     <% for(let i=0; i<chat.length; i++) {%>
-
     <span class="userName text-primary"><%=chat[i].senderId?.userName || userName || ""%></span>
     <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
     <li class="content text-wrap text-break mb-2 fw-light">
@@ -37,7 +27,6 @@
 </div>
 <form id="form" class="mb-2 px-3" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
   <div class="input-group">
-
     <div class="dropup-center dropup bg-secondary rounded-start">
       <button class="btn btn-secondary  rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa-solid fa-circle-plus fa-xl style=" color: #BFD9D7;"></i>
@@ -49,7 +38,6 @@
           </label>
           <input hidden type="file" name="file" id="fileInput" />
         </li>
-
       </ul>
     </div>
     <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light" placeholder="Message <%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
@@ -61,5 +49,4 @@
     <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
     <p class="container mt-5">Please select a chat.</p>
   </div>
-
 <% } %>
