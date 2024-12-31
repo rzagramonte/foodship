@@ -1,6 +1,6 @@
 <% if (chat) { %>
 <div class="d-flex justify-content-between border-bottom border-bottom-xl-0">
-  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
+  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars"></i></button>
   <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
@@ -8,7 +8,7 @@
       <%=group.groupName || group.members.map(m => m.userName).join(', ')%>
     </div>
   </form>
-  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group" style="color: #BFD9D7;"></i></button>
+  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
 </div>
 <div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled px-5 py-4">
@@ -23,7 +23,7 @@
     </li>
     <% } else { %>
     <li class="content text-wrap text-break mb-2 fw-light">
-      <i class="fa-solid fa-arrow-right" style="color: #4ED7D9"></i>
+      <i class="fa-solid fa-arrow-right"></i>
       <span class="text-primary">
         <%= chat[i].content %>
       </span>
@@ -37,9 +37,9 @@
   <div class="input-group">
     <div class="dropup-center dropup bg-secondary rounded-start">
       <button class="btn btn-secondary  rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa-solid fa-circle-plus fa-xl style=" color: #BFD9D7;"></i>
+        <i class="fa-solid fa-circle-plus fa-xl"></i>
       </button>
-      <ul class="dropdown-menu btn btn-primary ">
+      <ul class="dropdown-menu btn btn-primary">
         <li class="d-flex justify-content-center">
           <label for="fileInput">
             File Upload
@@ -54,7 +54,7 @@
 </form>
 <% } else { %>
 <div class="d-flex">
-  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
+  <button class="btn d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars"></i></button>
   <p class="container mt-5">Please select a chat.</p>
 </div>
 <% } %>

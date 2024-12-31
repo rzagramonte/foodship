@@ -152,6 +152,14 @@
   background-color: #2F313E;
 }
 
+i {
+  color: #BFD9D7;
+}
+
+.fa-arrow-right {
+  color:  #4ED7D9;
+}
+
 .x-mark {
   display: none; /* Initially hide the .xmark */
 }

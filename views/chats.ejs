@@ -4,7 +4,7 @@
       <span class="ms-auto">
         <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user="<%= user %>">
           <input hidden type="submit" id="create-chat">
-          <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm" style="color: #BFD9D7;"></i>
+          <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm"></i>
           </label>
         </form>
       </span>
@@ -14,15 +14,17 @@
       <ul class="group-chat-list list-unstyled overflow-y-auto">
         <% for(let i=0; i<chats.length; i++) {%>
         <div class="p-2">
-          <div class="d-flex group">
+          <div class="group d-flex">
             <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
               <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
                 <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
               </li>
             </a>
-            <a class="x-mark ms-auto mt-3" href="/user/<%=user._id%>">
-              <div class=""> <i class=" fa-solid fa-xmark" style="color: #BFD9D7;"></i></div>
-            </a>
+            <form class="x-mark ms-auto mt-3" id="delete-chat" action="/chat/deleteChat<%=chats[i]._id%>?_method=DELETE" method="POST" data-user="<%= user %>">
+              <input hidden type="submit" id="delete-chat">
+              <label class="nav-link " for="delete-chat"><i class=" fa-solid fa-xmark"></i>
+              </label>
+            </form>
           </div>
           <div class="member-length fw-normal d-block" data-member-length-chat-id="<%= chats[i]._id %>">
             <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
@@ -34,7 +36,7 @@
     </div>
   </div>
   <div class="d-flex text-primary p-2  user-card m-0 w-auto">
-    <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 me-2 rounded" width="32" height="32">
+    <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 m-2 rounded" width="32" height="32">
     <div class="p-1 mb-0 small lh-sm">
       <strong>@<%=user.userName%></strong>
       <div class="text-light pt-1">
@@ -42,6 +44,6 @@
       </div>
     </div>
     <a class="ms-auto" href="/user/<%=user._id%>">
-      <div class="p-2"> <i class="fa-solid fa-gear" style="color: #BFD9D7;"></i></div>
+      <div class="p-2"> <i class="fa-solid fa-gear"></i></div>
     </a>
   </div>

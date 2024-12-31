@@ -6,7 +6,7 @@
         <span class="ms-auto">
           <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user="<%= user %>">
             <input hidden type="submit" id="create-chat">
-            <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm" style="color: #BFD9D7;"></i>
+            <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm"></i>
             </label>
           </form>
         </span>
@@ -23,7 +23,7 @@
                 </li>
               </a>
               <a class="x-mark ms-auto mt-3" href="/user/<%=user._id%>">
-                <div class=""> <i class=" fa-solid fa-xmark" style="color: #BFD9D7;"></i></div>
+                <div class=""> <i class=" fa-solid fa-xmark"></i></div>
               </a>
             </div>
             <div class="member-length fw-normal d-block" data-member-length-chat-id="<%= chats[i]._id %>">
@@ -44,7 +44,7 @@
         </div>
       </div>
       <a class="ms-auto" href="/user/<%=user._id%>">
-        <div class="p-2"> <i class="fa-solid fa-gear" style="color: #BFD9D7;"></i></div>
+        <div class="p-2"> <i class="fa-solid fa-gear"></i></div>
       </a>
     </div>
   </div>

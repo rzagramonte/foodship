@@ -1,18 +1,30 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/multer");
-const chatsController = require("../controllers/chats");
-const { patchGroupName } = require('../controllers/chats');
-const { postChat } = require('../controllers/chats');
+const {
+  patchGroupName,
+  patchGroupPic,
+  postChat,
+  deleteChat,
+} = require("../controllers/chats");
 const { ensureAuth } = require("../middleware/auth");
 
-router.post("/createChat", (req, res) => {
-  postChat(req.app.get('io'))(req, res);  // Pass io to postChat
+router.post("/createChat", ensureAuth, (req, res) => {
+  postChat(req.app.get("io"))(req, res); // Pass io to postChat
 });
-router.patch("/updateGroupName/:id", (req, res) => {
-    patchGroupName(req.app.get('io'))(req, res);  // Pass io to patchGroupName
-  });
-router.patch("/updateGroupPic/:id", upload.single("file"), chatsController.patchGroupPic);
-router.delete("/deleteChat/:id", chatsController.deleteChat);
+router.patch("/updateGroupName/:id", ensureAuth, (req, res) => {
+  patchGroupName(req.app.get("io"))(req, res); // Pass io to patchGroupName
+});
+router.patch(
+  "/updateGroupPic/:id",
+  ensureAuth,
+  upload.single("file"),
+  (req, res) => {
+    patchGroupPic(req.app.get("io"))(req, res); // Pass io to patchGroupPic
+  }
+);
+router.delete("/deleteChat/:id", ensureAuth, (req, res) => {
+  deleteChat(req.app.get("io"))(req, res); // Pass io to deleteChat
+});
 
 module.exports = router;

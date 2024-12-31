@@ -101,7 +101,7 @@ module.exports = {
       console.log(err);
     }
   },
-  deleteChat: async (req, res) => {
+  deleteChat: (io) => async (req, res) => {
     try {
       const { chatId, userId } = req.params;
       await Chat.findByIdAndUpdate(
