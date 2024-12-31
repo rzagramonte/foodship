@@ -4,24 +4,32 @@
   <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <div class="text-primary group-name  px-4 py-2" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true">
-      <%= group.groupName || group.members.map(m => m.userName).join(', ') %>
+    <div class="text-primary group-name px-4 py-2" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true">
+      <%=group.groupName || group.members.map(m => m.userName).join(', ')%>
     </div>
   </form>
   <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group" style="color: #BFD9D7;"></i></button>
 </div>
-<div class="container chat-box overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
-  <ul id="messages" class="messages list-unstyled px-5">
+<div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
+  <ul id="messages" class="messages list-unstyled px-5 py-4">
     <% for(let i=0; i<chat.length; i++) {%>
-    <span class="userName text-primary"><%=chat[i].senderId?.userName || userName || ""%></span>
-    <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+    <% if(chat[i].senderId) { %>
     <li class="content text-wrap text-break mb-2 fw-light">
-      <% if (chat[i].content) { %>
-      <%= chat[i].content %>
-      <% } else  { %>
-      <img class="message-image" src="<%= chat[i].image %>" alt="User uploaded image">
-      <% } %>
+      <div>
+        <span class="userName text-primary"><%=chat[i].senderId?.userName%></span>
+        <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+      </div>
+      <%= chat[i].content ? chat[i].content : `<img class="message-image" src="${chat[i].image}" alt="User uploaded image">` %>
     </li>
+    <% } else { %>
+    <li class="content text-wrap text-break mb-2 fw-light">
+      <i class="fa-solid fa-arrow-right" style="color: #4ED7D9"></i>
+      <span class="text-primary">
+        <%= chat[i].content %>
+      </span>
+      <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+    </li>
+    <% } %>
     <% } %>
   </ul>
 </div>
@@ -40,13 +48,13 @@
         </li>
       </ul>
     </div>
-    <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light" placeholder="Message <%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
-    <button type="submit" class="btn btn-primary">Send</button>
+    <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light" placeholder="Message <%= group.groupNameSet ? group.groupName : group.members.map((member, j) => member.userName).join(', ') %>" data-chat-id="<%= chatId %>"/> 
+    <button type="submit" class="btn btn-primary" >Send</button>
   </div>
 </form>
 <% } else { %>
-  <div class="d-flex">
-    <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
-    <p class="container mt-5">Please select a chat.</p>
-  </div>
+<div class="d-flex">
+  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars" style="color: #BFD9D7;"></i></button>
+  <p class="container mt-5">Please select a chat.</p>
+</div>
 <% } %>

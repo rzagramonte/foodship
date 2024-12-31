@@ -152,12 +152,12 @@
   background-color: #2F313E;
 }
 
-.group:hover .x-mark {
-  display: inline-block !important;
-}
-
 .x-mark {
   display: none; /* Initially hide the .xmark */
+}
+
+.group:hover .x-mark {
+  display: inline-block !important;
 }
 
 .group-name{
@@ -178,6 +178,7 @@
 }
 
 .group-chat-list{
+  height: 85vh !important;
   scrollbar-color: #353745 #2F313E;
 }
 

@@ -1,13 +1,14 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const User = require("../models/User");
+const Message = require("../models/Message");
 
 module.exports = {
   getChats: async (req, res) => {
     try {
       const chats = await Chat.find({ members: req.user.id }).populate({
         path: "members",
-        select: "userName",
+        select: "userName _id preferences",
       });
       let chat;
       res.render("profile.ejs", {
@@ -22,38 +23,43 @@ module.exports = {
   },
   postChat: (io) => async (req, res) => {
     try {
-      const { id, preferences, userName } = req.user;
+      const user = req.user;
       const chatMatch = await Chat.findOne({
         $and: [
           // Ensures less than 6 members
           { $expr: { $lt: [{ $size: "$members" }, 6] } },
-          { members: { $ne: req.user.id } },
-          { foodPreferences: { $in: preferences.foodPreferences } },
-          { interests: { $in: preferences.interests } },
+          { members: { $ne: user.id } },
+          { foodPreferences: { $in: user.preferences.foodPreferences } },
+          { interests: { $in: user.preferences.interests } },
         ],
       }).sort({ matchScore: -1 });
       if (chatMatch && chatMatch.members.length <= 6) {
         // Add the userId to the members array
         //push the chatId into the users chatIds
-        chatMatch.members.push(id);
-        if (!chatMatch.groupNameSet)
-          chatMatch.groupName.concat(`, ${userName}`);
+        chatMatch.members.push(user.id);
         // Save the updated chat document
         await chatMatch.save();
-        await User.findByIdAndUpdate(id, { $push: { chatIds: chatMatch.id } });
+        await User.findByIdAndUpdate(user.id, { $push: { chatIds: chatMatch.id } });
+        const systemMessage = await Message.create({
+          chatId: chatMatch.id,
+          content: `${user.userName} has joined the group.`,
+          contentType: "text",
+        });
+        await Chat.findByIdAndUpdate(chatMatch.id, {
+          $push: { messages: systemMessage },
+        });
+        
         console.log("User has been added to the chat!");
-        res.redirect(`/messages/${chatMatch.id}`);
+        res.status(201).json({chatMatch, systemMessage, userName: user.userName});
       } else {
         const chat = await Chat.create({
-          groupName: userName,
-          members: [id],
-          foodPreferences: preferences.foodPreferences,
-          interests: preferences.interests,
+          members: [user.id],
+          foodPreferences: user.preferences.foodPreferences,
+          interests: user.preferences.interests,
         });
-        await User.findByIdAndUpdate(id, { $push: { chatIds: chat.id } });
+        await User.findByIdAndUpdate(user.id, { $push: { chatIds: chat.id } });
         console.log("Chat has been created!");
-        //res.status(201).json(userName);
-        res.redirect(`/messages/${chat.id}`);
+        res.status(201).json(chat);
       }
     } catch (err) {
       console.log(err);

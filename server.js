@@ -82,16 +82,10 @@ io.on("connection", (socket) => {
     console.log(`Group name updated for chat room: ${chatId}`);
   });
 
-  socket.on("new member groupName", (member, chatId) => {
+  socket.on("new member", (member) => {
     // Emit the message to the specific room (chatId)
-    socket.broadcast.emit("new member", member, chatId);
-    console.log(`Group name to chat room ${chatId} has been updated to include ${member}`);
-  });
-
-  socket.on("new member message", (systemMessage, member, chatId) => {
-    // Emit the message to the specific room (chatId)
-    io.emit("new member message", systemMessage, member, chatId); // Broadcast join message
-    console.log(`${member} has joined chat room: ${chatId}`);
+    io.emit("new member", member); // Broadcast join message
+    console.log(`New member`);
   });
 
   // Handle disconnect
