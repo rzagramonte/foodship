@@ -160,12 +160,17 @@ i {
   color:  #4ED7D9;
 }
 
+.fa-arrow-left {
+  color:  #dc143c;
+}
+
 .x-mark {
   display: none; /* Initially hide the .xmark */
 }
 
 .group:hover .x-mark {
   display: inline-block !important;
+  cursor: pointer !important;
 }
 
 .group-name{

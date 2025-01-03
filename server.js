@@ -88,6 +88,12 @@ io.on("connection", (socket) => {
     console.log(`New member`);
   });
 
+  socket.on("delete chat", (chat) => {
+    // Emit the message to the specific room (chatId)
+    io.emit("delete chat", chat); // Broadcast join message
+    console.log(`Chat deleted`);
+  });
+
   // Handle disconnect
   socket.on("disconnect", () => {
     console.log("User disconnected");

@@ -4,46 +4,48 @@
       <div class="d-flex justify-content-between px-3 py-2 border-bottom">
         <span>GROUP CHATS</span>
         <span class="ms-auto">
-          <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user="<%= user %>">
-            <input hidden type="submit" id="create-chat">
-            <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm"></i>
+          <form class="d-inline-block" id="new-chat-offcanvas" action="/chat/createChat" method="POST" data-user="<%= user %>">
+            <input hidden type="submit" id="create-chat-offcanvas">
+            <label class="nav-link " for="create-chat-offcanvas"><i class="fa-solid fa-plus fa-sm"></i>
             </label>
           </form>
         </span>
       </div>
       <div class="p-2 pb-0 ">
         <% if (chats.length) { %>
-        <ul class="group-chat-list list-unstyled overflow-y-auto">
-          <% for(let i=0; i<chats.length; i++) {%>
-          <div class="p-2">
-            <div class="d-flex group">
-              <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
-                <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
-                  <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
-                </li>
-              </a>
-              <a class="x-mark ms-auto mt-3" href="/user/<%=user._id%>">
-                <div class=""> <i class=" fa-solid fa-xmark"></i></div>
-              </a>
+          <ul class="group-chat-list list-unstyled overflow-y-auto">
+            <% for(let i=0; i<chats.length; i++) {%>
+            <div class="p-2">
+              <div class="group d-flex">
+                <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
+                  <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id-offcanvas="<%= chats[i]._id %>">
+                    <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
+                  </li>
+                </a>
+                <form class="x-mark-offcanvas ms-auto mt-3" id="delete-chat-offcanvas-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" data-user="<%= user %>" data-chat-length="<%= chats[i].members.length %>">
+                  <input hidden type="submit" id="delete-chat-input-offcanvas<%= chats[i]._id %>">
+                  <label class="nav-link" for="delete-chat-input-offcanvas<%= chats[i]._id %>"><i class=" fa-solid fa-xmark"></i>
+                  </label>
+                </form>
+              </div>
+              <div class="member-length fw-normal d-block" data-l-member-count-chat-id-offcanvas="<%= chats[i]._id %>">
+                <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
+              </div>
             </div>
-            <div class="member-length fw-normal d-block" data-member-length-chat-id="<%= chats[i]._id %>">
-              <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
-            </div>
-          </div>
-          <% } %>
-        </ul>
+            <% } %>
+          </ul>
         <% } %>
       </div>
     </div>
     <div class="d-flex text-primary p-2  user-card m-0 w-auto">
-      <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 me-2 rounded" width="32" height="32">
+      <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 m-2 rounded" width="32" height="32">
       <div class="p-1 mb-0 small lh-sm">
         <strong>@<%=user.userName%></strong>
         <div class="text-light pt-1">
           <%= user.userStatus%>
         </div>
       </div>
-      <a class="ms-auto" href="/user/<%=user._id%>">
+      <a class="m-2 ms-auto" href="/user/<%=user._id%>">
         <div class="p-2"> <i class="fa-solid fa-gear"></i></div>
       </a>
     </div>
@@ -51,19 +53,17 @@
 </div>
 <% if (chat) { %>
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasResponsive-members" aria-labelledby="offcanvasResponsiveLabel">
-  <div class="offcanvas-body">
+  <div class="offcanvas-body d-flex flex-column p-0">
     <div class="py-1" >
       <div class="px-3 py-2 d-flex justify-content-between border-bottom">
-        <span class="me-2" data-member-num-chat-id="<%= chatId %>">MEMBER<%= group.members.length == 1 ? '' : 'S' %>-<%=group.members.length%></span>
+        <span class="me-2" data-r-member-count-chat-id-offcanvas="<%= chatId %>">MEMBER<%= group.members.length == 1 ? '' : 'S' %>-<%=group.members.length%></span>
       </div>
       <div class="group-chat-list p-2 pb-0 text-primary">
-        <ul class="list-unstyled p-2" data-member-chat-id="<%= chatId %>">
+        <ul class="list-unstyled p-2" data-member-chat-offcanvas-id="<%= chatId %>">
           <% for(let i=0; i<group.members.length; i++) {%>
-          
-            <li class="mt-3">
+            <li class="mt-3" data-member-offcanvas-id="<%= group.members[i]._id %>">
               <%= group.members[i].userName%>
             </li>
-          
           <% } %>
         </ul>
       </div>

@@ -20,13 +20,13 @@
                 <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
               </li>
             </a>
-            <form class="x-mark ms-auto mt-3" id="delete-chat" action="/chat/deleteChat<%=chats[i]._id%>?_method=DELETE" method="POST" data-user="<%= user %>">
-              <input hidden type="submit" id="delete-chat">
-              <label class="nav-link " for="delete-chat"><i class=" fa-solid fa-xmark"></i>
+            <form class="x-mark ms-auto mt-3" id="delete-chat-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" data-user="<%= user %>" data-chat-length="<%= chats[i].members.length %>">
+              <input hidden type="submit" id="delete-chat-input-<%= chats[i]._id %>">
+              <label class="nav-link" for="delete-chat-input-<%= chats[i]._id %>"><i class="fa-solid fa-xmark"></i>
               </label>
             </form>
           </div>
-          <div class="member-length fw-normal d-block" data-member-length-chat-id="<%= chats[i]._id %>">
+          <div class="member-length fw-normal d-block" data-l-member-count-chat-id="<%= chats[i]._id %>">
             <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
           </div>
         </div>
@@ -43,7 +43,7 @@
         <%= user.userStatus%>
       </div>
     </div>
-    <a class="ms-auto" href="/user/<%=user._id%>">
+    <a class="m-2 ms-auto" href="/user/<%=user._id%>">
       <div class="p-2"> <i class="fa-solid fa-gear"></i></div>
     </a>
   </div>

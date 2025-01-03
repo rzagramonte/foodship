@@ -12,27 +12,24 @@ const groupNameDiv = document.getElementById("group-name-div");
 const groupNameInput = document.getElementById("group-name-input");
 const groupNameForm = document.getElementById("group-name");
 const cardGroupName = document.getElementById("card-group-name");
-const newChatMemberForm = document.getElementById("new-chat");
-const user = newChatMemberForm?.dataset.user;
+const newChatForm = document.getElementById("new-chat");
+const newChatFormOffCanvas = document.getElementById("new-chat-offcanvas");
 const newMemberPreferencesForm = document.getElementById("preferences");
-
-// Emit an event to join the room when the page loads
-socket.emit("join chat", chatId);
+const deleteForm = document.querySelector(".x-mark");
+const deleteFormOffCanvas = document.querySelector(".x-mark-offcanvas");
+const user = newChatForm?.dataset.user;
+const userOffCanvas = newChatFormOffCanvas?.dataset.user;
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
-    img.naturalWidth > img.naturalHeight
-      ? img.classList.add("landscape")
-      : img.classList.add("portrait");
+    img.naturalWidth > img.naturalHeight ? img.classList.add("landscape") : img.classList.add("portrait");
   });
 
   // If the image is already loaded (this happens when the image is cached)
   if (img.complete) {
-    img.naturalWidth > img.naturalHeight
-      ? img.classList.add("landscape")
-      : img.classList.add("portrait");
+    img.naturalWidth > img.naturalHeight ? img.classList.add("landscape") : img.classList.add("portrait");
   }
 });
 
@@ -50,7 +47,6 @@ form?.addEventListener("submit", async (e) => {
     formData.append("userName", userName); // userName
 
     if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
-    console.log(formData);
 
     // Save the message to the database
     const response = await fetch("/messages/send", {
@@ -79,7 +75,6 @@ socket.on("chat message", (msg, chatId) => {
     const div = document.createElement("div");
     const userName = document.createElement("span");
     const createdAt = document.createElement("span");
-    
 
     if (msg.contentType === "image") {
       const img = document.createElement("img");
@@ -87,9 +82,7 @@ socket.on("chat message", (msg, chatId) => {
       img.alt = "User uploaded image";
       message.style.display = "none";
       img.onload = () => {
-        img.className = `message-image ${
-          img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"
-        }`;
+        img.className = `message-image ${img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"}`;
         message.style.display = "block";
       };
       message.appendChild(img);
@@ -98,16 +91,13 @@ socket.on("chat message", (msg, chatId) => {
     }
     userName.textContent = `${msg.senderId.userName} `;
     userName.className = "userName text-primary";
-    createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(
-      undefined,
-      {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      }
-    )}`;
+    createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })}`;
     createdAt.className = "createdAt";
     message.className = "content text-wrap text-break mb-2 fw-light";
 
@@ -115,7 +105,7 @@ socket.on("chat message", (msg, chatId) => {
     div.appendChild(createdAt);
     message.prepend(div);
     messages.appendChild(message);
-    
+
     const chatBox = document.getElementById("chat-box");
     chatBox.scrollTo(0, chatBox.scrollHeight);
   }
@@ -156,11 +146,16 @@ socket.on("group name", (name, chatId) => {
   const input = document.querySelector(`input[data-chat-id="${chatId}"]`);
 
   liElement?.forEach((e) => (e.textContent = name));
-  groupNameDiv.textContent = name;
-  input.placeholder = name;
+  liElement?.forEach((e) => e.classList.replace("groupNameSet-false", "groupNameSet-true"));
+  if (groupNameDiv.getAttribute("data-chat-id") == chatId && input.getAttribute("data-chat-id") == chatId) {
+    groupNameDiv.textContent = name;
+    groupNameDiv.classList.replace("groupNameSet-false", "groupNameSet-true");
+    input.placeholder = name;
+    input.classList.replace("groupNameSet-false", "groupNameSet-true");
+  }
 });
 
-newChatMemberForm?.addEventListener("submit", async (e) => {
+const newChat = async (e) => {
   e.preventDefault();
   try {
     const response = await fetch("/chat/createChat", {
@@ -174,63 +169,85 @@ newChatMemberForm?.addEventListener("submit", async (e) => {
     const result = await response.json();
 
     socket.emit("new member", result);
-  
-    window.location.href = `/messages/${result.chatMatch?._id || result._id}`;
 
+    window.location.href = `/messages/${result.chatMatch?._id || result._id}`;
   } catch (error) {
     console.log(error);
   }
-});
+};
+
+newChatForm?.addEventListener("submit", newChat);
+newChatFormOffCanvas?.addEventListener("submit", newChat);
 
 socket.on("new member", (member) => {
-  const liElement = document.querySelector(`li[data-chat-id*="${member.chatMatch._id}"]`);
-  const memberLength = document.querySelector(`div[data-member-length-chat-id*="${member.chatMatch._id}"]`);
-  const memberNum = document.querySelector(`span[data-member-num-chat-id*="${member.chatMatch._id}"]`);
+  const liElement = document.querySelector(`li[data-chat-id="${member.chatMatch._id}"]`);
+  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${member.chatMatch._id}"]`);
+  const lMemberCount = document.querySelector(`div[data-l-member-count-chat-id="${member.chatMatch._id}"]`);
+  const lMemberCountOffCanvas = document.querySelector(`div[data-l-member-count-chat-id-offcanvas="${member.chatMatch._id}"]`);
+  const rMemberCount = document.querySelector(`span[data-r-member-count-chat-id="${member.chatMatch._id}"]`);
+  const rMemberCountOffCanvas = document.querySelectorAll(`span[data-r-member-count-chat-id-offcanvas="${member.chatMatch._id}"]`);
 
-  if (liElement.getAttribute("class") == "mt-3 text-truncate card-group-name groupNameSet-false"){
+  if (liElement?.getAttribute("class") == "mt-3 text-truncate card-group-name groupNameSet-false") {
+    liElement.innerText = liElement.innerText.trim()
     liElement.innerText += `, ${member.userName}`;
+    liElementOffCanvas.innerText = liElement.innerText
   }
-  
-  if (groupNameDiv.getAttribute("data-chat-id") == member.chatMatch._id){
+
+  if (lMemberCount?.innerText && lMemberCount.innerText.includes("1")) {
+    lMemberCount.innerText = lMemberCount.innerText.replace("Member", "Members");
+    lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+  }
+
+  if (lMemberCount?.innerText) {
+    lMemberCount.innerText = lMemberCount.innerText.replace(/\d/g, (e) => (+e + 1).toString());
+    lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+  }
+
+  if (rMemberCount?.innerText && rMemberCount.innerText.includes("1")) {
+    rMemberCount.innerText = rMemberCount.innerText.replace("MEMBER", "MEMBERS");
+    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
+  }
+
+  if (rMemberCount?.innerText) {
+    rMemberCount.innerText = rMemberCount.innerText.replace(/\d/g, (e) => (+e + 1).toString());
+    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
+  }
+
+
+  if (groupNameDiv?.getAttribute("class").includes("groupNameSet-false") && groupNameDiv?.getAttribute("data-chat-id") == member.chatMatch._id) {
     groupNameDiv.innerText += `, ${member.userName}`;
   }
-
-  if (memberLength.getAttribute("data-member-length-chat-id") == member.chatMatch._id){
-    memberLength.innerText = memberLength.innerText.replace(/\d/g,e=>(+e+1).toString());
-    memberLength.innerText = memberLength.innerText.replace(/Member/g,"Members");
+  if (input?.getAttribute("class").includes("groupNameSet-false")) {
+    input.placeholder += `, ${member.userName}`;
   }
-
-  if (memberNum.getAttribute("data-member-num-chat-id") == member.chatMatch._id){
-    memberNum.innerText = memberNum.innerText.replace(/\d/g,e=>(+e+1).toString());
-    memberNum.innerText = memberNum.innerText.replace(/MEMBER/g,"MEMBERS");
-  }
-
-  if (chatBox.getAttribute("data-chat-id") == member.chatMatch._id) {
+  if (chatBox?.getAttribute("data-chat-id") == member.chatMatch._id) {
     //for message
     const message = document.createElement("li");
     const icon = document.createElement("i");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
     const memberList = document.querySelector(`ul[data-member-chat-id*="${member.chatMatch._id}"]`);
+    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id*="${member.chatMatch._id}"]`);
     const memberLi = document.createElement("li");
+    const memberLiOffCanvas = document.createElement("li");
 
     content.innerText = ` ${member.systemMessage.content} `;
-    createdAt.innerText = ` ${new Date(member.systemMessage.createdAt).toLocaleString(
-      undefined,
-      {
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-      }
-    )} `;
+    createdAt.innerText = ` ${new Date(member.systemMessage.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })} `;
     memberLi.innerText = member.userName;
+    memberLiOffCanvas.innerText = member.userName;
+    memberLi.setAttribute("data-member-id", `${member.userId}`);
+    memberLiOffCanvas.setAttribute("data-member-offcanvas-id", `${member.userId}`);
 
     message.className = "content text-wrap text-break mb-2 fw-light";
     icon.className = "fa-solid fa-arrow-right";
     icon.style.color = "#4ED7D9";
-    content.className = "text-primary"
+    content.className = "text-primary";
     createdAt.className = "createdAt";
     memberLi.className = "mt-3";
 
@@ -238,6 +255,121 @@ socket.on("new member", (member) => {
     message.appendChild(content);
     message.appendChild(createdAt);
     messages.appendChild(message);
-    memberList.appendChild(memberLi);
+    memberList?.appendChild(memberLi);
+    memberListOffCanvas?.appendChild(memberLiOffCanvas);
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.scrollTo(0, chatBox.scrollHeight);
+  }
+});
+
+const deleteChat = async (e) => {
+  e.preventDefault();
+
+  try {
+    const chatId = e.target.getAttribute("data-chat-id");
+    const deleteChatForm = document.getElementById(`delete-chat-${chatId}`);
+    const deleteChatFormOffCanvas = document.getElementById(`delete-chat-offcanvas-${chatId}`);
+    const chatLength = deleteChatForm?.getAttribute("data-chat-length") || deleteChatFormOffCanvas?.getAttribute("data-chat-length");
+
+    const response = await fetch(`/chat/deleteChat/${chatId}`, {
+      method: "DELETE",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ chatLength }),
+    });
+
+    if (!response.ok) throw new Error("Failed to to delete group");
+
+    const result = await response.json();
+    console.log(result)
+    socket.emit("delete chat", result);
+
+    window.location.href = "/profile";
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+deleteForm?.addEventListener("submit", deleteChat);
+deleteFormOffCanvas?.addEventListener("submit", deleteChat);
+
+socket.on("delete chat", (chat) => {
+  const liElement = document.querySelector(`li[data-chat-id="${chat.deletedChat._id}"]`);
+  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chat.deletedChat._id}"]`);
+  const lMemberCount = document.querySelector(`div[data-l-member-count-chat-id="${chat.deletedChat._id}"]`);
+  const lMemberCountOffCanvas = document.querySelector(`div[data-l-member-count-chat-id-offcanvas="${chat.deletedChat._id}"]`);
+  const rMemberCount = document.querySelector(`span[data-r-member-count-chat-id="${chat.deletedChat._id}"]`);
+  const rMemberCountOffCanvas = document.querySelectorAll(`span[data-r-member-count-chat-id-offcanvas="${chat.deletedChat._id}"]`);
+
+
+  if (liElement?.getAttribute("class") == "mt-3 text-truncate card-group-name groupNameSet-false") {
+    liElement.innerText = liElement.innerText.replace(`, ${chat.userName}`, "")
+    liElementOffCanvas.innerText = liElement.innerText
+  }
+
+  if (lMemberCount?.innerText) {
+    lMemberCount.innerText = lMemberCount.innerText.replace(/\d/g, (e) => (+e - 1).toString());
+    lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+  }
+
+  if (lMemberCount?.innerText && lMemberCount.innerText.includes("1")) {
+    lMemberCount.innerText = lMemberCount.innerText.replace("s", "");
+    lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+  }
+
+  if (rMemberCount?.innerText) {
+    rMemberCount.innerText = rMemberCount.innerText.replace(/\d/g, (e) => (+e - 1).toString());
+    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
+  }
+
+  if (rMemberCount?.innerText && rMemberCount.innerText.includes("1")) {
+    rMemberCount.innerText = rMemberCount.innerText.replace("S", "");
+    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
+  }
+
+  if (groupNameDiv?.getAttribute("class").includes("groupNameSet-false") && groupNameDiv?.getAttribute("data-chat-id") == chat.deletedChat._id) {
+    groupNameDiv.innerText = groupNameDiv.innerText.replace(`, ${chat.userName}`, "");
+  }
+  if (input?.getAttribute("class").includes("groupNameSet-false")) {
+    input.placeholder.replace(`, ${chat.userName}`, "");
+  }
+  if (chatBox?.getAttribute("data-chat-id") == chat.deletedChat._id) {
+    //for message
+    const message = document.createElement("li");
+    const icon = document.createElement("i");
+    const content = document.createElement("span");
+    const createdAt = document.createElement("span");
+    const memberList = document.querySelector(`ul[data-member-chat-id*="${chat.deletedChat._id}"]`);
+    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id*="${chat.deletedChat._id}"]`);
+    const user = document.querySelector(`li[data-member-id*="${chat.userId}"]`);
+    const userOffCanvas = document.querySelector(`li[data-member-offcanvas-id*="${chat.userId}"]`);
+
+    content.innerText = ` ${chat.systemMessage.content} `;
+    createdAt.innerText = ` ${new Date(chat.systemMessage.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })} `;
+
+    message.className = "content text-wrap text-break mb-2 fw-light";
+    icon.className = "fa-solid fa-arrow-left";
+    icon.style.color = "#dc143c";
+    content.className = "text-primary";
+    createdAt.className = "createdAt";
+
+    message.appendChild(icon);
+    message.appendChild(content);
+    message.appendChild(createdAt);
+    messages.appendChild(message);
+    memberList?.removeChild(user);
+    memberListOffCanvas?.removeChild(userOffCanvas);
+
+    const chatBox = document.getElementById("chat-box");
+    chatBox.scrollTo(0, chatBox.scrollHeight);
   }
 });

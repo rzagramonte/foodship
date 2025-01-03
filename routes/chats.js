@@ -1,12 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/multer");
-const {
-  patchGroupName,
-  patchGroupPic,
-  postChat,
-  deleteChat,
-} = require("../controllers/chats");
+const { patchGroupName, patchGroupPic, postChat, deleteChat } = require("../controllers/chats");
 const { ensureAuth } = require("../middleware/auth");
 
 router.post("/createChat", ensureAuth, (req, res) => {
@@ -15,14 +10,9 @@ router.post("/createChat", ensureAuth, (req, res) => {
 router.patch("/updateGroupName/:id", ensureAuth, (req, res) => {
   patchGroupName(req.app.get("io"))(req, res); // Pass io to patchGroupName
 });
-router.patch(
-  "/updateGroupPic/:id",
-  ensureAuth,
-  upload.single("file"),
-  (req, res) => {
-    patchGroupPic(req.app.get("io"))(req, res); // Pass io to patchGroupPic
-  }
-);
+router.patch("/updateGroupPic/:id", ensureAuth, upload.single("file"), (req, res) => {
+  patchGroupPic(req.app.get("io"))(req, res); // Pass io to patchGroupPic
+});
 router.delete("/deleteChat/:id", ensureAuth, (req, res) => {
   deleteChat(req.app.get("io"))(req, res); // Pass io to deleteChat
 });

@@ -2,23 +2,23 @@ const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
-
 module.exports = {
   //get all messages of a specific chat
   getMessages: async (req, res) => {
     const { chatId } = req.params;
     const { id, userName } = req.user;
     try {
-      const chat = await Message.find({chatId} )
-        .populate({path: "senderId", select: "userName"})
-        .sort({ createdAt: "asc" });
-      const group = await Chat.findById(chatId).populate({path: "members", select: "userName"});
-      const chats = await Chat.find({members: id}).populate({path: "members", select: "userName"});
+      const chat = await Message.find({ chatId }).populate({ path: "senderId", select: "userName" }).sort({ createdAt: "asc" });
+      const group = await Chat.findById(chatId).populate({ path: "members", select: "userName" });
+      const chats = await Chat.find({ members: req.user.id }).populate({
+        path: "members",
+        select: "userName _id preferences",
+      });
       res.render("profile.ejs", {
         group,
         user: req.user,
         userName,
-        senderId: req.user._id.toString(),
+        senderId: id,
         chatId,
         chat,
         chats,
@@ -29,10 +29,11 @@ module.exports = {
       res.status(500).json({ error: "Error getting all messages" });
     }
   },
-  postMessage: (io) => async (req,res) => {
+  postMessage: (io) => async (req, res) => {
     try {
       let imgUrl;
       if (req.file) imgUrl = await cloudinary.uploader.upload(req.file.path);
+      console.log(req)
       const { chatId, content, contentType, senderId } = req.body;
       const newMessage = await Message.create({
         chatId,
@@ -60,19 +61,12 @@ module.exports = {
         likedBy: userId,
       });
       if (message) {
-        await Message.findOneAndUpdate(
-          { _id: messageId, likedBy: userId },
-          { $pull: { likedBy: userId }, $inc: { likes: -1 } }
-        );
+        await Message.findOneAndUpdate({ _id: messageId, likedBy: userId }, { $pull: { likedBy: userId }, $inc: { likes: -1 } });
         console.log("User has unliked the message");
         res.status(200).json("User has unliked the message");
         return;
       }
-      await Message.findOneAndUpdate(
-        { _id: messageId },
-        { $push: { likedBy: userId }, $inc: { likes: 1 } },
-        { upsert: true }
-      );
+      await Message.findOneAndUpdate({ _id: messageId }, { $push: { likedBy: userId }, $inc: { likes: 1 } }, { upsert: true });
       console.log("Marked Like");
       res.status(200).json("Marked Like");
     } catch (err) {
