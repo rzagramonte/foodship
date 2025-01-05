@@ -94,6 +94,7 @@ module.exports = {
       const chatId = req.params.id;
       const { chatLength } = req.body;
       const { user } = req
+
       if (chatLength > 1) {
         const deletedChat = await Chat.findByIdAndUpdate(chatId, {
           $pull: { members: user._id },

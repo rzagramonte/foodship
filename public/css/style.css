@@ -164,11 +164,11 @@ i {
   color:  #dc143c;
 }
 
-.x-mark {
+.x-mark, .x-mark-offcanvas {
   display: none; /* Initially hide the .xmark */
 }
 
-.group:hover .x-mark {
+.group:hover .x-mark, .group:hover .x-mark-offcanvas {
   display: inline-block !important;
   cursor: pointer !important;
 }

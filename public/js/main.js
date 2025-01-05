@@ -141,12 +141,23 @@ groupNameDiv?.addEventListener("keydown", onGroupNameUpdate);
 groupNameDiv?.addEventListener("blur", onGroupNameUpdate);
 
 socket.on("group name", (name, chatId) => {
-  const liElement = document.querySelectorAll(`li[data-chat-id="${chatId}"]`);
+  
+  const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
+  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chatId}"]`);
   const groupNameDiv = document.querySelector(`div[data-chat-id="${chatId}"]`);
   const input = document.querySelector(`input[data-chat-id="${chatId}"]`);
 
-  liElement?.forEach((e) => (e.textContent = name));
-  liElement?.forEach((e) => e.classList.replace("groupNameSet-false", "groupNameSet-true"));
+  if(liElement){
+    liElement.textContent = name;
+    liElement.classList.replace("groupNameSet-false", "groupNameSet-true");
+  }
+
+  if(liElementOffCanvas){
+    liElementOffCanvas.textContent = name;
+    liElementOffCanvas.classList.replace("groupNameSet-false", "groupNameSet-true");
+  }
+  
+  
   if (groupNameDiv.getAttribute("data-chat-id") == chatId && input.getAttribute("data-chat-id") == chatId) {
     groupNameDiv.textContent = name;
     groupNameDiv.classList.replace("groupNameSet-false", "groupNameSet-true");
@@ -185,39 +196,49 @@ socket.on("new member", (member) => {
   const lMemberCount = document.querySelector(`div[data-l-member-count-chat-id="${member.chatMatch._id}"]`);
   const lMemberCountOffCanvas = document.querySelector(`div[data-l-member-count-chat-id-offcanvas="${member.chatMatch._id}"]`);
   const rMemberCount = document.querySelector(`span[data-r-member-count-chat-id="${member.chatMatch._id}"]`);
-  const rMemberCountOffCanvas = document.querySelectorAll(`span[data-r-member-count-chat-id-offcanvas="${member.chatMatch._id}"]`);
+  const rMemberCountOffCanvas = document.querySelector(`span[data-r-member-count-chat-id-offcanvas="${member.chatMatch._id}"]`);
+  const deleteChatForm = document.querySelector(`delete-chat-${member.chatMatch._id}`);
+  const deleteChatFormOffCanvas = document.querySelector(`delete-chat-offcanvas-${member.chatMatch._id}`);
 
   if (liElement?.getAttribute("class") == "mt-3 text-truncate card-group-name groupNameSet-false") {
-    liElement.innerText = liElement.innerText.trim()
+    liElement.innerText = liElement.innerText.trim();
     liElement.innerText += `, ${member.userName}`;
-    liElementOffCanvas.innerText = liElement.innerText
+  }
+  if(liElementOffCanvas){
+    liElementOffCanvas.innerText = liElement.innerText;
   }
 
-  if (lMemberCount?.innerText && lMemberCount.innerText.includes("1")) {
+  if (lMemberCount && lMemberCount.innerText.includes("1")) {
     lMemberCount.innerText = lMemberCount.innerText.replace("Member", "Members");
     lMemberCountOffCanvas.innerText = lMemberCount.innerText;
   }
 
-  if (lMemberCount?.innerText) {
+  if (lMemberCount) {
     lMemberCount.innerText = lMemberCount.innerText.replace(/\d/g, (e) => (+e + 1).toString());
+    deleteChatForm?.setAttribute(`delete-chat-${member.deletedChat._id}`, `${lMemberCount.innerText.match(/\d/g)[0]}`); 
+  }
+
+  if(lMemberCountOffCanvas){
     lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+    deleteChatFormOffCanvas?.setAttribute(`delete-chat-offcanvas-${member.chatMatch._id}`, `${lMemberCountOffCanvas.innerText.match(/\d/g)[0]}`);
   }
 
-  if (rMemberCount?.innerText && rMemberCount.innerText.includes("1")) {
+  if (rMemberCount && rMemberCount.innerText.includes("1")) {
     rMemberCount.innerText = rMemberCount.innerText.replace("MEMBER", "MEMBERS");
-    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
   }
 
-  if (rMemberCount?.innerText) {
+  if (rMemberCount) {
     rMemberCount.innerText = rMemberCount.innerText.replace(/\d/g, (e) => (+e + 1).toString());
-    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
   }
 
+  if(rMemberCountOffCanvas){
+    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
+  }
 
   if (groupNameDiv?.getAttribute("class").includes("groupNameSet-false") && groupNameDiv?.getAttribute("data-chat-id") == member.chatMatch._id) {
     groupNameDiv.innerText += `, ${member.userName}`;
   }
-  if (input?.getAttribute("class").includes("groupNameSet-false")) {
+  if (input?.getAttribute("class").includes("groupNameSet-false") && input?.getAttribute("data-chat-id") == member.chatMatch._id) {
     input.placeholder += `, ${member.userName}`;
   }
   if (chatBox?.getAttribute("data-chat-id") == member.chatMatch._id) {
@@ -226,8 +247,8 @@ socket.on("new member", (member) => {
     const icon = document.createElement("i");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
-    const memberList = document.querySelector(`ul[data-member-chat-id*="${member.chatMatch._id}"]`);
-    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id*="${member.chatMatch._id}"]`);
+    const memberList = document.querySelector(`ul[data-member-chat-id="${member.chatMatch._id}"]`);
+    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id="${member.chatMatch._id}"]`);
     const memberLi = document.createElement("li");
     const memberLiOffCanvas = document.createElement("li");
 
@@ -250,6 +271,7 @@ socket.on("new member", (member) => {
     content.className = "text-primary";
     createdAt.className = "createdAt";
     memberLi.className = "mt-3";
+    memberLiOffCanvas.className = "mt-3";
 
     message.appendChild(icon);
     message.appendChild(content);
@@ -284,8 +306,8 @@ const deleteChat = async (e) => {
     if (!response.ok) throw new Error("Failed to to delete group");
 
     const result = await response.json();
-    console.log(result)
-    socket.emit("delete chat", result);
+    console.log(result);
+    socket.emit("delete chat", result, chatId);
 
     window.location.href = "/profile";
   } catch (error) {
@@ -296,56 +318,65 @@ const deleteChat = async (e) => {
 deleteForm?.addEventListener("submit", deleteChat);
 deleteFormOffCanvas?.addEventListener("submit", deleteChat);
 
-socket.on("delete chat", (chat) => {
-  const liElement = document.querySelector(`li[data-chat-id="${chat.deletedChat._id}"]`);
-  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chat.deletedChat._id}"]`);
-  const lMemberCount = document.querySelector(`div[data-l-member-count-chat-id="${chat.deletedChat._id}"]`);
-  const lMemberCountOffCanvas = document.querySelector(`div[data-l-member-count-chat-id-offcanvas="${chat.deletedChat._id}"]`);
-  const rMemberCount = document.querySelector(`span[data-r-member-count-chat-id="${chat.deletedChat._id}"]`);
-  const rMemberCountOffCanvas = document.querySelectorAll(`span[data-r-member-count-chat-id-offcanvas="${chat.deletedChat._id}"]`);
-
+socket.on("delete chat", (chat, chatId) => {
+  const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
+  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chatId}"]`);
+  const lMemberCount = document.querySelector(`div[data-l-member-count-chat-id="${chatId}"]`);
+  const lMemberCountOffCanvas = document.querySelector(`div[data-l-member-count-chat-id-offcanvas="${chatId}"]`);
+  const rMemberCount = document.querySelector(`span[data-r-member-count-chat-id="${chatId}"]`);
+  const rMemberCountOffCanvas = document.querySelector(`span[data-r-member-count-chat-id-offcanvas="${chatId}"]`);
+  const deleteChatForm = document.querySelector(`delete-chat-${chatId}`);
+  const deleteChatFormOffCanvas = document.querySelector(`delete-chat-offcanvas-${chatId}`);
 
   if (liElement?.getAttribute("class") == "mt-3 text-truncate card-group-name groupNameSet-false") {
-    liElement.innerText = liElement.innerText.replace(`, ${chat.userName}`, "")
-    liElementOffCanvas.innerText = liElement.innerText
+    liElement.innerText = liElement.innerText.replace(new RegExp(`(, ${chat.userName}|${chat.userName}, )`, 'g'), "");
+  }
+  if(liElementOffCanvas){
+    liElementOffCanvas.innerText = liElement.innerText;
   }
 
-  if (lMemberCount?.innerText) {
+  if (lMemberCount) {
     lMemberCount.innerText = lMemberCount.innerText.replace(/\d/g, (e) => (+e - 1).toString());
-    lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+    deleteChatForm?.setAttribute(`delete-chat-${chatId}`, `${lMemberCount.innerText.match(/\d/g)[0]}`);
   }
 
-  if (lMemberCount?.innerText && lMemberCount.innerText.includes("1")) {
+  if (lMemberCount && lMemberCount.innerText.includes("1")) {
     lMemberCount.innerText = lMemberCount.innerText.replace("s", "");
+  }
+
+  if(lMemberCountOffCanvas){
     lMemberCountOffCanvas.innerText = lMemberCount.innerText;
+    deleteChatFormOffCanvas?.setAttribute(`delete-chat-offcanvas-${chatId}`, `${lMemberCountOffCanvas.innerText.match(/\d/g)[0]}`);
   }
 
-  if (rMemberCount?.innerText) {
+  if (rMemberCount) {
     rMemberCount.innerText = rMemberCount.innerText.replace(/\d/g, (e) => (+e - 1).toString());
-    rMemberCountOffCanvas.innerText = rMemberCount.innerText;
   }
 
-  if (rMemberCount?.innerText && rMemberCount.innerText.includes("1")) {
+  if (rMemberCount && rMemberCount.innerText.includes("1")) {
     rMemberCount.innerText = rMemberCount.innerText.replace("S", "");
+  }
+
+  if(rMemberCountOffCanvas){
     rMemberCountOffCanvas.innerText = rMemberCount.innerText;
   }
 
-  if (groupNameDiv?.getAttribute("class").includes("groupNameSet-false") && groupNameDiv?.getAttribute("data-chat-id") == chat.deletedChat._id) {
-    groupNameDiv.innerText = groupNameDiv.innerText.replace(`, ${chat.userName}`, "");
+  if (groupNameDiv?.getAttribute("class").includes("groupNameSet-false") && groupNameDiv?.getAttribute("data-chat-id") == chatId) {
+    groupNameDiv.innerText = groupNameDiv.innerText.replace(new RegExp(`(, ${chat.userName}|${chat.userName}, )`, 'g'), "");
   }
-  if (input?.getAttribute("class").includes("groupNameSet-false")) {
-    input.placeholder.replace(`, ${chat.userName}`, "");
+  if (input?.getAttribute("class").includes("groupNameSet-false") && input?.getAttribute("data-chat-id") == chatId) {
+    input.placeholder = input.placeholder.replace(new RegExp(`(, ${chat.userName}|${chat.userName}, )`, 'g'), "");
   }
-  if (chatBox?.getAttribute("data-chat-id") == chat.deletedChat._id) {
+  if (chatBox?.getAttribute("data-chat-id") == chatId) {
     //for message
     const message = document.createElement("li");
     const icon = document.createElement("i");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
-    const memberList = document.querySelector(`ul[data-member-chat-id*="${chat.deletedChat._id}"]`);
-    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id*="${chat.deletedChat._id}"]`);
-    const user = document.querySelector(`li[data-member-id*="${chat.userId}"]`);
-    const userOffCanvas = document.querySelector(`li[data-member-offcanvas-id*="${chat.userId}"]`);
+    const memberList = document.querySelector(`ul[data-member-chat-id="${chatId}"]`);
+    const memberListOffCanvas = document.querySelector(`ul[data-member-chat-offcanvas-id="${chatId}"]`);
+    const user = document.querySelector(`li[data-member-id="${chat.userId}"]`);
+    const userOffCanvas = document.querySelector(`li[data-member-offcanvas-id="${chat.userId}"]`);
 
     content.innerText = ` ${chat.systemMessage.content} `;
     createdAt.innerText = ` ${new Date(chat.systemMessage.createdAt).toLocaleString(undefined, {
