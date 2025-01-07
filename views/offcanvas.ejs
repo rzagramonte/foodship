@@ -4,7 +4,7 @@
       <div class="d-flex justify-content-between px-3 py-2 border-bottom">
         <span>GROUP CHATS</span>
         <span class="ms-auto">
-          <form class="d-inline-block" id="new-chat-offcanvas" action="/chat/createChat" method="POST" data-user="<%= user %>">
+          <form class="d-inline-block" id="new-chat-offcanvas" action="/chat/createChat" method="POST">
             <input hidden type="submit" id="create-chat-offcanvas">
             <label class="nav-link " for="create-chat-offcanvas"><i class="fa-solid fa-plus fa-sm"></i>
             </label>
@@ -22,7 +22,7 @@
                     <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
                   </li>
                 </a>
-                <form class="x-mark-offcanvas ms-auto mt-3" id="delete-chat-offcanvas-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" data-user="<%= user %>" data-chat-length="<%= chats[i].members.length %>">
+                <form class="x-mark-offcanvas ms-auto mt-3" id="delete-chat-offcanvas-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>">
                   <input hidden type="submit" id="delete-chat-input-offcanvas<%= chats[i]._id %>">
                   <label class="nav-link" for="delete-chat-input-offcanvas<%= chats[i]._id %>"><i class=" fa-solid fa-xmark"></i>
                   </label>

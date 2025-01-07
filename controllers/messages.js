@@ -33,7 +33,6 @@ module.exports = {
     try {
       let imgUrl;
       if (req.file) imgUrl = await cloudinary.uploader.upload(req.file.path);
-      console.log(req)
       const { chatId, content, contentType, senderId } = req.body;
       const newMessage = await Message.create({
         chatId,

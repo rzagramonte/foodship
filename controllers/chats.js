@@ -53,7 +53,7 @@ module.exports = {
       await User.findByIdAndUpdate(user._id, {
         $addToSet: { chatIds: chatMatch._id },
       });
-      console.log("User has been added to the chat!", systemMessage._id);
+      console.log("User has been added to the chat!");
       res.status(201).json({ chatMatch, systemMessage, userName: user.userName, userId: user.id });
     } catch (err) {
       console.log(err);
@@ -92,8 +92,9 @@ module.exports = {
   deleteChat: (io) => async (req, res) => {
     try {
       const chatId = req.params.id;
-      const { chatLength } = req.body;
       const { user } = req
+      const chat = await Chat.findById(chatId);
+      const chatLength = chat.members.length;
 
       if (chatLength > 1) {
         const deletedChat = await Chat.findByIdAndUpdate(chatId, {
@@ -121,7 +122,8 @@ module.exports = {
         await Promise.all(imageDeletionPromises);
         const deletedChat = await Chat.findByIdAndDelete(chatId);
         await User.findByIdAndUpdate(user._id, { $pull: { chatIds: chatId } });
-        res.status(200).json({ deletedChat, userName: user.userName });
+        //res.status(200).json({ deletedChat, systemMessage: null, userName: user.userName, userId: user._id });
+        res.redirect("/profile")
         console.log("Chat has been deleted!");
       }
     } catch (err) {

@@ -20,7 +20,7 @@
                 <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
               </li>
             </a>
-            <form class="x-mark ms-auto mt-3" id="delete-chat-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" data-user="<%= user %>" data-chat-length="<%= chats[i].members.length %>">
+            <form class="x-mark ms-auto mt-3" id="delete-chat-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" >
               <input hidden type="submit" id="delete-chat-input-<%= chats[i]._id %>">
               <label class="nav-link" for="delete-chat-input-<%= chats[i]._id %>"><i class="fa-solid fa-xmark"></i>
               </label>
