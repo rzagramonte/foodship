@@ -92,11 +92,11 @@ module.exports = {
   deleteChat: (io) => async (req, res) => {
     try {
       const chatId = req.params.id;
-      const { user } = req
+      const { user } = req;
       const chat = await Chat.findById(chatId);
       const chatLength = chat.members.length;
 
-      if (chatLength > 1) {
+      if (chatLength && chatLength > 1) {
         const deletedChat = await Chat.findByIdAndUpdate(chatId, {
           $pull: { members: user._id },
         });
@@ -116,14 +116,12 @@ module.exports = {
           chatId,
           contentType: "image",
         });
-        const imageDeletionPromises = picMessages.map((message) =>
-          cloudinary.uploader.destroy(message.cloudinaryId)
-        );
+        const imageDeletionPromises = picMessages.map((message) => cloudinary.uploader.destroy(message.cloudinaryId));
         await Promise.all(imageDeletionPromises);
-        const deletedChat = await Chat.findByIdAndDelete(chatId);
+        await Message.deleteMany({ chatId });
+        await Chat.findByIdAndDelete(chatId);
         await User.findByIdAndUpdate(user._id, { $pull: { chatIds: chatId } });
-        //res.status(200).json({ deletedChat, systemMessage: null, userName: user.userName, userId: user._id });
-        res.redirect("/profile")
+        res.status(200).json({ message: "Chat has been deleted!" });
         console.log("Chat has been deleted!");
       }
     } catch (err) {

@@ -15,8 +15,8 @@ const cardGroupName = document.getElementById("card-group-name");
 const newChatForm = document.getElementById("new-chat");
 const newChatFormOffCanvas = document.getElementById("new-chat-offcanvas");
 const newMemberPreferencesForm = document.getElementById("preferences");
-const deleteForm = document.querySelector(".x-mark");
-const deleteFormOffCanvas = document.querySelector(".x-mark-offcanvas");
+const deleteForm = document.querySelectorAll(".x-mark");
+const deleteFormOffCanvas = document.querySelectorAll(".x-mark-offcanvas");
 const user = newChatForm?.dataset.user;
 const userOffCanvas = newChatFormOffCanvas?.dataset.user;
 
@@ -293,11 +293,10 @@ const deleteChat = async (e) => {
         "Content-Type": "application/json",
       },
     });
-
+    
     if (!response.ok) throw new Error("Failed to to delete group");
 
     const chat = await response.json();
-
     socket.emit("delete chat", chat);
 
     window.location.href = "/profile";
@@ -306,8 +305,8 @@ const deleteChat = async (e) => {
   }
 };
 
-deleteForm?.addEventListener("submit", deleteChat);
-deleteFormOffCanvas?.addEventListener("submit", deleteChat);
+deleteForm?.forEach((e) => e.addEventListener("submit", deleteChat));
+deleteFormOffCanvas?.forEach((e) => e.addEventListener("submit", deleteChat));
 
 socket.on("delete chat", (chat) => {
   const liElement = document.querySelector(`li[data-chat-id="${chat.deletedChat._id}"]`);
