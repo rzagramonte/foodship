@@ -1,33 +1,20 @@
-<%- include('partials/header') -%>
-<main class="container d-flex flex-wrap justify-content-around vh-75 flex-grow-1 py-3"">
-  <form class="container " id="preferences" action="/user/update/<%=userId%>?_method=PATCH" method="POST" data-user-name="<%= userName %>">
-    <h1 class="py-3 text-center">Preferences</h1>
-    <h2>Food</h2>
-    <div class=" m-3 ">
+<main class=" d-flex flex-wrap justify-content-around vh-75 flex-grow-1 py-3"">
+    <h2 class="fs-5 me-auto">Food</h2>
+    <div class="m-2">
       <% for(let i=0; i<foodPreferences.length; i++) {%>
       <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
-        <input <%= user.preferences.foodPreferences.includes(foodPreferences[i].foodPreference) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i%>" name="foodPreferences" value="<%= foodPreferences[i].foodPreference %>">
-        <label class="btn btn-outline-primary" for="btncheck<%=i%>"><%=foodPreferences[i].foodPreference%></label>
+        <input <%= user.preferences.foodPreferences.includes(foodPreferences[i].foodPreference) ? 'checked' : '' %> type="checkbox" class="btn-check fs-5" id="btncheck<%=i%>" name="foodPreferences" value="<%= foodPreferences[i].foodPreference %>">
+        <label class="btn btn-outline-light" for="btncheck<%=i%>"><%=foodPreferences[i].foodPreference%></label>
       </div>
       <% } %>
     </div>
-    <h2 class="mt-5">Interests</h2>
-    <div class="m-3">
+    <h2 class=" fs-5 me-auto">Interests</h2>
+    <div class="m-2">
       <% for(let i=0; i<interests.length; i++) {%>
-      <div class="btn-group mb-3" role="group" aria-label="Basic checkbox toggle button group">
+      <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
         <input <%= user.preferences.interests.includes(interests[i].interest) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" name="interests" value="<%= interests[i].interest %>">
-        <label class="btn btn-outline-primary" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
+        <label class="btn btn-outline-light" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
       </div>
       <% } %>
     </div>
-    <div class="d-flex justify-content-center mt-5">
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
-  <form action="/user/delete/<%= userId %>?_method=PUT" method="POST" data-user-name="<%= userName %>">
-    <div>
-      <button type="submit" class="btn btn-danger">Clear All</button>
-    </div>
-  </form>
 </main>
-<%- include('partials/footer') -%>

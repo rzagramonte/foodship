@@ -79,7 +79,7 @@
   --bs-highlight-bg: #fff3cd !important;
   --bs-border-width: 1px !important;
   --bs-border-style: solid !important;
-  --bs-border-color: #dee2e6 !important;
+  --bs-border-color: #97B2AF !important;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.175) !important;
   --bs-border-radius: 1.5rem !important;
   --bs-border-radius-sm: 0.25rem !important;
@@ -132,6 +132,28 @@
 .btn-secondary{
   --bs-btn-color:#BFD9D7 !important; /* Mint */
   --bs-btn-bg: #353745 !important; /* Charcoal */
+}
+
+.btn-outline-light{
+  --bs-btn-color:#97B2AF !important;
+  --bs-btn-border-color:#97B2AF !important;
+  --bs-btn-hover-bg:#97B2AF !important;
+  --bs-btn-hover-border-color:#97B2AF !important;
+  --bs-btn-focus-shadow-rgb:151, 178, 175 !important;
+  --bs-btn-active-bg:#97B2AF !important;
+  --bs-btn-active-border-color:#97B2AF !important;
+  --bs-btn-active-shadow:inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color:#97B2AF !important;
+  --bs-btn-disabled-border-color:#97B2AF !important;
+}
+
+.chat-file-upload{
+  --bs-dropdown-min-width:25rem !important;
+}
+
+.form-control::file-selector-button{
+  background-color: var(--bs-primary) !important;
+  color: var(--bs-secondary) !important;
 }
 
 .navbar{

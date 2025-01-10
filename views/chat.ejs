@@ -1,14 +1,62 @@
 <% if (chat) { %>
-<div class="d-flex justify-content-between border-bottom border-bottom-xl-0">
+<div class="d-flex  border-bottom border-bottom-xl-0">
   <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars"></i></button>
   <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <div class="text-primary group-name px-4 py-2 <%= group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true" >
+    <div class="text-primary group-name px-4 py-2 m-0 <%= group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true" >
       <%=group.groupName || group.members.map(m => m.userName).join(', ')%>
     </div>
   </form>
-  <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
+
+  <button class="btn ms-auto p-0" type="button" data-bs-toggle="modal" data-bs-target="#new-calender-event"><i class="fa-solid fa-calendar-plus px-4"></i></button>
+
+  <div class="modal fade" id="new-calender-event" aria-hidden="true" aria-labelledby="new-calender-eventLabel" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="new-calender-eventLabel">Create a New Event</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="calendar" action="/events/createEvent" method="POST" data-user-name="<%= userName %>">
+        <div class="modal-body">
+          
+
+          <input class="form-control"
+            type="datetime-local"
+            id="meeting-time"
+            name="meeting-time"
+            
+             />
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="seeAllEvents" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="see-all-calender-events" aria-hidden="true" aria-labelledby="see-all-calender-eventsLabel2" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="see-all-calender-eventsLabel2">Calendar Events</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" data-bs-target="#new-calender-event" data-bs-toggle="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <button class="btn  d-xl-none " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
 </div>
 <div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
   <ul id="messages" class="messages list-unstyled px-5 py-4">
@@ -39,16 +87,13 @@
 </div>
 <form id="form" class="mb-2 px-3" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
   <div class="input-group">
-    <div class="dropup-center dropup bg-secondary rounded-start">
-      <button class="btn btn-secondary  rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="dropup">
+      <button class="btn btn-secondary rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa-solid fa-circle-plus fa-xl"></i>
       </button>
-      <ul class="dropdown-menu btn btn-primary">
-        <li class="d-flex justify-content-center">
-          <label for="fileInput">
-            File Upload
-          </label>
-          <input hidden type="file" name="file" id="fileInput" />
+      <ul class="dropdown-menu chat-file-upload p-0">
+        <li class="input-group">
+            <input type="file" name="file" class="form-control" id="fileInput">
         </li>
       </ul>
     </div>

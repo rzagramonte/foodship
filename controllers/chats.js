@@ -2,6 +2,8 @@ const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const User = require("../models/User");
 const Message = require("../models/Message");
+const Interest = require("../models/Interest");
+const FoodPreference = require("../models/FoodPreference");
 
 module.exports = {
   getChats: async (req, res) => {
@@ -10,11 +12,22 @@ module.exports = {
         path: "members",
         select: "userName _id preferences",
       });
+      const foodPreferences = await FoodPreference.find();
+      const interests = await Interest.find();
+      
+      const { userName } = req.user;
+      const user = req.user;
+      
+      const userId = req.user._id;
       let chat;
       res.render("profile.ejs", {
-        chats,
+        foodPreferences,
+        interests,
+        user,
+        userId,
+        userName,
         chat,
-        user: req.user,
+        chats,
         landingPage: false,
       });
     } catch (err) {

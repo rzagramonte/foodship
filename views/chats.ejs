@@ -1,52 +1,87 @@
 <div class="flex-grow-1 py-1">
-    <div class="d-flex justify-content-between px-3 py-2 border-bottom">
-      <span>GROUP CHATS</span>
-      <span class="ms-auto">
-        <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user="<%= user %>">
-          <input hidden type="submit" id="create-chat">
-          <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm"></i>
-          </label>
-        </form>
-      </span>
-    </div>
-    <div class="p-2 pb-0">
-      <% if (chats.length) { %>
-      <ul class="group-chat-list list-unstyled overflow-y-auto">
-        <% for(let i=0; i<chats.length; i++) {%>
-        <div class="p-2">
-          <div class="group d-flex">
-            <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
-              <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
-                <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
-              </li>
-            </a>
-            <form class="x-mark ms-auto mt-3" id="delete-chat-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>" >
-              <input hidden type="submit" id="delete-chat-input-<%= chats[i]._id %>">
-              <label class="nav-link" for="delete-chat-input-<%= chats[i]._id %>"><i class="fa-solid fa-xmark"></i>
-              </label>
-            </form>
-          </div>
-          <div class="member-length fw-normal d-block" data-l-member-count-chat-id="<%= chats[i]._id %>">
-            <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
-          </div>
-        </div>
-        <% } %>
-      </ul>
-      <% } %>
-    </div>
+  <div class="d-flex justify-content-between px-3 py-2 border-bottom">
+    <span>GROUP CHATS</span>
+    <span class="ms-auto">
+      <form class="d-inline-block" id="new-chat" action="/chat/createChat" method="POST" data-user="<%= user %>">
+        <input hidden type="submit" id="create-chat">
+        <label class="nav-link " for="create-chat"><i class="fa-solid fa-plus fa-sm"></i>
+        </label>
+      </form>
+    </span>
   </div>
-  <div class="d-flex text-primary p-2  user-card m-0 w-auto">
-    <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 m-2 rounded" width="32" height="32">
-    <a href="/profile" class="navbar-brand d-flex align-items-center me-auto">
-      <div class="p-1 mb-0 small lh-sm">
-        <strong>@<%=user.userName%></strong>
-        <div class="text-light pt-1">
-          <%= user.userStatus%>
+  <div class="p-2 pb-0">
+    <% if (chats.length) { %>
+    <ul class="group-chat-list list-unstyled overflow-y-auto">
+      <% for(let i=0; i<chats.length; i++) {%>
+      <div class="p-2">
+        <div class="group d-flex">
+          <a class="link-primary link-underline-opacity-0 w-75" href="/messages/<%= chats[i]._id%>">
+            <li class="mt-3 text-truncate card-group-name <%= chats[i].groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" data-chat-id="<%= chats[i]._id %>">
+              <%= chats[i].groupNameSet ? chats[i].groupName : chats[i].members.map((member, j) => member.userName).join(', ') %>
+            </li>
+          </a>
+          <form class="x-mark ms-auto mt-3" id="delete-chat-<%= chats[i]._id %>" action="/chat/deleteChat/<%= chats[i]._id %>?_method=DELETE" method="POST" data-chat-id="<%= chats[i]._id %>">
+            <input hidden type="submit" id="delete-chat-input-<%= chats[i]._id %>">
+            <label class="nav-link" for="delete-chat-input-<%= chats[i]._id %>"><i class="fa-solid fa-xmark"></i>
+            </label>
+          </form>
+        </div>
+        <div class="member-length fw-normal d-block" data-l-member-count-chat-id="<%= chats[i]._id %>">
+          <%=chats[i].members.length%> Member<%= chats[i].members.length == 1 ? '' : 's' %>
         </div>
       </div>
-    </a>
-
-    <a class="m-2 ms-auto" href="/user/<%=user._id%>">
-      <div class="p-2"> <i class="fa-solid fa-gear"></i></div>
-    </a>
+      <% } %>
+    </ul>
+    <% } %>
   </div>
+</div>
+<div class="d-flex  text-primary p-2  user-card m-0 w-auto">
+  <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 m-2 rounded" width="32" height="32">
+  <a href="/profile" class="navbar-brand d-flex align-items-center me-auto">
+    <div class="p-1 mb-0 small lh-sm text-break">
+      <strong>@<%=user.userName%></strong>
+      <div class="text-light pt-1">
+        <%= user.userStatus%>
+      </div>
+    </div>
+  </a>
+
+  <div class="dropup-center dropup">
+    <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="fa-solid fa-gear"></i>
+    </button>
+    <ul class="dropdown-menu btn btn-primary">
+      <li class="d-flex justify-content-center">
+        <a class="nav-link" href="/safety">safety</a>
+      </li>
+      <li class="d-flex justify-content-center">
+        <div data-bs-toggle="modal" data-bs-target="#preferences">
+          preferences
+        </div>
+      </li>
+      <li class="d-flex justify-content-center">
+        <a class="nav-link" href="/logout">logout</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="modal fade" id="preferences" tabindex="-1" aria-labelledby="preferencesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-bottom">
+          <h1 class="modal-title fs-5" id="preferencesLabel">Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="preferences" action="/user/update/<%=userId%>?_method=PATCH" method="POST" data-user-name="<%= userName %>">
+          <div class="modal-body">
+            <%- include('preferences') -%>
+          </div>
+          <div class="modal-footer border-bottom">
+            <button type="button" id="clearAll" class="btn btn-danger">Clear All</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

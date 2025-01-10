@@ -1,27 +1,36 @@
 const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const Message = require("../models/Message");
+const Interest = require("../models/Interest");
+const FoodPreference = require("../models/FoodPreference");
 
 module.exports = {
   //get all messages of a specific chat
   getMessages: async (req, res) => {
-    const { chatId } = req.params;
-    const { id, userName } = req.user;
     try {
+      const user = req.user
+      const { id, userName } = user;
+      const userId = id;
+      const { chatId } = req.params;
       const chat = await Message.find({ chatId }).populate({ path: "senderId", select: "userName" }).sort({ createdAt: "asc" });
-      const group = await Chat.findById(chatId).populate({ path: "members", select: "userName" });
       const chats = await Chat.find({ members: req.user.id }).populate({
         path: "members",
         select: "userName _id preferences",
       });
+      const group = await Chat.findById(chatId).populate({ path: "members", select: "userName" });
+      const foodPreferences = await FoodPreference.find();
+      const interests = await Interest.find();
       res.render("profile.ejs", {
-        group,
-        user: req.user,
-        userName,
-        senderId: id,
         chatId,
         chat,
         chats,
+        foodPreferences,
+        interests,
+        group,
+        user,
+        userId,
+        userName,
+        senderId: id,
         landingPage: false,
       });
     } catch (err) {

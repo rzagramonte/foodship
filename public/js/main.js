@@ -14,11 +14,12 @@ const groupNameForm = document.getElementById("group-name");
 const cardGroupName = document.getElementById("card-group-name");
 const newChatForm = document.getElementById("new-chat");
 const newChatFormOffCanvas = document.getElementById("new-chat-offcanvas");
-const newMemberPreferencesForm = document.getElementById("preferences");
 const deleteForm = document.querySelectorAll(".x-mark");
 const deleteFormOffCanvas = document.querySelectorAll(".x-mark-offcanvas");
 const user = newChatForm?.dataset.user;
 const userOffCanvas = newChatFormOffCanvas?.dataset.user;
+const clearAllButton = document.getElementById('clearAll');
+const clearAllButtonOffCanvas = document.getElementById('clearAll-offcanvas');
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -160,7 +161,7 @@ socket.on("group name", (name, chatId) => {
   if (groupNameDiv.getAttribute("data-chat-id") == chatId && input.getAttribute("data-chat-id") == chatId) {
     groupNameDiv.textContent = name;
     groupNameDiv.classList.replace("groupNameSet-false", "groupNameSet-true");
-    input.placeholder = name;
+    input.placeholder = `Message ${name}`;
     input.classList.replace("groupNameSet-false", "groupNameSet-true");
   }
 });
@@ -293,7 +294,7 @@ const deleteChat = async (e) => {
         "Content-Type": "application/json",
       },
     });
-    
+
     if (!response.ok) throw new Error("Failed to to delete group");
 
     const chat = await response.json();
@@ -390,3 +391,15 @@ socket.on("delete chat", (chat) => {
     chatBox.scrollTo(0, chatBox.scrollHeight);
   }
 });
+
+const clearAll = () => {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+}
+
+clearAllButton.addEventListener('click', clearAll);
+clearAllButtonOffCanvas.addEventListener('click', clearAll);
+
+
