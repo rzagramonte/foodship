@@ -2,7 +2,7 @@ module.exports = {
   //Renders the landing page
   getIndex: (req, res) => {
     if (req.user) return res.redirect("/profile");
-    res.render("index.ejs", { chats: false, landingPage: true , user:req.user });
+    res.render("index.ejs", { chats: false, landingPage: true, user:null });
   },
   //Renders about page
   getAbout: (req, res) => {

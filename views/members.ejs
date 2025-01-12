@@ -1,14 +1,14 @@
 <% if (chat) { %>
 <div class="py-1" >
   <div class="px-3 py-2 d-flex justify-content-between border-bottom">
-    <span class="me-2" data-r-member-count-chat-id="<%= chatId %>">MEMBER<%= group.members.length == 1 ? '' : 'S' %>-<%= group.members.length %></span>
+    <span class="me-2" data-r-member-count-chat-id="<%= chat.chatId %>">MEMBER<%= chat.group.members.length == 1 ? '' : 'S' %>-<%= chat.group.members.length %></span>
   </div>
   <div class="group-chat-list p-2 pb-0 text-primary">
-    <ul class="list-unstyled p-2" data-member-chat-id="<%= chatId %>">
-      <% for(let i=0; i<group.members.length; i++) {%>
+    <ul class="list-unstyled p-2" data-member-chat-id="<%= chat.chatId %>">
+      <% for(let i=0; i<chat.group.members.length; i++) {%>
       
-        <li class="mt-3" data-member-id="<%= group.members[i]._id %>">
-          <%= group.members[i].userName %>
+        <li class="mt-3" data-member-id="<%= chat.group.members[i]._id %>">
+          <%= chat.group.members[i].userName %>
         </li>
       
       <% } %>

@@ -2,42 +2,20 @@ const cloudinary = require("../middleware/cloudinary");
 const Chat = require("../models/Chat");
 const User = require("../models/User");
 const Message = require("../models/Message");
-const Interest = require("../models/Interest");
-const FoodPreference = require("../models/FoodPreference");
 
 module.exports = {
-  getChats: async (req, res) => {
+  getChats: async (req,res) => {
     try {
-      const chats = await Chat.find({ members: req.user.id }).populate({
-        path: "members",
-        select: "userName _id preferences",
-      });
-      const foodPreferences = await FoodPreference.find();
-      const interests = await Interest.find();
-      
-      const { userName } = req.user;
-      const user = req.user;
-      
-      const userId = req.user._id;
-      let chat;
-      res.render("profile.ejs", {
-        foodPreferences,
-        interests,
-        user,
-        userId,
-        userName,
-        chat,
-        chats,
-        landingPage: false,
-      });
+      const chats = await Chat.find({ members: req.user._id }).populate({path: "members", select: "userName _id preferences",});
+      return chats;
     } catch (err) {
       console.log(err);
+      res.status(500).json({ error: "Error getting all user chats", err });
     }
   },
   postChat: (io) => async (req, res) => {
     try {
-      const user = req.user;
-
+      const { user } = req;
       const chatMatch =
         (await Chat.findOne({
           $and: [

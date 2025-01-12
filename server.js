@@ -18,6 +18,7 @@ const connectionRoutes = require("./routes/connections");
 const eventRoutes = require("./routes/events");
 const chatRoutes = require("./routes/chats");
 const messageRoutes = require("./routes/messages");
+const profileRoutes = require("./routes/profile");
 
 //Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -118,6 +119,7 @@ app.use("/connections", connectionRoutes);
 app.use("/events", eventRoutes);
 app.use("/chat", chatRoutes);
 app.use("/messages", messageRoutes);
+app.use("/profile", profileRoutes);
 
 //Server Running
 server.listen(process.env.PORT, () => {

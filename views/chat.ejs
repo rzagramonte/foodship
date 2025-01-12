@@ -1,11 +1,11 @@
 <% if (chat) { %>
 <div class="d-flex  border-bottom border-bottom-xl-0">
   <button class="btn  d-xl-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-groups" aria-controls="offcanvasResponsive"><i class="fa-solid fa-bars"></i></button>
-  <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chatId %>?_method=PATCH" method="POST">
-    <input hidden type="text" name="groupName" id="group-name-input" value="<%= group.groupName || group.members.map(m => m.userName).join(', ') %>" />
+  <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chat.chatId %>?_method=PATCH" method="POST">
+    <input hidden type="text" name="groupName" id="group-name-input" value="<%= chat.group.groupName || chat.group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <div class="text-primary group-name px-4 py-2 m-0 <%= group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chatId %>" contenteditable="true" >
-      <%=group.groupName || group.members.map(m => m.userName).join(', ')%>
+    <div class="text-primary group-name px-4 py-2 m-0 <%= chat.group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chat.chatId %>" contenteditable="true" >
+      <%=chat.group.groupName || chat.group.members.map(m => m.userName).join(', ')%>
     </div>
   </form>
 
@@ -18,15 +18,12 @@
           <h1 class="modal-title fs-5" id="new-calender-eventLabel">Create a New Event</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="calendar" action="/events/createEvent" method="POST" data-user-name="<%= userName %>">
+        <form id="calendar" action="/events/createEvent" method="POST" data-user-name="<%= user.userName %>">
         <div class="modal-body">
-          
-
           <input class="form-control"
             type="datetime-local"
-            id="meeting-time"
-            name="meeting-time"
-            
+            id="event-time"
+            name="event-time"
              />
         </div>
         <div class="modal-footer">
@@ -58,34 +55,34 @@
   
   <button class="btn  d-xl-none " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
 </div>
-<div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chatId %>">
+<div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chat.chatId %>">
   <ul id="messages" class="messages list-unstyled px-5 py-4">
-    <% for(let i=0; i<chat.length; i++) {%>
-    <% if(chat[i].senderId) { %>
+    <% for(let i=0; i<chat.messages.length; i++) {%>
+    <% if(chat.messages[i].senderId) { %>
     <li class="content text-wrap text-break mb-2 fw-light">
       <div>
-        <span class="userName text-primary <%= chat[i].senderId._id %>"><%=chat[i].senderId?.userName%></span>
-        <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+        <span class="userName text-primary <%= chat.messages[i].senderId._id %>"><%=chat.messages[i].senderId?.userName%></span>
+        <span class="createdAt"><%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
       </div>
-      <% if(chat[i].content) { %>
-      <%=chat[i].content%>
+      <% if(chat.messages[i].content) { %>
+      <%=chat.messages[i].content%>
       <% } else { %>
-      <img class="message-image" src="<%= chat[i].image %>" alt="User uploaded image">
+      <img class="message-image" src="<%= chat.messages[i].image %>" alt="User uploaded image">
       <% } %>
     </li>
     <% } else { %>
     <li class="content text-wrap text-break mb-2 fw-light">
-      <i class="fa-solid fa-arrow-<%= chat[i].content.includes('joined') ? 'right' : 'left' %> "></i>
+      <i class="fa-solid fa-arrow-<%= chat.messages[i].content.includes('joined') ? 'right' : 'left' %> "></i>
       <span class="text-primary">
-        <%= chat[i].content %>
+        <%= chat.messages[i].content %>
       </span>
-      <span class="createdAt"><%=new Date(chat[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+      <span class="createdAt"><%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
     </li>
     <% } %>
     <% } %>
   </ul>
 </div>
-<form id="form" class="mb-2 px-3" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chatId %>" data-sender-id="<%= senderId %>" data-user-name="<%= userName %>">
+<form id="form" class="mb-2 px-3" action="/messages/send" enctype="multipart/form-data" method="POST" data-chat-id="<%= chat.chatId %>" data-sender-id="<%= chat.senderId %>" data-user-name="<%= user.userName %>">
   <div class="input-group">
     <div class="dropup">
       <button class="btn btn-secondary rounded-end-0 border border-end-0 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -97,7 +94,7 @@
         </li>
       </ul>
     </div>
-    <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light <%= group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" placeholder="Message <%= group.groupNameSet ? group.groupName : group.members.map((member, j) => member.userName).join(', ') %>" data-chat-id="<%= chatId %>" />
+    <input id="input" autocomplete="off" type="text" name="content" class="form-control fw-light <%= chat.group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" placeholder="Message <%= chat.group.groupNameSet ? chat.group.groupName : chat.group.members.map((member, j) => member.userName).join(', ') %>" data-chat-id="<%= chat.chatId %>" />
     <button type="submit" class="btn btn-primary">Send</button>
   </div>
 </form>
