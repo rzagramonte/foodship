@@ -4,12 +4,11 @@ const User = require("../models/User");
 const Chat = require("../models/Chat");
 
 module.exports = {
-  getUser: async (req,res) => {
-    try{
+  getUser: async (req, res) => {
+    try {
       const user = await User.findById(req.user._id);
-
       return user;
-    }catch(err){
+    } catch (err) {
       console.log("Error fetching user:", err);
       res.status(500).send("Server error. Please try again later.");
     }
@@ -17,7 +16,7 @@ module.exports = {
   getFoodPreferences: async (req, res) => {
     try {
       const foodPreferences = await FoodPreference.find();
-      return foodPreferences.map(e=>e.foodPreference);
+      return foodPreferences.map((e) => e.foodPreference);
     } catch (err) {
       console.log("Error fetching preferences:", err);
       res.status(500).send("Server error. Please try again later.");
@@ -26,7 +25,7 @@ module.exports = {
   getInterest: async (req, res) => {
     try {
       const interests = await Interest.find();
-      return interests.map(e=>e.interest);
+      return interests.map((e) => e.interest);
     } catch (err) {
       console.log("Error fetching preferences:", err);
       res.status(500).send("Server error. Please try again later.");

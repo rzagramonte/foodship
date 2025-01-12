@@ -2,7 +2,6 @@ const Event = require("../models/Event");
 
 module.exports = {
   getEvents: async (req, res) => {
-    console.log(req.user);
     try {
       const events = await Event.find({ ground: req.group.id });
       res.render("events.ejs", {
@@ -38,19 +37,10 @@ module.exports = {
     try {
       const { eventId } = req.params;
       const { newDate, newLocation } = req.body;
-
-      // Create an update object dynamically
       const updateFields = {};
       if (newDate) updateFields.date = newDate;
       if (newLocation) updateFields.location = newLocation;
-
-      // Update the event with the new date and/or location
-      await Event.findByIdAndUpdate(
-        { _id: eventId },
-        { $set: updateFields },
-        { new: true }
-      );
-
+      await Event.findByIdAndUpdate({ _id: eventId }, { $set: updateFields }, { new: true });
       console.log("Event updated successfully!");
       res.redirect(`/event/${eventId}`);
     } catch (err) {
@@ -60,7 +50,6 @@ module.exports = {
   },
   deleteEvent: async (req, res) => {
     try {
-      // Delete event by id
       await Event.findByIdAndDelete(req.params.id);
       console.log("Deleted Event");
       res.redirect(`/chat/${req.params.chatId}`);

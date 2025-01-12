@@ -4,9 +4,9 @@ const User = require("../models/User");
 const Message = require("../models/Message");
 
 module.exports = {
-  getChats: async (req,res) => {
+  getChats: async (req, res) => {
     try {
-      const chats = await Chat.find({ members: req.user._id }).populate({path: "members", select: "userName _id preferences",});
+      const chats = await Chat.find({ members: req.user._id }).populate({ path: "members", select: "userName _id preferences" });
       return chats;
     } catch (err) {
       console.log(err);
@@ -55,7 +55,6 @@ module.exports = {
     try {
       const chatId = req.params.id;
       const { groupName } = req.body;
-      //console.log(groupName)
       await Chat.findByIdAndUpdate(chatId, { groupName, groupNameSet: true }, { new: true }); // Find the group and update the name
       console.log("Group name has been updated!");
       res.status(201).json(groupName);
@@ -86,7 +85,6 @@ module.exports = {
       const { user } = req;
       const chat = await Chat.findById(chatId);
       const chatLength = chat.members.length;
-
       if (chatLength && chatLength > 1) {
         const deletedChat = await Chat.findByIdAndUpdate(chatId, {
           $pull: { members: user._id },

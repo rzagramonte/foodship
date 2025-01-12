@@ -14,10 +14,8 @@ exports.getLogin = (req, res) => {
 
 exports.postLogin = (req, res, next) => {
   const validationErrors = [];
-  if (!validator.isEmail(req.body.email))
-    validationErrors.push({ msg: "Please enter a valid email address." });
-  if (validator.isEmpty(req.body.password))
-    validationErrors.push({ msg: "Password cannot be blank." });
+  if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: "Please enter a valid email address." });
+  if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: "Password cannot be blank." });
   console.log(req.body.email);
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
@@ -78,14 +76,12 @@ exports.getSignup = (req, res) => {
 exports.postSignup = async (req, res, next) => {
   try {
     const validationErrors = [];
-    if (!validator.isEmail(req.body.email))
-      validationErrors.push({ msg: "Please enter a valid email address." });
+    if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: "Please enter a valid email address." });
     if (!validator.isLength(req.body.password, { min: 8 }))
       validationErrors.push({
         msg: "Password must be at least 8 characters long",
       });
-    if (req.body.password !== req.body.confirmPassword)
-      validationErrors.push({ msg: "Passwords do not match" });
+    if (req.body.password !== req.body.confirmPassword) validationErrors.push({ msg: "Passwords do not match" });
 
     if (validationErrors.length) {
       req.flash("errors", validationErrors);

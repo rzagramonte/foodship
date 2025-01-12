@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const connectionsController = require("../controllers/connections");
 const { ensureAuth } = require("../middleware/auth");
+const { getConnection } = require("../controllers/connections");
 
 //Connections Route
-router.get("/connections", ensureAuth, connectionsController.getConnection);
+router.get("/connections", ensureAuth, getConnection);
 
 module.exports = router;

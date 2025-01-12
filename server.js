@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const MongoStore = require("connect-mongo");
@@ -72,25 +71,25 @@ io.on("connection", (socket) => {
 
   // Listen for the message and broadcast to the specific chat room
   socket.on("chat message", (msg, chatId) => {
-    // Emit the message to the specific room (chatId)
+    // Emit the message and chatId
     io.emit("chat message", msg, chatId);
     console.log(`Message sent to chat room: ${chatId}`);
   });
 
   socket.on("group name", (name, chatId) => {
-    // Emit the message to the specific room (chatId)
+    // Emit the group name and chatId
     io.emit("group name", name, chatId);
     console.log(`Group name updated for chat room: ${chatId}`);
   });
 
   socket.on("new member", (member) => {
-    // Emit the message to the specific room (chatId)
+    // Emit the new member
     io.emit("new member", member); // Broadcast join message
     console.log(`New member`);
   });
 
   socket.on("delete chat", (chat) => {
-    // Emit the message to the specific room (chatId)
+    // Emit the deleted chat room
     socket.broadcast.emit("delete chat", chat); // Broadcast join message
     //io.emit("delete chat", chat);
     console.log(`Chat deleted`);

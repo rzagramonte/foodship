@@ -18,8 +18,8 @@ const deleteForm = document.querySelectorAll(".x-mark");
 const deleteFormOffCanvas = document.querySelectorAll(".x-mark-offcanvas");
 const user = newChatForm?.dataset.user;
 const userOffCanvas = newChatFormOffCanvas?.dataset.user;
-const clearAllButton = document.getElementById('clearAll');
-const clearAllButtonOffCanvas = document.getElementById('clearAll-offcanvas');
+const clearAllButton = document.getElementById("clearAll");
+const clearAllButtonOffCanvas = document.getElementById("clearAll-offcanvas");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -397,9 +397,7 @@ const clearAll = () => {
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
   });
-}
+};
 
-clearAllButton.addEventListener('click', clearAll);
-clearAllButtonOffCanvas.addEventListener('click', clearAll);
-
-
+clearAllButton.addEventListener("click", clearAll);
+clearAllButtonOffCanvas.addEventListener("click", clearAll);

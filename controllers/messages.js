@@ -3,10 +3,9 @@ const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 module.exports = {
-  //get all messages of a specific chat
   getMessages: async (req, res) => {
     try {
-      const { user } = req
+      const { user } = req;
       const { id, userName } = user;
       const userId = id;
       const { chatId } = req.params;
