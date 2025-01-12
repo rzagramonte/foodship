@@ -3,8 +3,8 @@
     <div class="m-2">
       <% for(let i=0; i<foodPreferences.length; i++) {%>
       <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
-        <input <%= user.preferences.foodPreferences.includes(foodPreferences[i].foodPreference) ? 'checked' : '' %> type="checkbox" class="btn-check fs-5" id="btncheck<%=i%>" name="foodPreferences" value="<%= foodPreferences[i].foodPreference %>">
-        <label class="btn btn-outline-light" for="btncheck<%=i%>"><%=foodPreferences[i].foodPreference%></label>
+        <input <%= user.preferences.foodPreferences.includes(foodPreferences[i]) ? 'checked' : '' %> type="checkbox" class="btn-check fs-5" id="btncheck<%=i%>" name="foodPreferences" value="<%= foodPreferences[i] %>">
+        <label class="btn btn-outline-light" for="btncheck<%=i%>"><%=foodPreferences[i]%></label>
       </div>
       <% } %>
     </div>
@@ -12,8 +12,8 @@
     <div class="m-2">
       <% for(let i=0; i<interests.length; i++) {%>
       <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
-        <input <%= user.preferences.interests.includes(interests[i].interest) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" name="interests" value="<%= interests[i].interest %>">
-        <label class="btn btn-outline-light" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i].interest%></label>
+        <input <%= user.preferences.interests.includes(interests[i]) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck<%=i+foodPreferences.length%>" name="interests" value="<%= interests[i] %>">
+        <label class="btn btn-outline-light" for="btncheck<%=i+foodPreferences.length%>"><%=interests[i]%></label>
       </div>
       <% } %>
     </div>

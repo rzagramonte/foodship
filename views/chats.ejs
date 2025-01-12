@@ -72,7 +72,7 @@
           <h1 class="modal-title fs-5" id="preferencesLabel">Preferences</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="preferences" action="/user/update/<%=chats.userId%>?_method=PATCH" method="POST" data-user-name="<%= chats.userName %>">
+        <form id="preferences" action="/user/update/<%=user._id%>?_method=PATCH" method="POST" data-user-name="<%= user.userName %>">
           <div class="modal-body">
             <%- include('preferences') -%>
           </div>
