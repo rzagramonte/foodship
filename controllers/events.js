@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const Restaurant = require("../models/Restaurant");
 
 module.exports = {
   getEvents: async (req, res) => {
@@ -21,14 +22,31 @@ module.exports = {
       console.log(err);
     }
   },
-  postEvent: async (req, res) => {
+  postEvent: (io) => async (req, res) => {
     try {
-      await Event.create({
+      const { user } = req;
+      const restaurant = await Restaurant.findOne({
+        foodPreferences: { $in: user.preferences.foodPreferences },
+      });
+      const event = await Event.create({
+        restaurant,
         date: req.body.date,
-        location: result.secure_url,
+      });
+      const systemMessage = await Message.create({
+        chatId: req.chat._id,
+        content: `${user.userName} created event: ${event}.`,
+        contentType: "text",
+      });
+
+      await Chat.findByIdAndUpdate(req.chat._id, {
+        $push: { events: event._id },
+        $push: { messages: systemMessage._id },
+      });
+      await User.findByIdAndUpdate(user._id, {
+        $push: { events: event._id },
       });
       console.log("Event has been created!");
-      res.redirect(`/chat/${chatId}`);
+      res.status(201).json({ restaurant, event, systemMessage, user: req.user });
     } catch (err) {
       console.log(err);
     }

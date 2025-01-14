@@ -22,13 +22,13 @@
         <div class="modal-body">
           <input class="form-control"
             type="datetime-local"
-            id="event-time"
-            name="event-time"
+            id="event-date"
+            name="event-date"
              />
         </div>
         <div class="modal-footer">
-          <button type="button" id="seeAllEvents" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
-          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" id="see-all-events" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
+          <button type="submit" id="create-event" class="btn btn-primary">Save</button>
         </div>
       </form>
       </div>
@@ -39,6 +39,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="see-all-calender-eventsLabel2">Calendar Events</h1>
+          <div>
+            <ul class="events">
+              <% for(let i=0; i<chat.messages.length; i++) {%>
+              <li></li>
+              <% } %>
+            </ul>
+          </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

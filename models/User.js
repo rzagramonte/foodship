@@ -22,6 +22,7 @@ const UserSchema = new mongoose.Schema({
     state: { type: String },
     zip: { type: Number }},
   chatIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
 });
 
 // Password hash middleware.

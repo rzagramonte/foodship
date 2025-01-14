@@ -20,6 +20,9 @@ const user = newChatForm?.dataset.user;
 const userOffCanvas = newChatFormOffCanvas?.dataset.user;
 const clearAllButton = document.getElementById("clearAll");
 const clearAllButtonOffCanvas = document.getElementById("clearAll-offcanvas");
+const newEventForm = document.getElementById("new-event");
+const userEvent = newEventForm?.dataset.user;
+const eventDate = document.getElementById("event-date");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -389,6 +392,55 @@ socket.on("delete chat", (chat) => {
 
     const chatBox = document.getElementById("chat-box");
     chatBox.scrollTo(0, chatBox.scrollHeight);
+  }
+});
+
+newEventForm?.addEventListener('submit', async(e)=>{
+  e.preventDefault();
+
+  try {
+
+    const response = await fetch(`/events/createEvent`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ date: eventDate.value }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update group name");
+
+    const event = await response.json();
+    socket.emit("new event", event, chatId);
+
+    console.log("User created event!");
+  } catch (error) {
+    console.error("Failed to update group name: ", error);
+  }
+})
+
+socket.on("new event", (event) => {
+  const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
+  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chatId}"]`);
+  const groupNameDiv = document.querySelector(`div[data-chat-id="${chatId}"]`);
+  const input = document.querySelector(`input[data-chat-id="${chatId}"]`);
+
+  if (liElement) {
+    liElement.textContent = name;
+    liElement.classList.replace("groupNameSet-false", "groupNameSet-true");
+  }
+  console.log();
+
+  if (liElementOffCanvas) {
+    liElementOffCanvas.textContent = name;
+    liElementOffCanvas.classList.replace("groupNameSet-false", "groupNameSet-true");
+  }
+
+  if (groupNameDiv.getAttribute("data-chat-id") == chatId && input.getAttribute("data-chat-id") == chatId) {
+    groupNameDiv.textContent = name;
+    groupNameDiv.classList.replace("groupNameSet-false", "groupNameSet-true");
+    input.placeholder = `Message ${name}`;
+    input.classList.replace("groupNameSet-false", "groupNameSet-true");
   }
 });
 

@@ -6,7 +6,8 @@ const { getEvents, getEvent, postEvent, patchEvent, deleteEvent } = require("../
 //Events routes
 router.get("/", ensureAuth, getEvents);
 router.get("/:id", ensureAuth, getEvent);
-router.post("/createEvent", postEvent);
+router.post("/createEvent", ensureAuth, (req, res) => {
+    postEvent(req.app.get("io"))(req, res)}); // Pass io to postEvent);
 router.patch("/updateEvent/:id", patchEvent);
 router.delete("/deleteEvent/:id", deleteEvent);
 

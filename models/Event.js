@@ -5,15 +5,11 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
-  participants: [{
+  restaurant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  }],
-  chat: {
+    ref: "Restaurant", 
+  },
+  chatId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Chat", 
   },
