@@ -1,4 +1,5 @@
 const socket = io();
+const year = document.getElementById("copyright");
 const form = document.getElementById("form");
 const chatId = form?.dataset.chatId;
 const senderId = form?.dataset.senderId;
@@ -23,6 +24,10 @@ const clearAllButtonOffCanvas = document.getElementById("clearAll-offcanvas");
 const newEventForm = document.getElementById("calendar");
 const userEvent = newEventForm?.dataset.user;
 const eventDate = document.getElementById("date");
+
+if(year) year.innerText = year.innerText.replace(/\d{4}/g, `${new Date().toLocaleString(undefined, {
+  year: "numeric"
+})}`) ;
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
