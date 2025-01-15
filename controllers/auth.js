@@ -108,7 +108,7 @@ module.exports = {
   
       req.logIn(savedUser, (err) => {
         if (err) return next(err);
-        if (savedUser) res.redirect(req.session.returnTo || `user/${user._id}`);
+        if (savedUser) res.redirect(req.session.returnTo || "/profile");
       });
     } catch (err) {
       console.log(err);
