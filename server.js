@@ -88,7 +88,7 @@ io.on("connection", (socket) => {
     console.log(`New member`);
   });
 
-  socket.on("new event", (event) => {
+  socket.on("new event", (event, chatId) => {
     // Emit the new member
     io.emit("new event", event, chatId); // Broadcast join message
     console.log(`New event`);

@@ -186,6 +186,10 @@ i {
   color: #dc143c;
 }
 
+.fa-calendar-check{
+color: #85edbe
+}
+
 .x-mark,
 .x-mark-offcanvas {
   display: none; /* Initially hide the .xmark */
@@ -199,6 +203,10 @@ i {
 
 .group-name {
   padding: 0.5em 1em !important;
+}
+
+.message-content {
+  padding: 0 2.2em !important;
 }
 
 .border-bottom {

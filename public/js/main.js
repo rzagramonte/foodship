@@ -20,9 +20,9 @@ const user = newChatForm?.dataset.user;
 const userOffCanvas = newChatFormOffCanvas?.dataset.user;
 const clearAllButton = document.getElementById("clearAll");
 const clearAllButtonOffCanvas = document.getElementById("clearAll-offcanvas");
-const newEventForm = document.getElementById("new-event");
+const newEventForm = document.getElementById("calendar");
 const userEvent = newEventForm?.dataset.user;
-const eventDate = document.getElementById("event-date");
+const eventDate = document.getElementById("date");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -76,9 +76,11 @@ socket.on("chat message", (msg, chatId) => {
   const divElement = document.querySelector(`div[data-chat-id="${chatId}"]`);
   if (divElement) {
     const message = document.createElement("li");
-    const div = document.createElement("div");
+    const icon = document.createElement("i");
+    const messageHeader = document.createElement("div");
     const userName = document.createElement("span");
     const createdAt = document.createElement("span");
+    const content = document.createElement("div");
 
     if (msg.contentType === "image") {
       const img = document.createElement("img");
@@ -89,11 +91,12 @@ socket.on("chat message", (msg, chatId) => {
         img.className = `message-image ${img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"}`;
         message.style.display = "block";
       };
-      message.appendChild(img);
+      content.appendChild(img);
     } else {
-      message.textContent = msg.content;
+      content.textContent = ` ${msg.content} `;
     }
-    userName.textContent = `${msg.senderId.userName} `;
+    icon.className = "px-2 fa-solid fa-user";
+    userName.textContent = ` ${msg.senderId.userName} `;
     userName.className = "userName text-primary";
     createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
       year: "numeric",
@@ -104,10 +107,15 @@ socket.on("chat message", (msg, chatId) => {
     })}`;
     createdAt.className = "createdAt";
     message.className = "content text-wrap text-break mb-2 fw-light";
+    messageHeader.className = "message-header";
+    content.className = "message-content";
 
-    div.appendChild(userName);
-    div.appendChild(createdAt);
-    message.prepend(div);
+    message.appendChild(messageHeader);
+    messageHeader.appendChild(icon);
+    messageHeader.appendChild(userName);
+    messageHeader.appendChild(createdAt);
+    message.appendChild(content);
+  
     messages.appendChild(message);
 
     const chatBox = document.getElementById("chat-box");
@@ -265,8 +273,8 @@ socket.on("new member", (member) => {
     memberLi.setAttribute("data-member-id", `${member.userId}`);
     memberLiOffCanvas.setAttribute("data-member-offcanvas-id", `${member.userId}`);
 
-    message.className = "content text-wrap text-break mb-2 fw-light";
-    icon.className = "fa-solid fa-arrow-right";
+    message.className = "content text-wrap text-break mb-3 fw-light";
+    icon.className = "px-2 fa-solid fa-arrow-right";
     icon.style.color = "#4ED7D9";
     content.className = "text-primary";
     createdAt.className = "createdAt";
@@ -378,7 +386,7 @@ socket.on("delete chat", (chat) => {
     })} `;
 
     message.className = "content text-wrap text-break mb-2 fw-light";
-    icon.className = "fa-solid fa-arrow-left";
+    icon.className = "px-2 fa-solid fa-arrow-left";
     icon.style.color = "#dc143c";
     content.className = "text-primary";
     createdAt.className = "createdAt";
@@ -395,17 +403,19 @@ socket.on("delete chat", (chat) => {
   }
 });
 
-newEventForm?.addEventListener('submit', async(e)=>{
+newEventForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   try {
+    const chatId = newEventForm?.dataset.chatId;
+    const eventModal = document.getElementById("new-calender-event-close");
 
     const response = await fetch(`/events/createEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ date: eventDate.value }),
+      body: JSON.stringify({ date: eventDate.value, chatId }),
     });
 
     if (!response.ok) throw new Error("Failed to update group name");
@@ -413,35 +423,42 @@ newEventForm?.addEventListener('submit', async(e)=>{
     const event = await response.json();
     socket.emit("new event", event, chatId);
 
+    eventModal.click(); 
+
     console.log("User created event!");
   } catch (error) {
-    console.error("Failed to update group name: ", error);
+    console.error("Failed to create new event: ", error);
   }
-})
+});
 
-socket.on("new event", (event) => {
-  const liElement = document.querySelector(`li[data-chat-id="${chatId}"]`);
-  const liElementOffCanvas = document.querySelector(`li[data-chat-id-offcanvas="${chatId}"]`);
-  const groupNameDiv = document.querySelector(`div[data-chat-id="${chatId}"]`);
-  const input = document.querySelector(`input[data-chat-id="${chatId}"]`);
+socket.on("new event", (event, chatId) => {
+  const message = document.createElement("li");
+  const icon = document.createElement("i");
+  const content = document.createElement("span");
+  const createdAt = document.createElement("span");
 
-  if (liElement) {
-    liElement.textContent = name;
-    liElement.classList.replace("groupNameSet-false", "groupNameSet-true");
-  }
-  console.log();
+  content.innerText = ` ${event.systemMessage.content} `;
+  createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })} `;
 
-  if (liElementOffCanvas) {
-    liElementOffCanvas.textContent = name;
-    liElementOffCanvas.classList.replace("groupNameSet-false", "groupNameSet-true");
-  }
+  message.className = "content text-wrap text-break mb-2 fw-light";
+  icon.className = "px-2 fa-solid fa-calendar-check";
+  icon.style.color = "#85edbe";
+  content.className = "text-primary";
+  createdAt.className = "createdAt";
 
-  if (groupNameDiv.getAttribute("data-chat-id") == chatId && input.getAttribute("data-chat-id") == chatId) {
-    groupNameDiv.textContent = name;
-    groupNameDiv.classList.replace("groupNameSet-false", "groupNameSet-true");
-    input.placeholder = `Message ${name}`;
-    input.classList.replace("groupNameSet-false", "groupNameSet-true");
-  }
+  message.appendChild(icon);
+  message.appendChild(content);
+  message.appendChild(createdAt);
+  messages.appendChild(message);
+
+  const chatBox = document.getElementById("chat-box");
+  chatBox.scrollTo(0, chatBox.scrollHeight);
 });
 
 const clearAll = () => {

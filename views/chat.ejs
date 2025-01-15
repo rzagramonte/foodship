@@ -4,8 +4,8 @@
   <form class="border-bottom-0 border-bottom-xl my-0" id="group-name" action="/chat/updateGroupName/<%= chat.chatId %>?_method=PATCH" method="POST">
     <input hidden type="text" name="groupName" id="group-name-input" value="<%= chat.group.groupName || chat.group.members.map(m => m.userName).join(', ') %>" />
     <input hidden type="submit" id="update-group-name">
-    <div class="text-primary group-name px-4 py-2 m-0 <%= chat.group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chat.chatId %>" contenteditable="true" >
-      <%=chat.group.groupName || chat.group.members.map(m => m.userName).join(', ')%>
+    <div class="text-primary group-name px-4 py-2 m-0 <%= chat.group.groupNameSet ? 'groupNameSet-true' : 'groupNameSet-false' %>" id="group-name-div" data-chat-id="<%= chat.chatId %>" contenteditable="true">
+      <%=chat.group.groupName || chat.group.members.map(m=> m.userName).join(', ')%>
     </div>
   </form>
 
@@ -16,21 +16,17 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="new-calender-eventLabel">Create a New Event</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" id="new-calender-event-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form id="calendar" action="/events/createEvent" method="POST" data-user-name="<%= user.userName %>">
-        <div class="modal-body">
-          <input class="form-control"
-            type="datetime-local"
-            id="event-date"
-            name="event-date"
-             />
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="see-all-events" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
-          <button type="submit" id="create-event" class="btn btn-primary">Save</button>
-        </div>
-      </form>
+        <form id="calendar" action="/events/createEvent" method="POST" data-chat-id="<%= chat.chatId %>">
+          <div class="modal-body">
+            <input class="form-control" type="datetime-local" id="date" name="date" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="see-all-events" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
+            <button type="submit" id="create-event" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -39,17 +35,19 @@
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="see-all-calender-eventsLabel2">Calendar Events</h1>
-          <div>
-            <ul class="events">
-              <% for(let i=0; i<chat.messages.length; i++) {%>
-              <li></li>
-              <% } %>
-            </ul>
-          </div>
+
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-
+          <div>
+            <ul class="events">
+              <% for(let i=0; i<events.length; i++) {%>
+              <li>
+                <%=events[i]%>
+              </li>
+              <% } %>
+            </ul>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary" data-bs-target="#new-calender-event" data-bs-toggle="modal">Back</button>
@@ -58,32 +56,48 @@
     </div>
   </div>
 
-
-  
-  <button class="btn  d-xl-none " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
+  <button class="btn d-xl-none " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasResponsive-members" aria-controls="offcanvasResponsive"><i class="fa-solid fa-user-group"></i></button>
 </div>
-<div class="chat-box containerp-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chat.chatId %>">
+<div class="chat-box container p-2 pb-0 overflow-x-hidden overflow-y-auto" id="chat-box" data-chat-id="<%= chat.chatId %>">
   <ul id="messages" class="messages list-unstyled px-5 py-4">
     <% for(let i=0; i<chat.messages.length; i++) {%>
     <% if(chat.messages[i].senderId) { %>
-    <li class="content text-wrap text-break mb-2 fw-light">
-      <div>
-        <span class="userName text-primary <%= chat.messages[i].senderId._id %>"><%=chat.messages[i].senderId?.userName%></span>
-        <span class="createdAt"><%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+    <li class="content text-wrap text-break mb-2 fw-light ">
+      <div class="message-header">
+        <% if (chat.messages[i].senderId.profilePic) { %>
+        <img src="<%= chat.messages[i].senderId.profilePic %>" alt="User Profile" class="px-2 rounded" width="32" height="32">
+        <% } else { %>
+        <i class="px-2 fa-solid fa-user"></i>
+        <% } %>
+        <span class="userName text-primary">
+          <%=chat.messages[i].senderId?.userName%>
+        </span>
+        <span class="createdAt">
+          <%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' , hour: 'numeric', minute: 'numeric' }) %>
+        </span>
       </div>
-      <% if(chat.messages[i].content) { %>
-      <%=chat.messages[i].content%>
-      <% } else { %>
-      <img class="message-image" src="<%= chat.messages[i].image %>" alt="User uploaded image">
-      <% } %>
+      <div class="message-content">
+        <% if(chat.messages[i].content) { %>
+        <%=chat.messages[i].content%>
+        <% } else { %>
+        <img class="message-image" src="<%= chat.messages[i].image %>" alt="User uploaded image">
+        <% } %>
+      </div>
     </li>
     <% } else { %>
     <li class="content text-wrap text-break mb-2 fw-light">
-      <i class="fa-solid fa-arrow-<%= chat.messages[i].content.includes('joined') ? 'right' : 'left' %> "></i>
-      <span class="text-primary">
-        <%= chat.messages[i].content %>
+      <span>
+        <i class="px-2 fa-solid fa-<%= chat.messages[i].content.includes('event') ? 'calendar-check' : chat.messages[i].content.includes('joined') ? 'arrow-right' : 'arrow-left'%>"></i>
       </span>
-      <span class="createdAt"><%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) %></span>
+      <span class="userName text-primary">
+        <%=chat.messages[i].content.split(" ")[0]%>
+      </span>
+      <span>
+        <%= chat.messages[i].content.split(" ").slice(1).join(" ")%>
+      </span>
+      <span class="createdAt">
+        <%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric' , month: 'numeric', day: 'numeric' , hour: 'numeric' , minute: 'numeric' }) %>
+      </span>
     </li>
     <% } %>
     <% } %>
@@ -97,7 +111,7 @@
       </button>
       <ul class="dropdown-menu chat-file-upload p-0">
         <li class="input-group">
-            <input type="file" name="file" class="form-control" id="fileInput">
+          <input type="file" name="file" class="form-control" id="fileInput">
         </li>
       </ul>
     </div>

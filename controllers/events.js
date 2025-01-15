@@ -1,23 +1,22 @@
 const Event = require("../models/Event");
 const Restaurant = require("../models/Restaurant");
+const Message = require("../models/Message");
+const Chat = require("../models/Chat");
+const User = require("../models/User");
 
 module.exports = {
   getEvents: async (req, res) => {
     try {
-      const events = await Event.find({ ground: req.group.id });
-      res.render("events.ejs", {
-        user: req.user,
-        events: events,
-        group: req.group,
-      });
+      const events = await Event.find({ chatId: req.params.chatId });
+      return events;
     } catch (err) {
       console.log(err);
     }
   },
   getEvent: async (req, res) => {
     try {
-      const event = await Event.findById(req.params.id);
-      res.render("event.ejs", { event: event, user: req.user });
+      const event = await Event.findById(req.params.chatId);
+      return event;
     } catch (err) {
       console.log(err);
     }
@@ -25,20 +24,35 @@ module.exports = {
   postEvent: (io) => async (req, res) => {
     try {
       const { user } = req;
-      const restaurant = await Restaurant.findOne({
+      const { chatId, date } = req.body;
+      console.log(req.body);
+
+      const foodPreference = await Restaurant.findOne({
         foodPreferences: { $in: user.preferences.foodPreferences },
+      });
+      const i = myArray[Math.floor(Math.random() * myArray.length)];
+      const restaurant = await Restaurant.findOne({
+        foodPreferences: { $in: foodPreference },
       });
       const event = await Event.create({
         restaurant,
-        date: req.body.date,
+        date,
       });
       const systemMessage = await Message.create({
-        chatId: req.chat._id,
-        content: `${user.userName} created event: ${event}.`,
+        chatId,
+        content: `${user.userName} created an event for ${new Date(event.date).toLocaleString(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "long",
+          hour: "numeric",
+          minute: "numeric",
+        })} at ${event.restaurant}.`,
+
         contentType: "text",
       });
 
-      await Chat.findByIdAndUpdate(req.chat._id, {
+      await Chat.findByIdAndUpdate(chatId, {
         $push: { events: event._id },
         $push: { messages: systemMessage._id },
       });
@@ -46,7 +60,7 @@ module.exports = {
         $push: { events: event._id },
       });
       console.log("Event has been created!");
-      res.status(201).json({ restaurant, event, systemMessage, user: req.user });
+      res.status(201).json({ restaurant, event, systemMessage, user });
     } catch (err) {
       console.log(err);
     }

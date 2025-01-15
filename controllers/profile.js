@@ -1,7 +1,7 @@
 const { getChats } = require("./chats");
 const { getMessages } = require("./messages");
 const { getUser, getFoodPreferences, getInterest } = require("./users");
-const { getEvents, getEvent } = require("./events");
+const { getEvents } = require("./events");
 
 const fetchProfileData = async (req, res) => {
   const [chats, foodPreferences, interests, user] = await Promise.all([getChats(req, res), getFoodPreferences(req, res), getInterest(req, res), getUser(req, res)]);
@@ -23,11 +23,10 @@ module.exports = {
 
   getMessages: async (req, res) => {
     try {
-      const [profileData, chat, events, event] = await Promise.all([fetchProfileData(req, res), getMessages(req, res),  getEvents(req,res), getEvent(req,res)]);
+      const [profileData, chat, events] = await Promise.all([fetchProfileData(req, res), getMessages(req, res), getEvents(req,res)]);
       const profile = {
         ...profileData,
         chat,
-        event,
         events,
         landingPage: false,
       };

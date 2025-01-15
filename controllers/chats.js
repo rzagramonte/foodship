@@ -56,6 +56,8 @@ module.exports = {
       const chatId = req.params.id;
       const { groupName } = req.body;
       await Chat.findByIdAndUpdate(chatId, { groupName, groupNameSet: true }, { new: true }); // Find the group and update the name
+//brian changed the channel name: Group Night 9/15/22 — 9/15/22, 8:42 PM
+
       console.log("Group name has been updated!");
       res.status(201).json(groupName);
     } catch (err) {
