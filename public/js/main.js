@@ -24,12 +24,21 @@ const clearAllButtonOffCanvas = document.getElementById("clearAll-offcanvas");
 const newEventForm = document.getElementById("calendar");
 const userEvent = newEventForm?.dataset.user;
 const eventDate = document.getElementById("date");
+const createdAt = document.querySelectorAll(".createdAt");
+
+chatBox?.scrollTo(0, chatBox.scrollHeight);
+
+createdAt?.forEach(e=>e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+})}`);
 
 if(year) year.innerText = year.innerText.replace(/\d{4}/g, `${new Date().toLocaleString(undefined, {
   year: "numeric"
 })}`) ;
-
-chatBox?.scrollTo(0, chatBox.scrollHeight);
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
