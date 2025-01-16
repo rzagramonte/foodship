@@ -28,14 +28,6 @@ const createdAt = document.querySelectorAll(".createdAt");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
-createdAt?.forEach(e=>e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-})}`);
-
 if(year) year.innerText = year.innerText.replace(/\d{4}/g, `${new Date().toLocaleString(undefined, {
   year: "numeric"
 })}`) ;
@@ -484,3 +476,11 @@ const clearAll = () => {
 
 clearAllButton.addEventListener("click", clearAll);
 clearAllButtonOffCanvas.addEventListener("click", clearAll);
+
+createdAt?.forEach(e=>e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+})}`);
