@@ -477,10 +477,16 @@ const clearAll = () => {
 clearAllButton.addEventListener("click", clearAll);
 clearAllButtonOffCanvas.addEventListener("click", clearAll);
 
-createdAt?.forEach(e=>e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
-  year: "numeric",
-  month: "numeric",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-})}`);
+createdAt?.forEach(e=>{
+  e.addEventListener("load", () => {
+    e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })}`
+  })
+  
+}
+);
