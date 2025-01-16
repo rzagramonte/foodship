@@ -73,7 +73,7 @@
           <%=chat.messages[i].senderId?.userName%>
         </span>
         <span class="createdAt">
-          <%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric', month: 'numeric', day: 'numeric' , hour: 'numeric', minute: 'numeric' }) %>
+          <%=chat.messages[i].createdAt %>
         </span>
       </div>
       <div class="message-content">
@@ -96,7 +96,7 @@
         <%= chat.messages[i].content.split(" ").slice(1).join(" ")%>
       </span>
       <span class="createdAt">
-        <%=new Date(chat.messages[i].createdAt).toLocaleString(undefined, { year: 'numeric' , month: 'numeric', day: 'numeric' , hour: 'numeric' , minute: 'numeric' }) %>
+        <%=chat.messages[i].createdAt %>
       </span>
     </li>
     <% } %>

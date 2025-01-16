@@ -28,9 +28,13 @@ const createdAt = document.querySelectorAll(".createdAt");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
-if(year) year.innerText = year.innerText.replace(/\d{4}/g, `${new Date().toLocaleString(undefined, {
-  year: "numeric"
-})}`) ;
+if (year)
+  year.innerText = year.innerText.replace(
+    /\d{4}/g,
+    `${new Date().toLocaleString(undefined, {
+      year: "numeric",
+    })}`
+  );
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
@@ -121,7 +125,7 @@ socket.on("chat message", (msg, chatId) => {
     messageHeader.appendChild(userName);
     messageHeader.appendChild(createdAt);
     message.appendChild(content);
-  
+
     messages.appendChild(message);
 
     const chatBox = document.getElementById("chat-box");
@@ -429,7 +433,7 @@ newEventForm?.addEventListener("submit", async (e) => {
     const event = await response.json();
     socket.emit("new event", event, chatId);
 
-    eventModal.click(); 
+    eventModal.click();
 
     console.log("User created event!");
   } catch (error) {
@@ -477,16 +481,13 @@ const clearAll = () => {
 clearAllButton.addEventListener("click", clearAll);
 clearAllButtonOffCanvas.addEventListener("click", clearAll);
 
-createdAt?.forEach(e=>{
-  e.addEventListener("load", () => {
-    e.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
+createdAt?.forEach(
+  (e) =>
+    (e.textContent = `${new Date(e.textContent).toLocaleString(undefined, {
       year: "numeric",
       month: "numeric",
       day: "numeric",
       hour: "numeric",
       minute: "numeric",
-    })}`
-  })
-  
-}
+    })}`)
 );
