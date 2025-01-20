@@ -1,31 +1,38 @@
 const Interest = require("../models/Interest");
-const FoodPreference = require("../models/FoodPreference");
+const Cuisine = require("../models/Cuisine");
 const User = require("../models/User");
 const Chat = require("../models/Chat");
 
 module.exports = {
   getUser: async (req, res) => {
     try {
-      const user = await User.findById(req.user._id);
+      const user = await User.findById(req.user._id)
+  .populate({
+    path: "preferences",
+    populate: [
+      { path: "cuisines", model: "Cuisine" },
+      { path: "interests", model: "Interest" },
+    ],
+  });
       return user;
     } catch (err) {
       console.log("Error fetching user:", err);
       res.status(500).send("Server error. Please try again later.");
     }
   },
-  getFoodPreferences: async (req, res) => {
+  getCuisines: async (req, res) => {
     try {
-      const foodPreferences = await FoodPreference.find();
-      return foodPreferences.map((e) => e.foodPreference);
+      const cuisines = await Cuisine.find();
+      return cuisines;
     } catch (err) {
       console.log("Error fetching preferences:", err);
       res.status(500).send("Server error. Please try again later.");
     }
   },
-  getInterest: async (req, res) => {
+  getInterests: async (req, res) => {
     try {
       const interests = await Interest.find();
-      return interests.map((e) => e.interest);
+      return interests;
     } catch (err) {
       console.log("Error fetching preferences:", err);
       res.status(500).send("Server error. Please try again later.");
@@ -34,9 +41,11 @@ module.exports = {
   patchPreferences: async (req, res) => {
     try {
       const userId = req.user.id;
-      let { foodPreferences, interests } = req.body;
-      if (!foodPreferences) {
-        foodPreferences = [];
+      let { cuisines, interests } = req.body;
+      console.log(typeof interests)
+      console.log(req.body)
+      if (!cuisines) {
+        cuisines = [];
       }
       if (!interests) {
         interests = [];
@@ -47,8 +56,8 @@ module.exports = {
         {
           $set: {
             preferences: {
-              interests: interests,
-              foodPreferences: foodPreferences,
+              interests,
+              cuisines,
             },
           },
         },
@@ -58,7 +67,7 @@ module.exports = {
         { members: userId },
         {
           $addToSet: {
-            foodPreferences: { $each: [...foodPreferences] },
+            cuisines: { $each: [...cuisines] },
             interests: { $each: [...interests] },
           },
         },

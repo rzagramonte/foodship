@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const User = require("./User");
 
 const ChatSchema = new mongoose.Schema({
   members: [{
@@ -19,11 +18,13 @@ const ChatSchema = new mongoose.Schema({
   cloudinaryId: {
     type: String,
   },
-  foodPreferences: [{
-    type: String,
+  cuisines: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Cuisine", 
   }],
   interests: [{ 
-    type: String, 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Interest", 
   }],
   messages: [{
     type: mongoose.Schema.Types.ObjectId,

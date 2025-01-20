@@ -1,11 +1,11 @@
 const { getChats } = require("./chats");
 const { getMessages } = require("./messages");
-const { getUser, getFoodPreferences, getInterest } = require("./users");
+const { getUser, getCuisines, getInterests } = require("./users");
 const { getEvents } = require("./events");
 
 const fetchProfileData = async (req, res) => {
-  const [chats, foodPreferences, interests, user] = await Promise.all([getChats(req, res), getFoodPreferences(req, res), getInterest(req, res), getUser(req, res)]);
-  return { chats, foodPreferences, interests, user };
+  const [chats, cuisines, interests, user] = await Promise.all([getChats(req, res), getCuisines(req, res), getInterests(req, res), getUser(req, res)]);
+  return { chats, cuisines, interests, user };
 };
 
 module.exports = {

@@ -26,15 +26,14 @@ module.exports = {
       const { user } = req;
       const { chatId, date } = req.body;
       console.log(req.body);
-
-      const foodPreference = await Restaurant.findOne({
-        foodPreferences: { $in: user.preferences.foodPreferences },
-      });
-      const i = myArray[Math.floor(Math.random() * myArray.length)];
-      const restaurant = await Restaurant.findOne({
-        foodPreferences: { $in: foodPreference },
-      });
+      const chat = await Chat.findById(chatId).populate({ path: "cuisines", select: "cuisine" });
+      const cuisines = chat.cuisines.map(c=>c.cuisine);
+      const cuisine = cuisines[Math.floor(Math.random() * cuisines.length)];
+      console.log(cuisine)
+      const restaurant = await Restaurant.findOne({cuisine: cuisine });
+      console.log("restaurant: ", restaurant, "cuisine:", cuisine);
       const event = await Event.create({
+        chatId,
         restaurant,
         date,
       });
@@ -47,8 +46,7 @@ module.exports = {
           weekday: "long",
           hour: "numeric",
           minute: "numeric",
-        })} at ${event.restaurant}.`,
-
+        })} at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
         contentType: "text",
       });
 

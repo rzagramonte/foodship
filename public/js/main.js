@@ -39,11 +39,13 @@ if (year)
 images.forEach((img) => {
   img.addEventListener("load", () => {
     img.naturalWidth > img.naturalHeight ? img.classList.add("landscape") : img.classList.add("portrait");
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
   });
 
   // If the image is already loaded (this happens when the image is cached)
   if (img.complete) {
     img.naturalWidth > img.naturalHeight ? img.classList.add("landscape") : img.classList.add("portrait");
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
   }
 });
 
@@ -444,10 +446,12 @@ newEventForm?.addEventListener("submit", async (e) => {
 socket.on("new event", (event, chatId) => {
   const message = document.createElement("li");
   const icon = document.createElement("i");
+  const user = document.createElement("span");
   const content = document.createElement("span");
   const createdAt = document.createElement("span");
 
-  content.innerText = ` ${event.systemMessage.content} `;
+  user.innerText = ` ${event.systemMessage.content.split(" ")[0]} `;
+  content.innerText = ` ${event.systemMessage.content.split(" ").slice(1).join(" ")} `;
   createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
     year: "numeric",
     month: "numeric",
@@ -459,10 +463,11 @@ socket.on("new event", (event, chatId) => {
   message.className = "content text-wrap text-break mb-2 fw-light";
   icon.className = "px-2 fa-solid fa-calendar-check";
   icon.style.color = "#85edbe";
-  content.className = "text-primary";
+  user.className = "userName text-primary";
   createdAt.className = "createdAt";
 
   message.appendChild(icon);
+  message.appendChild(user);
   message.appendChild(content);
   message.appendChild(createdAt);
   messages.appendChild(message);

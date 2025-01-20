@@ -70,9 +70,9 @@
 
 </div>
 
-    <!-- Modal -->
+    <!-- Preferences Modal -->
     <div class="modal fade" id="preferences-offcanvas" tabindex="-1" aria-labelledby="preferences-offcanvasLabel" aria-hidden="true" data-bs-backdrop="false">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
           <div class="modal-header border-bottom">
             <h1 class="modal-title fs-5" id="preferences-offcanvasLabel">Preferences</h1>
@@ -80,13 +80,13 @@
           </div>
           <form id="preferences-offcanvas" action="/user/update/<%=user._id%>?_method=PATCH" method="POST" data-user-name="<%= user.userName %>">
             <div class="modal-body">
-              <main class=" d-flex flex-wrap justify-content-around vh-75 flex-grow-1 py-3"">
+              <main class=" d-flex flex-wrap justify-content-around py-3">
                 <h2 class="fs-5 me-auto">Food</h2>
                 <div class="m-2">
-                  <% for(let i=0; i<foodPreferences.length; i++) {%>
+                  <% for(let i=0; i<cuisines.length; i++) {%>
                   <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
-                    <input <%= user.preferences.foodPreferences.includes(foodPreferences[i]) ? 'checked' : '' %> type="checkbox" class="btn-check fs-5" id="btncheck-offcanvas<%=i%>" name="foodPreferences" value="<%= foodPreferences[i] %>">
-                    <label class="btn btn-outline-light" for="btncheck-offcanvas<%=i%>"><%=foodPreferences[i]%></label>
+                    <input <%= user.preferences.cuisines.some(cuisine => cuisine._id.toString() === cuisines[i]._id.toString()) ? 'checked' : '' %> type="checkbox" class="btn-check fs-5" id="btncheck-offcanvas-<%=i%>" name="cuisines" value="<%= cuisines[i]._id %>">
+                    <label class="btn btn-outline-light" for="btncheck-offcanvas-<%=i%>"><%=cuisines[i].cuisine%></label>
                   </div>
                   <% } %>
                 </div>
@@ -94,8 +94,8 @@
                 <div class="m-2">
                   <% for(let i=0; i<interests.length; i++) {%>
                   <div class="btn-group mb-2" role="group" aria-label="Basic checkbox toggle button group">
-                    <input <%= user.preferences.interests.includes(interests[i]) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck-offcanvas<%=i+foodPreferences.length%>" name="interests" value="<%= interests[i] %>">
-                    <label class="btn btn-outline-light" for="btncheck-offcanvas<%=i+foodPreferences.length%>"><%=interests[i]%></label>
+                    <input <%= user.preferences.interests.some(interest => interest._id.toString() === interests[i]._id.toString()) ? 'checked' : '' %> type="checkbox" class="btn-check" id="btncheck-offcanvas-<%=i+cuisines.length%>" name="interests" value="<%= interests[i]._id %>">
+                    <label class="btn btn-outline-light" for="btncheck-offcanvas-<%=i+cuisines.length%>"><%=interests[i].interest%></label>
                   </div>
                   <% } %>
                 </div>

@@ -14,13 +14,14 @@ const UserSchema = new mongoose.Schema({
   profilePic: { type: String },
   cloudinaryId: { type: String },
   preferences: {
-    foodPreferences: [{ type: String }],
-    interests: [{ type: String }],
+    cuisines: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cuisine" }],
+    interests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Interest" }],
   },
   location: {
     city: { type: String },
     state: { type: String },
-    zip: { type: Number }},
+    zip: { type: Number },
+  },
   chatIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
   events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
 });
@@ -40,10 +41,7 @@ UserSchema.pre("save", function save(next) {
 });
 
 // Helper method for validating user's password.
-UserSchema.methods.comparePassword = function comparePassword(
-  candidatePassword,
-  cb
-) {
+UserSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
   bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
     cb(err, isMatch);
   });

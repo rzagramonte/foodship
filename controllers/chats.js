@@ -22,12 +22,12 @@ module.exports = {
             // Ensures less than 6 members
             { $expr: { $lt: [{ $size: "$members" }, 6] } },
             { members: { $ne: user._id } },
-            { foodPreferences: { $in: user.preferences.foodPreferences } },
+            { cuisines: { $in: user.preferences.cuisines } },
             { interests: { $in: user.preferences.interests } },
           ],
         }).sort({ matchScore: -1 })) ||
         (await Chat.create({
-          foodPreferences: user.preferences.foodPreferences,
+          cuisines: user.preferences.cuisines,
           interests: user.preferences.interests,
         }));
 
