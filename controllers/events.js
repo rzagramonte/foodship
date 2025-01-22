@@ -7,7 +7,7 @@ const User = require("../models/User");
 module.exports = {
   getEvents: async (req, res) => {
     try {
-      const events = await Event.find({ chatId: req.params.chatId });
+      const events = await Event.find({ chatId: req.params.chatId }).populate({ path: "restaurant", select: "name address borough" });
       return events;
     } catch (err) {
       console.log(err);
@@ -27,11 +27,9 @@ module.exports = {
       const { chatId, date } = req.body;
       console.log(req.body);
       const chat = await Chat.findById(chatId).populate({ path: "cuisines", select: "cuisine" });
-      const cuisines = chat.cuisines.map(c=>c.cuisine);
+      const cuisines = chat.cuisines.map((c) => c.cuisine);
       const cuisine = cuisines[Math.floor(Math.random() * cuisines.length)];
-      console.log(cuisine)
-      const restaurant = await Restaurant.findOne({cuisine: cuisine });
-      console.log("restaurant: ", restaurant, "cuisine:", cuisine);
+      const restaurant = await Restaurant.findOne({ cuisine: cuisine });
       const event = await Event.create({
         chatId,
         restaurant,

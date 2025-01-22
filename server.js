@@ -11,6 +11,7 @@ const { Server } = require("socket.io");
 const { createServer } = require("http");
 const server = createServer(app);
 const io = new Server(server, { connectionStateRecovery: {} });
+//const agenda = require('./config/agenda'); might need this later
 const mainRoutes = require("./routes/main");
 const userRoutes = require("./routes/user");
 const connectionRoutes = require("./routes/connections");
@@ -28,6 +29,7 @@ require("./config/passport")(passport);
 //Connect To Database
 connectDB();
 
+//Socket.io
 app.set("io", io);
 
 //Using EJS for views

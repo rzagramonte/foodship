@@ -11,10 +11,10 @@
 
   <button class="btn ms-auto p-0" type="button" data-bs-toggle="modal" data-bs-target="#new-calender-event"><i class="fa-solid fa-calendar-plus px-4"></i></button>
 
-  <div class="modal fade" id="new-calender-event" aria-hidden="true" aria-labelledby="new-calender-eventLabel" tabindex="-1">
+  <div class="modal fade text-primary" id="new-calender-event" aria-hidden="true" aria-labelledby="new-calender-eventLabel" tabindex="-1">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header border-bottom">
           <h1 class="modal-title fs-5" id="new-calender-eventLabel">Create a New Event</h1>
           <button type="button" id="new-calender-event-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -22,34 +22,47 @@
           <div class="modal-body">
             <input class="form-control" type="datetime-local" id="date" name="date" />
           </div>
-          <div class="modal-footer">
-            <button type="button" id="see-all-events" class="btn btn-info" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
+          <div class="modal-footer border-bottom">
+            <button type="button" id="see-all-events" class="btn btn-secondary" data-bs-target="#see-all-calender-events" data-bs-toggle="modal">See All Events</button>
             <button type="submit" id="create-event" class="btn btn-primary">Save</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  <div class="modal fade" id="see-all-calender-events" aria-hidden="true" aria-labelledby="see-all-calender-eventsLabel2" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+  <div class="modal fade text-primary" id="see-all-calender-events" aria-hidden="true" aria-labelledby="see-all-calender-eventsLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header border-bottom">
           <h1 class="modal-title fs-5" id="see-all-calender-eventsLabel2">Calendar Events</h1>
 
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div>
-            <ul class="events">
-              <% for(let i=0; i<events.length; i++) {%>
-              <li>
-                <%=events[i]%>
-              </li>
-              <% } %>
-            </ul>
+            <table class="table events">
+              <thead>
+                <tr >
+                  <th scope="col" class="calender-header">#</th>
+                  <th scope="col" class="calender-header">Restaurant</th>
+                  <th scope="col" class="calender-header">Address</th>
+                  <th scope="col" class="calender-header">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for(let i=0; i<events.length; i++) {%>
+                <tr>
+                  <th scope="row" class="calender-header"><%=i+1%></th>
+                  <td><%=events[i].restaurant?.name%></td>
+                  <td><%=events[i].restaurant?.address.building%> <%=events[i].restaurant?.address.street%>, <%=events[i].restaurant?.borough%>, NY <%=events[i].restaurant?.address.zipcode%></td>
+                  <td class="date-set"><%=events[i].date%></td>
+                </tr>
+                  <% } %>
+              </tbody>
+            </table>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer border-bottom">
           <button class="btn btn-primary" data-bs-target="#new-calender-event" data-bs-toggle="modal">Back</button>
         </div>
       </div>

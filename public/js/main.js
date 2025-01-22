@@ -25,6 +25,7 @@ const newEventForm = document.getElementById("calendar");
 const userEvent = newEventForm?.dataset.user;
 const eventDate = document.getElementById("date");
 const createdAt = document.querySelectorAll(".createdAt");
+const dateSet = document.querySelectorAll(".date-set");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -93,6 +94,7 @@ socket.on("chat message", (msg, chatId) => {
     const userName = document.createElement("span");
     const createdAt = document.createElement("span");
     const content = document.createElement("div");
+    const chatBox = document.getElementById("chat-box");
 
     if (msg.contentType === "image") {
       const img = document.createElement("img");
@@ -102,6 +104,7 @@ socket.on("chat message", (msg, chatId) => {
       img.onload = () => {
         img.className = `message-image ${img.naturalWidth > img.naturalHeight ? "landscape" : "portrait"}`;
         message.style.display = "block";
+        chatBox.scrollTo(0, chatBox.scrollHeight);
       };
       content.appendChild(img);
     } else {
@@ -127,10 +130,8 @@ socket.on("chat message", (msg, chatId) => {
     messageHeader.appendChild(userName);
     messageHeader.appendChild(createdAt);
     message.appendChild(content);
-
     messages.appendChild(message);
 
-    const chatBox = document.getElementById("chat-box");
     chatBox.scrollTo(0, chatBox.scrollHeight);
   }
 });
@@ -487,6 +488,18 @@ clearAllButton.addEventListener("click", clearAll);
 clearAllButtonOffCanvas.addEventListener("click", clearAll);
 
 createdAt?.forEach(
+  (e) =>
+    (e.textContent = `${new Date(e.textContent).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })}`)
+);
+
+
+dateSet?.forEach(
   (e) =>
     (e.textContent = `${new Date(e.textContent).toLocaleString(undefined, {
       year: "numeric",

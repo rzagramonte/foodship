@@ -59,10 +59,10 @@
   --bs-body-color-rgb: 191, 217, 215 !important; /* Mint */
   --bs-body-bg: #353745 !important; /* Charcoal */
   --bs-body-bg-rgb: 53, 55, 69 !important; /* Charcoal */
-  --bs-emphasis-color: #000 !important;
-  --bs-emphasis-color-rgb: 0, 0, 0 !important;
+  --bs-emphasis-color: #97b2af !important;
+  --bs-emphasis-color-rgb: 138, 114, 69 !important;
   --bs-secondary-color: #ae9152bf !important;
-  --bs-secondary-color-rgb: 174, 145, 82 !important;
+  --bs-secondary-color-rgb: 151, 178, 175 !important;
   --bs-secondary-bg: #e9ecef !important;
   --bs-secondary-bg-rgb: 191, 217, 215 !important;
   --bs-tertiary-color: rgba(33, 37, 41, 0.5) !important;
@@ -264,4 +264,8 @@ i {
 
 .portrait {
   max-height: 534px; /* Example maximum width */
+}
+
+.calender-header {
+  color: var(--bs-primary) !important;
 }
