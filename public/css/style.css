@@ -227,9 +227,9 @@ i {
   color: #97b2af;
 }
 
-.group-chat-list {
-  height: 85vh !important;
-  scrollbar-color: #353745 #2f313e;
+.group-chat-list{
+  height: 80vh !important;
+  scrollbar-color: #2f313e #2f313e;
 }
 
 .chat-box {
@@ -243,11 +243,18 @@ i {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #5c6570; /* Your desired color for the scrollbar thumb */
-  border-radius: 4px; /* Optional: rounded corners */
+  background-color: #353745; /* Your desired color for the scrollbar thumb */
+}
+::-webkit-scrollbar-track {
+  background-color: #353745; /* Your desired color for the track */
 }
 
-::-webkit-scrollbar-track {
+.group-chat-list::-webkit-scrollbar{
+  width: 3px; /* Adjust scrollbar width */
+  background-color: #2f313e;
+}
+
+ .group-chat-list::-webkit-scrollbar-thumb, .group-chat-list::-webkit-scrollbar-track {
   background-color: #2f313e; /* Your desired color for the track */
 }
 

@@ -35,10 +35,10 @@
     <% } %>
   </div>
 </div>
-<div class="d-flex  text-primary p-2  user-card m-0 w-auto">
-  <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="flex-shrink-0 m-2 rounded" width="32" height="32">
+<div class="d-flex  text-primary p-2  user-card m-0">
+  <img src="/imgs/gabriel-sample.jpg" alt="User Profile" class="m-2 rounded" width="32" height="32">
   <a href="/profile" class="navbar-brand d-flex align-items-center me-auto">
-    <div class="p-1 mb-0 small lh-sm text-break">
+    <div class="p-1 mb-0 small lh-sm text-break text-truncate">
       <strong>@<%=user.userName%></strong>
       <div class="text-light pt-1">
         <%= user.userStatus%>
@@ -51,15 +51,15 @@
       <i class="fa-solid fa-gear"></i>
     </button>
     <ul class="dropdown-menu btn btn-primary">
-      <li class="d-flex justify-content-center">
+      <li class="d-flex justify-content-center my-3">
         <a class="nav-link" href="/safety">safety</a>
       </li>
-      <li class="d-flex justify-content-center">
+      <li class="d-flex justify-content-center my-3">
         <div data-bs-toggle="modal" data-bs-target="#preferences">
           preferences
         </div>
       </li>
-      <li class="d-flex justify-content-center">
+      <li class="d-flex justify-content-center my-3">
         <a class="nav-link" href="/logout">logout</a>
       </li>
     </ul>

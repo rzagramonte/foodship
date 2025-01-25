@@ -42,8 +42,6 @@ module.exports = {
     try {
       const userId = req.user.id;
       let { cuisines, interests } = req.body;
-      console.log(typeof interests)
-      console.log(req.body)
       if (!cuisines) {
         cuisines = [];
       }
