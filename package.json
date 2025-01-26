@@ -20,6 +20,7 @@
   "license": "MIT",
   "homepage": "https://github.com/rzagramonte/foodship#readme",
   "dependencies": {
+    "@huggingface/inference": "^3.1.2",
     "agenda": "^5.0.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.3",

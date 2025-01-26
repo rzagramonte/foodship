@@ -3,6 +3,7 @@ const Restaurant = require("../models/Restaurant");
 const Message = require("../models/Message");
 const Chat = require("../models/Chat");
 const User = require("../models/User");
+const scheduleJobs = require("../jobs/jobScheduler");
 
 module.exports = {
   getEvents: async (req, res) => {
@@ -46,7 +47,6 @@ module.exports = {
         })} at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
         contentType: "text",
       });
-
       await Chat.findByIdAndUpdate(chatId, {
         $push: { events: event._id },
         $push: { messages: systemMessage._id },
@@ -54,6 +54,7 @@ module.exports = {
       await User.findByIdAndUpdate(user._id, {
         $push: { events: event._id },
       });
+      await scheduleJobs({ chatId, eventId: event._id, eventDate: event.date });
       console.log("Event has been created!");
       res.status(201).json({ restaurant, event, systemMessage, user });
     } catch (err) {
