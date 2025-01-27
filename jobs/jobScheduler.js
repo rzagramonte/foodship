@@ -26,15 +26,25 @@ const fetchQuestionsFromAPI = async () => {
 
     // Call the Hugging Face API
     const response = await hf.chatCompletion({
-      model: "mistralai/Mistral-Nemo-Instruct-2407", // Use an appropriate model
+      model: "mistralai/Mistral-Nemo-Instruct-2407",
       messages: messages,
       max_tokens: 1024,
     });
 
-    console.log("Response from Hugging Face API:", response);
+    console.log("Response from Hugging Face API:", response.choices.message);
 
-    // Extract the questions from the response (modify this according to API structure)
-    const questions = response.choices[0].message.content.split("\n").map((question) => question.trim());
+    // Extract the raw content from the response
+    const rawContent = response.choices[0].message.content;
+
+    // Regex pattern to capture just the questions (assuming they start with a number or bullet point)
+    const questionPattern = /\*\*"([^"]+)"\*\*/g;
+
+    // Find all questions using the regex pattern
+    const questions = [];
+    let match;
+    while ((match = questionPattern.exec(rawContent)) !== null) {
+      questions.push(match[1].trim());
+    }
 
     // Return the questions
     return questions;
@@ -52,48 +62,32 @@ const scheduleJobs = async (event) => {
       throw new Error("Agenda is not initialized. Ensure connectDB has been called.");
     }
 
-    // Define the job
-    agenda.define("test job", async (job) => {
-      // Access the passed event object
-      const { event } = job.attrs.data;
-      console.log("Event data:", event); // This will log the event data
-      try {
-        // Fetch questions from the Hugging Face API
-        const questions = await fetchQuestionsFromAPI();
+    const questions = await fetchQuestionsFromAPI();
 
-        // Simulate sending questions to the chat
-        for (let i = 0; i < questions.length; i++) {
-          console.log(`Sending question ${i + 1} to chat ${event.chatId}:`, questions[i]);
-
-          // Convert eventDate string to Date object
-          const eventDate = new Date(event.eventDate);
-
-          // Add a 15-minute delay for each question
-          const scheduledDate = new Date(eventDate.getTime() + i * 15 * 60 * 1000); // Delay by i * 15 mins
-
-          // Add a 15-minute delay between each question
-          await agenda.schedule(scheduledDate, "send single question", {
-            chatId: event.chatId,
-            eventId: event.eventId,
-            eventDate: event.eventDate,
-            question: questions[i],
-          });
-        }
-
-        console.log(`All questions sent for event ${event.eventId}`);
-      } catch (err) {
-        console.error("Error while sending meetup questions:", err);
-        throw err; // Mark as failed so Agenda can retry
-      }
+    // Define the job for sending a single question
+    agenda.define("send single question", async (job) => {
+      const { postEventQuestion }  = require("../controllers/events");
+      const { event, question } = job.attrs.data; // Extract individual question
+      const chatId = event.chatId;
+      postEventQuestion({ chatId, question });
+      console.log(`Sending question to chat ${chatId}:`, question);
     });
 
+    // Schedule each question with a 15-minute delay
+    for (let i = 0; i < questions.length; i++) {
+      const scheduledDate = new Date(event.eventDate.getTime() + i * 15 * 60 * 1000);
+
+      // Schedule a separate job for each question
+      await agenda.schedule(scheduledDate, "send single question", {
+        event,
+        question: questions[i], // Pass each question individually
+      });
+
+      console.log(`Scheduled question ${i + 1} at ${scheduledDate}`);
+    }
     // Start Agenda
     await agenda.start();
     console.log("Agenda started successfully.");
-
-    // Schedule the test job
-    await agenda.now("test job", { event });
-    console.log("Test job scheduled to run immediately.");
   } catch (err) {
     console.error("Error scheduling test job:", err);
   }

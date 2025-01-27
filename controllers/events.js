@@ -54,7 +54,7 @@ module.exports = {
       await User.findByIdAndUpdate(user._id, {
         $push: { events: event._id },
       });
-      await scheduleJobs({ chatId, eventId: event._id, eventDate: event.date });
+      scheduleJobs({ chatId, eventId: event._id, eventDate: event.date });
       console.log("Event has been created!");
       res.status(201).json({ restaurant, event, systemMessage, user });
     } catch (err) {
@@ -84,6 +84,24 @@ module.exports = {
     } catch (err) {
       console.error("Error deleting event:", err);
       res.redirect(`/chat/${req.params.chatId}`);
+    }
+  },
+  postEventQuestion: async (req) => {
+    const io = require('../server');
+    const { chatId, question } = req;
+    try {
+      const savedQuestion = await Message.create({
+        chatId,
+        content: question,
+        contentType: "text",
+      });
+      await Chat.findByIdAndUpdate(chatId, {
+        $push: { messages: savedQuestion._id },
+      });
+      io.emit("question", savedQuestion, chatId);
+      return savedQuestion;
+    } catch (err) {
+      console.log(err);
     }
   },
 };

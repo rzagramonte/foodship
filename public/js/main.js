@@ -112,7 +112,7 @@ socket.on("chat message", (msg, chatId) => {
     }
     icon.className = "px-2 fa-solid fa-user";
     userName.textContent = ` ${msg.senderId.userName} `;
-    userName.className = "userName text-primary";
+    userName.className = "text-primary";
     createdAt.textContent = `${new Date(msg.createdAt).toLocaleString(undefined, {
       year: "numeric",
       month: "numeric",
@@ -132,7 +132,7 @@ socket.on("chat message", (msg, chatId) => {
     message.appendChild(content);
     messages.appendChild(message);
 
-    chatBox.scrollTo(0, chatBox.scrollHeight);
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
   }
 });
 
@@ -445,36 +445,76 @@ newEventForm?.addEventListener("submit", async (e) => {
 });
 
 socket.on("new event", (event, chatId) => {
-  const message = document.createElement("li");
-  const icon = document.createElement("i");
-  const user = document.createElement("span");
-  const content = document.createElement("span");
-  const createdAt = document.createElement("span");
+  const divElement = document.querySelector(`div[data-chat-id="${chatId}"]`);
+  if (divElement) {
+    const message = document.createElement("li");
+    const icon = document.createElement("i");
+    const user = document.createElement("span");
+    const content = document.createElement("span");
+    const createdAt = document.createElement("span");
 
-  user.innerText = ` ${event.systemMessage.content.split(" ")[0]} `;
-  content.innerText = ` ${event.systemMessage.content.split(" ").slice(1).join(" ")} `;
-  createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  })} `;
+    user.innerText = ` ${event.systemMessage.content.split(" ")[0]} `;
+    content.innerText = ` ${event.systemMessage.content.split(" ").slice(1).join(" ")} `;
+    createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })} `;
 
-  message.className = "content text-wrap text-break mb-2 fw-light";
-  icon.className = "px-2 fa-solid fa-calendar-check";
-  icon.style.color = "#85edbe";
-  user.className = "userName text-primary";
-  createdAt.className = "createdAt";
+    createdAt.className = "createdAt";
+    message.className = "content text-wrap text-break mb-2 fw-light";
+    icon.className = "px-2 fa-solid fa-calendar-check";
+    icon.style.color = "#85edbe";
+    user.className = "text-primary";
+    
 
-  message.appendChild(icon);
-  message.appendChild(user);
-  message.appendChild(content);
-  message.appendChild(createdAt);
-  messages.appendChild(message);
+    message.appendChild(icon);
+    message.appendChild(user);
+    message.appendChild(content);
+    message.appendChild(createdAt);
+    messages.appendChild(message);
 
-  const chatBox = document.getElementById("chat-box");
-  chatBox.scrollTo(0, chatBox.scrollHeight);
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
+  }
+});
+
+socket.on("question", async (savedQuestion, chatId) => {
+  const divElement = document.querySelector(`div[data-chat-id="${chatId}"]`);
+  if (divElement) {
+    const message = document.createElement("li");
+    const icon = document.createElement("i");
+    const span = document.createElement("span");
+    const content = document.createElement("span");
+    const content2 = document.createElement("span");
+    const createdAt = document.createElement("span");
+    
+
+    content.innerText = ` ${savedQuestion.content.split(" ")[0]} `;
+    content2.innerText = ` ${savedQuestion.content.split(" ").slice(1).join(" ")} `;
+    createdAt.textContent = `${new Date(savedQuestion.createdAt).toLocaleString(undefined, {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })}`;
+
+    createdAt.className = "createdAt";
+    message.className = "content text-wrap text-break mb-2 fw-light";
+    icon.className = "px-2 fa-solid fa-circle-question";
+    icon.style.color = "#b38f3f";
+
+    span.appendChild(icon);
+    message.appendChild(span);
+    message.appendChild(content);
+    message.appendChild(content2);
+    message.appendChild(createdAt);
+    messages.appendChild(message);
+
+    chatBox?.scrollTo(0, chatBox.scrollHeight);
+  }
 });
 
 const clearAll = () => {
@@ -497,7 +537,6 @@ createdAt?.forEach(
       minute: "numeric",
     })}`)
 );
-
 
 dateSet?.forEach(
   (e) =>

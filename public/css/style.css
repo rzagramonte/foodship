@@ -61,7 +61,7 @@
   --bs-body-bg-rgb: 53, 55, 69 !important; /* Charcoal */
   --bs-emphasis-color: #97b2af !important;
   --bs-emphasis-color-rgb: 138, 114, 69 !important;
-  --bs-secondary-color: #ae9152bf !important;
+  --bs-secondary-color: #ae9152 !important;
   --bs-secondary-color-rgb: 151, 178, 175 !important;
   --bs-secondary-bg: #e9ecef !important;
   --bs-secondary-bg-rgb: 191, 217, 215 !important;
@@ -188,6 +188,10 @@ i {
 
 .fa-arrow-left {
   color: #dc143c;
+}
+
+.fa-circle-question {
+  color: #b38f3f
 }
 
 .fa-calendar-check {

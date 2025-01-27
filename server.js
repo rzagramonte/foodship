@@ -91,7 +91,7 @@ io.on("connection", (socket) => {
   socket.on("new event", (event, chatId) => {
     // Emit the new event
     io.emit("new event", event, chatId);
-    console.log(`New event`);
+    console.log(`New event for chat room: ${chatId}`);
   });
 
   socket.on("delete chat", (chat) => {
@@ -129,3 +129,5 @@ app.use("/profile", profileRoutes);
 server.listen(process.env.PORT, () => {
   console.log(`Server is running on ${process.env.PORT}, you better catch it!`);
 });
+
+module.exports = io;
