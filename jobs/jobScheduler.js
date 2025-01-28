@@ -1,4 +1,3 @@
-// jobScheduler.js
 const dbManager = require("../config/database");
 const { HfInference } = require("@huggingface/inference");
 
@@ -36,7 +35,7 @@ const fetchQuestionsFromAPI = async () => {
     // Extract the raw content from the response
     const rawContent = response.choices[0].message.content;
 
-    // Regex pattern to capture just the questions (assuming they start with a number or bullet point)
+    // Regex pattern to capture just the questions
     const questionPattern = /\*\*"([^"]+)"\*\*/g;
 
     // Find all questions using the regex pattern
@@ -64,10 +63,10 @@ const scheduleJobs = async (event) => {
 
     const questions = await fetchQuestionsFromAPI();
 
-    // Define the job for sending a single question
+    // Defines the job for sending a single question
     agenda.define("send single question", async (job) => {
-      const { postEventQuestion }  = require("../controllers/events");
-      const { event, question } = job.attrs.data; // Extract individual question
+      const { postEventQuestion } = require("../controllers/events");
+      const { event, question } = job.attrs.data; // Extracts individual question
       const chatId = event.chatId;
       postEventQuestion({ chatId, question });
       console.log(`Sending question to chat ${chatId}:`, question);
@@ -75,12 +74,14 @@ const scheduleJobs = async (event) => {
 
     // Schedule each question with a 15-minute delay
     for (let i = 0; i < questions.length; i++) {
-      const scheduledDate = new Date(event.eventDate.getTime() + i * 15 * 60 * 1000).toISOString();
+      const baseDate = new Date(event.eventDate); // local time
+      const utcDate = new Date(baseDate.toISOString()); // Convert it to UTC
+      const scheduledDate = new Date(utcDate.getTime() + i * 15 * 60 * 1000).toISOString();
 
-      // Schedule a separate job for each question
+      // Schedules a separate job for each question
       await agenda.schedule(scheduledDate, "send single question", {
         event,
-        question: questions[i], // Pass each question individually
+        question: questions[i],
       });
 
       console.log(`Scheduled question ${i + 1} at ${scheduledDate}`);
