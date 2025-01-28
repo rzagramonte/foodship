@@ -68,6 +68,7 @@ const scheduleJobs = async (event) => {
     agenda.define("send single question", async (job) => {
       const { postEventQuestion } = require("../controllers/events");
       const { event, question } = job.attrs.data; // Extracts individual question
+      console.log(event)
       const chatId = event.chatId;
       postEventQuestion({ chatId, question });
       console.log(`Sending question to chat ${chatId}:`, question);
@@ -75,7 +76,8 @@ const scheduleJobs = async (event) => {
 
     // Schedule each question with a 15-minute delay
     for (let i = 0; i < questions.length; i++) {
-      const localDate = DateTime.fromISO(event.eventDate, { setZone: true });
+      const eventDate = new Date(event.eventDate);
+      const localDate = DateTime.fromJSDate(eventDate);
       const utcDate = localDate.toUTC();
       const scheduledDate = utcDate.plus({ minutes: i * 15 }).toISO();
 
