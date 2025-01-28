@@ -422,7 +422,7 @@ newEventForm?.addEventListener("submit", async (e) => {
   try {
     const chatId = newEventForm?.dataset.chatId;
     const eventModal = document.getElementById("new-calender-event-close");
-
+    console.log("front: ", eventDate.value)
     const response = await fetch(`/events/createEvent`, {
       method: "POST",
       headers: {
