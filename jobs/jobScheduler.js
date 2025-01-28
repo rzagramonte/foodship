@@ -1,5 +1,6 @@
 const dbManager = require("../config/database");
 const { HfInference } = require("@huggingface/inference");
+const { DateTime } = require("luxon");
 
 const fetchQuestionsFromAPI = async () => {
   const SYSTEM_PROMPT = "You are a psychotherapist with extensive experience in fostering deep interpersonal connections. Your task is to generate 4 thought-provoking and emotionally intelligent questions designed to help participants build a profound sense of trust, understanding, and connection. The questions should evoke vulnerability, curiosity, and shared humanity, encouraging participants to reflect on their experiences, values, and dreams.";
@@ -74,9 +75,9 @@ const scheduleJobs = async (event) => {
 
     // Schedule each question with a 15-minute delay
     for (let i = 0; i < questions.length; i++) {
-      const baseDate = new Date(event.eventDate); // local time
-      const utcDate = new Date(baseDate.toISOString()); // Convert it to UTC
-      const scheduledDate = new Date(utcDate.getTime() + i * 15 * 60 * 1000).toISOString();
+      const localDate = DateTime.fromISO(event.eventDate, { setZone: true });
+      const utcDate = localDate.toUTC();
+      const scheduledDate = utcDate.plus({ minutes: i * 15 }).toISO();
 
       // Schedules a separate job for each question
       await agenda.schedule(scheduledDate, "send single question", {
