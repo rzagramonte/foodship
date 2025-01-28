@@ -31,7 +31,7 @@ const fetchQuestionsFromAPI = async () => {
       max_tokens: 1024,
     });
 
-    console.log("Response from Hugging Face API:", response.choices.message);
+    console.log("Response from Hugging Face API:", response);
 
     // Extract the raw content from the response
     const rawContent = response.choices[0].message.content;
