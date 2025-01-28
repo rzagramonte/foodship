@@ -75,7 +75,7 @@ const scheduleJobs = async (event) => {
 
     // Schedule each question with a 15-minute delay
     for (let i = 0; i < questions.length; i++) {
-      const scheduledDate = new Date(event.eventDate.getTime() + i * 15 * 60 * 1000);
+      const scheduledDate = new Date(event.eventDate.getTime() + i * 15 * 60 * 1000).toISOString();
 
       // Schedule a separate job for each question
       await agenda.schedule(scheduledDate, "send single question", {
