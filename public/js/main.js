@@ -421,7 +421,7 @@ newEventForm?.addEventListener("submit", async (e) => {
   try {
     const chatId = newEventForm?.dataset.chatId;
     const eventModal = document.getElementById("new-calender-event-close");
-    
+
     const date = new Date(new Date(eventDate.value).toISOString());
     const dateUTC = date.toISOString();
 
@@ -455,9 +455,15 @@ socket.on("new event", (event, chatId) => {
     const user = document.createElement("span");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
+    const regex = /([A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (AM|PM))/;
+    const dateTimeMatch = systemMessage.content.match(regex);
+    const dateTimeString = dateTimeMatch[0];
+    const localDate = new Date(dateTimeString.replace(/(AM|PM)/, " $1"));
+    const localDateString = localDate.toLocaleString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", hour12: true });
+    const updatedString = inputString.replace(dateTimeString, localDateString);
 
-    user.innerText = ` ${event.systemMessage.content.split(" ")[0]} `;
-    content.innerText = ` ${event.systemMessage.content.split(" ").slice(1).join(" ")} `;
+    user.innerText = ` ${updatedString.split(" ")[0]} `;
+    content.innerText = ` ${updatedString.split(" ").slice(1).join(" ")} `;
     createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
       year: "numeric",
       month: "numeric",
