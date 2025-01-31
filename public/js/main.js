@@ -533,8 +533,8 @@ const clearAll = () => {
   });
 };
 
-clearAllButton.addEventListener("click", clearAll);
-clearAllButtonOffCanvas.addEventListener("click", clearAll);
+clearAllButton?.addEventListener("click", clearAll);
+clearAllButtonOffCanvas?.addEventListener("click", clearAll);
 
 createdAt?.forEach(
   (e) =>
