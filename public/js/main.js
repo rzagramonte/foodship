@@ -421,12 +421,15 @@ newEventForm?.addEventListener("submit", async (e) => {
   try {
     const chatId = newEventForm?.dataset.chatId;
     const eventModal = document.getElementById("new-calender-event-close");
+    const date = new Date(eventDate.value);
+    const dateUTC = date.toUTCString();
+    console.log("EST date: ", eventDate.value, "UTC date:", dateUTC)
     const response = await fetch(`/events/createEvent`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ date: eventDate.value, chatId }),
+      body: JSON.stringify({ date: dateUTC, chatId }),
     });
 
     if (!response.ok) throw new Error("Failed to update group name");
