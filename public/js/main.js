@@ -454,20 +454,16 @@ socket.on("new event", (event, chatId) => {
     const user = document.createElement("span");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
-    console.log(event.systemMessage.content)
-    const date = new Date(event.systemMessage.content.match(/[A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (?:AM|PM)/)[0]);
-  
-    const localDateString = date.toLocaleString(undefined, { 
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      weekday: "long",
-      hour: "numeric",
-      minute: "numeric",
-    });
-    
-    const updatedSystemMessage = event.systemMessage.content.replace(date, localDateString);
-    console.log(updatedSystemMessage)
+    console.log(event.systemMessage.content);
+    const { DateTime } = luxon;
+    const text = event.systemMessage.content;
+    const regex = /[A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (?:AM|PM)/;
+    const match = text.match(regex);
+    const dateString = match[0];
+    const date = DateTime.fromFormat(dateString, "EEEE, MMMM d, yyyy 'at' h:mm a", { zone: "local" });
+    const localDateString = date.toLocaleString(DateTime.DATETIME_FULL);
+    const updatedSystemMessage = event.systemMessage.content.replace(dateString, localDateString);
+    console.log(updatedSystemMessage);
     user.innerText = ` ${updatedSystemMessage.split(" ")[0]} `;
     content.innerText = ` ${updatedSystemMessage.split(" ").slice(1).join(" ")} `;
     createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
