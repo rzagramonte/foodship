@@ -460,8 +460,8 @@ socket.on("new event", (event, chatId) => {
     const regex = /[A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (?:AM|PM)/;
     const match = text.match(regex);
     const dateString = match[0];
-    const date = DateTime.fromFormat(dateString, "EEEE, MMMM d, yyyy 'at' h:mm a", { zone: "local" });
-    const localDateString = date.toLocaleString(DateTime.DATETIME_FULL);
+    const date = DateTime.fromFormat(dateString, "EEEE, MMMM d, yyyy 'at' h:mm a", { zone: "utc" });
+    const localDateString = date.toLocaleString();
     const updatedSystemMessage = event.systemMessage.content.replace(dateString, localDateString);
     console.log(updatedSystemMessage);
     user.innerText = ` ${updatedSystemMessage.split(" ")[0]} `;

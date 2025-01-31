@@ -100,7 +100,7 @@
     <% } else { %>
     <li class="content text-wrap text-break mb-2 fw-light">
       <span>
-        <i class="px-2 fa-solid fa-<%= chat.messages[i].content.includes('event') ? 'calendar-check' : chat.messages[i].content.includes('?') ? 'circle-question' : chat.messages[i].content.includes('joined') ? 'arrow-right' : 'arrow-left'%>"></i>
+        <i class="px-2 fa-solid fa-<%= chat.messages[i].content.includes('?') ? 'circle-question' :chat.messages[i].content.includes('event') ? 'calendar-check' : chat.messages[i].content.includes('joined') ? 'arrow-right' : 'arrow-left'%>"></i>
       </span>
       <span class="<%= chat.messages[i].content.includes('?') ? '' : 'text-primary' %>">
         <%=chat.messages[i].content.split(" ")[0]%>
