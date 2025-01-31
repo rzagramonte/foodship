@@ -26,6 +26,7 @@ const userEvent = newEventForm?.dataset.user;
 const eventDate = document.getElementById("date");
 const createdAt = document.querySelectorAll(".createdAt");
 const dateSet = document.querySelectorAll(".date-set");
+const eventSystemMessage = document.querySelectorAll(".eventSystemMessage");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
@@ -463,7 +464,7 @@ socket.on("new event", (event, chatId) => {
       weekday: "long",
       hour: "numeric",
       minute: "numeric",
-    })}`)
+    })}`);
     user.innerText = ` ${systemMessage.split(" ")[0]} `;
     content.innerText = ` ${systemMessage.split(" ").slice(1).join(" ")} `;
     console.log(event.systemMessage.createdAt);
@@ -476,7 +477,7 @@ socket.on("new event", (event, chatId) => {
     })} `;
 
     createdAt.className = "createdAt";
-    message.className = "content text-wrap text-break mb-2 fw-light";
+    message.className = "eventSystemMessage text-wrap text-break mb-2 fw-light";
     icon.className = "px-2 fa-solid fa-calendar-check";
     icon.style.color = "#85edbe";
     user.className = "text-primary";
@@ -558,3 +559,8 @@ dateSet?.forEach(
       minute: "numeric",
     })}`)
 );
+/*
+eventSystemMessage?.forEach(e=>(
+
+))
+*/
