@@ -68,7 +68,6 @@ const scheduleJobs = async (event) => {
     agenda.define("send single question", async (job) => {
       const { postEventQuestion } = require("../controllers/events");
       const { event, question } = job.attrs.data; // Extracts individual question
-      console.log("event from jobSched:", event)
       const chatId = event.chatId;
       postEventQuestion({ chatId, question });
       console.log(`Sending question to chat ${chatId}:`, question);

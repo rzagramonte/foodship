@@ -15,16 +15,13 @@ const dbManager = {
       console.log("Agenda initialized.");
 
       // Graceful shutdown for Agenda
-      process.on("SIGTERM", async () => {
+      const stop = async () => {
         await this.agenda.stop();
         console.log("Agenda stopped on SIGTERM.");
         process.exit(0);
-      });
-      process.on("SIGINT", async () => {
-        await this.agenda.stop();
-        console.log("Agenda stopped on SIGINT.");
-        process.exit(0);
-      });
+      };
+      process.on("SIGTERM", stop);
+      process.on("SIGINT", stop);
     } catch (err) {
       console.error("Error connecting to DB or initializing Agenda:", err);
       process.exit(1); // Exit process with failure
