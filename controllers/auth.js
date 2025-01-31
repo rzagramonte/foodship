@@ -16,7 +16,6 @@ module.exports = {
     const validationErrors = [];
     if (!validator.isEmail(req.body.email)) validationErrors.push({ msg: "Please enter a valid email address." });
     if (validator.isEmpty(req.body.password)) validationErrors.push({ msg: "Password cannot be blank." });
-    console.log(req.body.email);
     if (validationErrors.length) {
       req.flash("errors", validationErrors);
       return res.redirect("/login");
