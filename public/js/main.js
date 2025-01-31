@@ -421,9 +421,11 @@ newEventForm?.addEventListener("submit", async (e) => {
   try {
     const chatId = newEventForm?.dataset.chatId;
     const eventModal = document.getElementById("new-calender-event-close");
-    const date = new Date(eventDate.value);
-    const dateUTC = date.toUTCString();
-    console.log("EST date: ", eventDate.value, "UTC date:", dateUTC)
+    
+    const date = new Date(new Date(eventDate.value).toISOString());
+    const dateUTC = date.toISOString();
+
+    console.log("EST date: ", eventDate.value, "UTC date:", dateUTC);
     const response = await fetch(`/events/createEvent`, {
       method: "POST",
       headers: {
@@ -469,7 +471,6 @@ socket.on("new event", (event, chatId) => {
     icon.className = "px-2 fa-solid fa-calendar-check";
     icon.style.color = "#85edbe";
     user.className = "text-primary";
-    
 
     message.appendChild(icon);
     message.appendChild(user);
@@ -490,7 +491,6 @@ socket.on("question", async (savedQuestion, chatId) => {
     const content = document.createElement("span");
     const content2 = document.createElement("span");
     const createdAt = document.createElement("span");
-    
 
     content.innerText = ` ${savedQuestion.content.split(" ")[0]} `;
     content2.innerText = ` ${savedQuestion.content.split(" ").slice(1).join(" ")} `;
