@@ -37,14 +37,7 @@ module.exports = {
       });
       const systemMessage = await Message.create({
         chatId,
-        content: `${user.userName} created an event for ${new Date(event.date).toLocaleString(undefined, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          weekday: "long",
-          hour: "numeric",
-          minute: "numeric",
-        })} at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
+        content: `${user.userName} created an event for DATE at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
         contentType: "text",
       });
       await Chat.findByIdAndUpdate(chatId, {
