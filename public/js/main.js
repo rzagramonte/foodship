@@ -425,7 +425,6 @@ newEventForm?.addEventListener("submit", async (e) => {
     const date = new Date(new Date(eventDate.value).toISOString());
     const dateUTC = date.toISOString();
 
-    console.log("EST date: ", eventDate.value, "UTC date:", dateUTC);
     const response = await fetch(`/events/createEvent`, {
       method: "POST",
       headers: {
@@ -455,15 +454,22 @@ socket.on("new event", (event, chatId) => {
     const user = document.createElement("span");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
-    const regex = /([A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (AM|PM))/;
-    const dateTimeMatch = systemMessage.content.match(regex);
-    const dateTimeString = dateTimeMatch[0];
-    const localDate = new Date(dateTimeString.replace(/(AM|PM)/, " $1"));
-    const localDateString = localDate.toLocaleString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", hour12: true });
-    const updatedString = inputString.replace(dateTimeString, localDateString);
-
-    user.innerText = ` ${updatedString.split(" ")[0]} `;
-    content.innerText = ` ${updatedString.split(" ").slice(1).join(" ")} `;
+    console.log(event.systemMessage.content)
+    const date = new Date(event.systemMessage.content.match(/[A-Za-z]+, \w+ \d{1,2}, \d{4} at \d{1,2}:\d{2} (?:AM|PM)/)[0]);
+  
+    const localDateString = date.toLocaleString(undefined, { 
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+      hour: "numeric",
+      minute: "numeric",
+    });
+    
+    const updatedSystemMessage = event.systemMessage.content.replace(date, localDateString);
+    console.log(updatedSystemMessage)
+    user.innerText = ` ${updatedSystemMessage.split(" ")[0]} `;
+    content.innerText = ` ${updatedSystemMessage.split(" ").slice(1).join(" ")} `;
     createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
       year: "numeric",
       month: "numeric",
