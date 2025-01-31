@@ -167,7 +167,7 @@
 }
 
 .landing-page {
-  background: url("https://res.cloudinary.com/rza/image/upload/f_auto,q_auto/v1738359120/bg_ywdiex.jpg") no-repeat center/cover !important;
+  background: url("../imgs/bg.webp") no-repeat center/cover !important;
 }
 
 .group-card {
