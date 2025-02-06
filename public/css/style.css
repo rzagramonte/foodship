@@ -102,6 +102,14 @@
   --bs-form-invalid-border-color: #dc3545 !important;
 }
 
+html, body {
+  margin: 0 !important;
+
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+
 .btn {
   --bs-btn-padding-x: 1.5rem !important;
   --bs-btn-padding-y: 0.75rem !important;
