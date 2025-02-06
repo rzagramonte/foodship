@@ -26,6 +26,7 @@ module.exports = {
     try {
       const { user } = req;
       const { chatId, date } = req.body;
+      console.log(date)
       const chat = await Chat.findById(chatId).populate({ path: "cuisines", select: "cuisine" });
       const cuisines = chat.cuisines.map((c) => c.cuisine);
       const cuisine = cuisines[Math.floor(Math.random() * cuisines.length)];
@@ -37,7 +38,7 @@ module.exports = {
       });
       const systemMessage = await Message.create({
         chatId,
-        content: `${user.userName} created an event for DATE at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
+        content: `${user.userName} created an event for ${date} at ${event.restaurant.name}: ${event.restaurant.address.building} ${event.restaurant.address.street}, ${event.restaurant.borough}, NY ${event.restaurant.address.zipcode}.`,
         contentType: "text",
       });
       await Chat.findByIdAndUpdate(chatId, {

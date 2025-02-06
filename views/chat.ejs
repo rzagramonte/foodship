@@ -105,7 +105,7 @@
       <span class="<%= chat.messages[i].content.includes('?') ? '' : 'text-primary' %>">
         <%=chat.messages[i].content.split(" ")[0]%>
       </span>
-      <span class="<%=chat.messages[i].content.includes('event') ? 'eventSystemMessage' : '' %>" data-event-date="">
+      <span class="<%=chat.messages[i].content.includes('event') ? 'eventSystemMessage' : '' %>">
         <%= chat.messages[i].content.split(" ").slice(1).join(" ")%>
       </span>
       <span class="createdAt">

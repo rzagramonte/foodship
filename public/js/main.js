@@ -455,19 +455,19 @@ socket.on("new event", (event, chatId) => {
     const user = document.createElement("span");
     const content = document.createElement("span");
     const createdAt = document.createElement("span");
-    console.log(event.systemMessage.content)
-    console.log(event.event.date)
-    const systemMessage = event.systemMessage.content.replace('DATE', `${new Date(event.event.date).toLocaleString(undefined, {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      weekday: "long",
-      hour: "numeric",
-      minute: "numeric",
-    })}`);
+    const systemMessage = event.systemMessage.content.replace(
+      /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/,
+      `${new Date(event.event.date).toLocaleString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
+        hour: "numeric",
+        minute: "numeric",
+      })}`
+    );
     user.innerText = ` ${systemMessage.split(" ")[0]} `;
     content.innerText = ` ${systemMessage.split(" ").slice(1).join(" ")} `;
-    console.log(event.systemMessage.createdAt);
     createdAt.innerText = ` ${new Date(event.systemMessage.createdAt).toLocaleString(undefined, {
       year: "numeric",
       month: "numeric",
@@ -559,8 +559,21 @@ dateSet?.forEach(
       minute: "numeric",
     })}`)
 );
-/*
-eventSystemMessage?.forEach(e=>(
 
-))
-*/
+eventSystemMessage?.forEach((e) => {
+  const systemMessage = e.textContent;
+  const regex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/g;
+  const eventDate = systemMessage.match(regex);
+
+  e.textContent = e.textContent.replace(
+    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/,
+    `${new Date(eventDate).toLocaleString(undefined, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      weekday: "long",
+      hour: "numeric",
+      minute: "numeric",
+    })}`
+  );
+});

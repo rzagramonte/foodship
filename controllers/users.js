@@ -65,8 +65,8 @@ module.exports = {
         { members: userId },
         {
           $addToSet: {
-            cuisines: { $each: [...cuisines] },
-            interests: { $each: [...interests] },
+            cuisines: cuisines,
+            interests: interests,
           },
         },
         { new: true }
