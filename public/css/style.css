@@ -1,7 +1,7 @@
 body {
-  max-height: 100vh;
+  max-height: 100vh !important;
   /* mobile viewport bug fix */
-  max-height: -webkit-fill-available;
+  max-height: -webkit-fill-available !important;
 }
 
 :root,
