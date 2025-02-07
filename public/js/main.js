@@ -578,7 +578,9 @@ eventSystemMessage?.forEach((e) => {
   );
 });
 
-window.onresize = function() {
-  document.body.height = window.innerHeight;
-}
-window.onresize(); // called to initially set the height.
+document.addEventListener("DOMContentLoaded", function() {
+  window.onresize = function() {
+      document.body.style.height = window.innerHeight + 'px';
+  }
+  window.onresize(); // called to initially set the height
+});
