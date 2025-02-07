@@ -577,10 +577,3 @@ eventSystemMessage?.forEach((e) => {
     })}`
   );
 });
-
-document.addEventListener("DOMContentLoaded", function() {
-  window.onresize = function() {
-      document.body.style.height = window.innerHeight + 'px';
-  }
-  window.onresize(); // called to initially set the height
-});
