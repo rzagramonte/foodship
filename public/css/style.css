@@ -4,10 +4,6 @@ body {
   min-height: -webkit-fill-available;
 }
 
-html {
-  height: -webkit-fill-available;
-}
-
 :root,
 [data-bs-theme="light"] {
   --bs-primary: #ae9152 !important; /* Gold */
