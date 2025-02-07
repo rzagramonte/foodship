@@ -1,8 +1,3 @@
-@supports (-webkit-touch-callout: none) {
-  body {
-    height: -webkit-fill-available !important;
-  }
-}
 
 :root,
 [data-bs-theme="light"] {
