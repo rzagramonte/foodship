@@ -187,7 +187,6 @@ body {
 
 .modal-body {
   max-height: 75vh;
-  max-height: -webkit-fill-available !important;
 }
 
 i {
