@@ -186,7 +186,7 @@ body {
 }
 
 .modal-body {
-  flex: .75;
+  max-height: 70vh;
 }
 
 i {
