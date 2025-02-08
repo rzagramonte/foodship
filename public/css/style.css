@@ -248,9 +248,11 @@ i {
 }
 
 .chat-box {
-  flex: .90 !important;
+  height: 90vh !important;
   scrollbar-color: #353745 #353745;
 }
+
+
 
 /* For most modern browsers */
 ::-webkit-scrollbar {
