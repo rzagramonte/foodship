@@ -237,12 +237,12 @@ i {
 }
 
 .group-chat-list{
-  height: 80vh !important;
+  max-height: 80vh !important;
   scrollbar-color: #2f313e #2f313e;
 }
 
 .chat-box {
-  height: 90vh !important;
+  max-height: 90vh !important;
   scrollbar-color: #353745 #353745;
 }
 
