@@ -6,7 +6,7 @@ const eventSchema = new mongoose.Schema({
   eventDate: { type: Date, required: true }
 });
 
-const AgendaSchema = new mongoose.Schema({
+const AgendaJobSchema = new mongoose.Schema({
     name: { type: String, required: true },
     data: {
       event: { type: eventSchema, required: true },
@@ -22,4 +22,4 @@ const AgendaSchema = new mongoose.Schema({
     lastFinishedAt: { type: Date, default: null }
 });
 
-module.exports = mongoose.model("Agenda", AgendaSchema);
+module.exports = mongoose.model("AgendaJob", AgendaJobSchema);
