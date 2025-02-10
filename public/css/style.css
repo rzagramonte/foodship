@@ -1,9 +1,3 @@
-body {
-  max-height: 100vh !important;
-  /* mobile viewport bug fix */
-  max-height: -webkit-fill-available !important;
-}
-
 :root,
 [data-bs-theme="light"] {
   --bs-primary: #ae9152 !important; /* Gold */
