@@ -64,33 +64,35 @@ const scheduleQuestions = async (event) => {
     const questions = await fetchQuestionsFromAPI();
 
     // Defines the job for sending a single question
-    agenda.define("send question", async (job) => {
-      const { postEventQuestion } = require("../controllers/events");
-      const { event, question } = job.attrs.data; // Extracts individual question
-      const chatId = event.chatId;
-      postEventQuestion({ chatId, question });
-      console.log(`Sending question to chat ${chatId}:`, question);
-    });
-
-    // Start Agenda
-    await agenda.start();
-    console.log("Agenda started successfully.");
-
-    // Schedule each question with a 15-minute delay
-    for (let i = 0; i < questions.length; i++) {
-      const eventDate = new Date(event.eventDate);
-      const localDate = DateTime.fromJSDate(eventDate);
-      const utcDate = localDate.toUTC();
-      const scheduledDate = utcDate.plus({ minutes: i * 15 }).toISO();
-
-      // Schedules a separate job for each question
-      await agenda.schedule(scheduledDate, "send question", {
-        event,
-        question: questions[i],
+    agenda.on("ready", async () => {
+      agenda.define("send question", async (job) => {
+        const { postEventQuestion } = require("../controllers/events");
+        const { event, question } = job.attrs.data; // Extracts individual question
+        const chatId = event.chatId;
+        postEventQuestion({ chatId, question });
+        console.log(`Sending question to chat ${chatId}:`, question);
       });
 
-      console.log(`Scheduled question ${i + 1} at ${scheduledDate}`);
-    }
+      // Start Agenda
+      await agenda.start();
+      console.log("Agenda started successfully.");
+
+      // Schedule each question with a 15-minute delay
+      for (let i = 0; i < questions.length; i++) {
+        const eventDate = new Date(event.eventDate);
+        const localDate = DateTime.fromJSDate(eventDate);
+        const utcDate = localDate.toUTC();
+        const scheduledDate = utcDate.plus({ minutes: i * 15 }).toISO();
+
+        // Schedules a separate job for each question
+        await agenda.schedule(scheduledDate, "send question", {
+          event,
+          question: questions[i],
+        });
+
+        console.log(`Scheduled question ${i + 1} at ${scheduledDate}`);
+      }
+    });
   } catch (err) {
     console.error("Error scheduling test job:", err);
   }

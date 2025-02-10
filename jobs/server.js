@@ -7,7 +7,7 @@ const pingServer = async (agenda) => {
       //define job to ping server
       agenda.define("ping server", async () => {
         await fetch("https://foodship-app.onrender.com/");
-        console.log("Server pinged successfully");
+        console.log("Server pinged successfully.");
       });
 
       // Start Agenda
