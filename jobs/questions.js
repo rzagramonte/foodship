@@ -72,6 +72,10 @@ const scheduleQuestions = async (event) => {
       console.log(`Sending question to chat ${chatId}:`, question);
     });
 
+    // Start Agenda
+    await agenda.start();
+    console.log("Agenda started successfully.");
+
     // Schedule each question with a 15-minute delay
     for (let i = 0; i < questions.length; i++) {
       const eventDate = new Date(event.eventDate);
@@ -87,9 +91,6 @@ const scheduleQuestions = async (event) => {
 
       console.log(`Scheduled question ${i + 1} at ${scheduledDate}`);
     }
-    // Start Agenda
-    await agenda.start();
-    console.log("Agenda started successfully.");
   } catch (err) {
     console.error("Error scheduling test job:", err);
   }
