@@ -17,6 +17,7 @@ const eventRoutes = require("./routes/events");
 const chatRoutes = require("./routes/chats");
 const messageRoutes = require("./routes/messages");
 const profileRoutes = require("./routes/profile");
+const agendaJobs = require("./models/AgendaJobs");
 
 // Use .env file in config folder
 require("dotenv").config({ path: "./config/.env" });
@@ -58,6 +59,22 @@ app.use(
     }),
   })
 );
+
+//Check if some jobs have to be repaired (immediately restarted) (for example due to OOM or similar when a job was running)
+
+(async () => {
+  try {
+    const numFixes = await agendaJobs.updateMany(
+      { $expr: { $gt: [{ $subtract: ["$lastRunAt", "$lastFinishedAt"] }, 0] } },
+      { $unset: { lockedAt: undefined }, $set: { nextRunAt: new Date() } },
+      { upsert: false }
+    ).exec();
+
+    console.log(`Fixed ${numFixes.modifiedCount} jobs in agenda.`);
+  } catch (error) {
+    console.error("Error fixing agenda jobs:", error);
+  }
+})();
 
 // Socket.IO connection chatIds
 io.on("connection", (socket) => {

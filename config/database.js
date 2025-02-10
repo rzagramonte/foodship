@@ -11,7 +11,7 @@ const dbManager = {
       console.log(`MongoDB Connected: ${this.conn.connection.host}`);
 
       // Initialize Agenda
-      this.agenda = new Agenda({ db: { address: process.env.DB_STRING } });
+      this.agenda = new Agenda({ db: { address: process.env.DB_STRING, collection: 'agendaJobs' } });
       console.log("Agenda initialized.");
 
       // Graceful shutdown for Agenda
