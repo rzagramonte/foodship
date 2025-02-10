@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Agenda = require("agenda");
+const pingServer = require("../jobs/server");
 
 const dbManager = {
   conn: null, // MongoDB connection
@@ -13,6 +14,9 @@ const dbManager = {
       // Initialize Agenda
       this.agenda = new Agenda({ db: { address: process.env.DB_STRING, collection: 'agendajobs' } });
       console.log("Agenda initialized.");
+
+      //Ping server
+      await pingServer(this.agenda);
 
       // Graceful shutdown for Agenda
       const stop = async () => {
