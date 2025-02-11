@@ -26,7 +26,6 @@ module.exports = {
     try {
       const { user } = req;
       const { chatId, date } = req.body;
-      console.log(date)
       const chat = await Chat.findById(chatId).populate({ path: "cuisines", select: "cuisine" });
       const cuisines = chat.cuisines.map((c) => c.cuisine);
       const cuisine = cuisines[Math.floor(Math.random() * cuisines.length)];
