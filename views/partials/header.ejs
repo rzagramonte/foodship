@@ -82,12 +82,34 @@
             <a class="nav-link" href="/safety">safety</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/user/<%=user._id%>">preferences</a>
+            <div data-bs-toggle="modal" data-bs-target="#preferences-header-offcanvas">
+              preferences
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/logout">logout</a>
           </li>
         </ul>
+              <!-- Preferences Modal -->
+  <div class="modal fade" id="preferences-header-offcanvas" tabindex="-1" aria-labelledby="preferencesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-bottom">
+          <h1 class="modal-title fs-5" id="preferencesLabel">Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="preferences" action="/user/update/<%=user._id%>?_method=PATCH" method="POST" data-user-name="<%= user.userName %>">
+          <div class="modal-body">
+            <%- include('preferences') -%>
+          </div>
+          <div class="modal-footer border-bottom">
+            <button type="button" id="clearAll" class="btn btn-danger">Clear All</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
         <% } else { %>
         <ul class="navbar-nav justify-content-end pe-3">
           <li class="nav-item">
