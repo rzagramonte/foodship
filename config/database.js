@@ -24,6 +24,10 @@ const dbManager = {
       // Start Agenda
       await this.startAgenda();
 
+      this.agenda.on("ready", async () => {
+        await pingServer(this.agenda);
+      });
+
       // Graceful shutdown for Agenda
       this.setupShutdownHandlers();
     } catch (err) {
