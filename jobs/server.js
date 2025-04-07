@@ -5,7 +5,7 @@ const pingServer = async (agenda) => {
     }
 
     //schedule for every 10 minutes
-    agenda.every("10 minutes", "ping server");
+    agenda.every("15 minutes", "ping server");
   } catch (err) {
     console.error("Error scheduling test job:", err);
   }
