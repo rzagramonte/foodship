@@ -85,7 +85,7 @@
           </div>
           <form id="preferences-offcanvas" action="/user/update/<%=user._id%>?_method=PATCH" method="POST" data-user-name="<%= user.userName %>">
             <div class="modal-body">
-              <%- include('preferences') -%>
+              <%- include('preferences-offcanvas') -%>
             </div>
             <div class="modal-footer border-bottom">
               <button type="button" id="clearAll-offcanvas" class="btn btn-danger">Clear All</button>
