@@ -38,7 +38,7 @@ const fetchQuestionsFromAPI = async () => {
     console.log(rawContent);
 
     // Regex pattern to capture just the questions
-    const questionPattern = /^\d+\.\s(.+?)\s*\(/gm;
+    const questionPattern = /\d+\.\s([\s\S]+?)(?=\n\d+\.|$)/g;
 
     // Find all questions using the regex pattern
     const questions = [];
