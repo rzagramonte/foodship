@@ -26,7 +26,7 @@ const fetchQuestionsFromAPI = async () => {
 
     // Call the Hugging Face API
     const response = await hf.chatCompletion({
-      model: "mistralai/Mistral-7B-Instruct-v0.2",
+      model: "mistralai/Mistral-7B-Instruct-v0.3",
       messages: messages,
       max_tokens: 1024,
     });
@@ -38,7 +38,7 @@ const fetchQuestionsFromAPI = async () => {
     console.log(rawContent);
 
     // Regex pattern to capture just the questions
-    const questionPattern = /\d+\.\s"([^"]+\?)"/gs;
+    const questionPattern = /\d+\.\s([^?]+(?:\?[^.]+)*\?)/g;
 
     // Find all questions using the regex pattern
     const questions = [];
