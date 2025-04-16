@@ -172,13 +172,7 @@
 }
 
 .landing-page {
-  background: url("../imgs/bg-blur.webp") no-repeat center/cover !important;
-  transition: background-image 0.3s ease-in-out !important;
-}
-
-
-.landing-page.loaded {
-  background-image: url("../imgs/bg.webp") !important;
+  background: url("../imgs/bg.webp") no-repeat center/cover !important;
 }
 
 .group-card {
