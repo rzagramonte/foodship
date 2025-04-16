@@ -26,6 +26,8 @@ const userEvent = newEventForm?.dataset.user;
 const eventDate = document.getElementById("date");
 const createdAt = document.querySelectorAll(".createdAt");
 const dateSet = document.querySelectorAll(".date-set");
+const landing = document.querySelector(".landing-page");
+const fullBg = new Image();
 const eventSystemMessage = document.querySelectorAll(".eventSystemMessage");
 
 chatBox?.scrollTo(0, chatBox.scrollHeight);
@@ -548,6 +550,12 @@ createdAt?.forEach(
       minute: "numeric",
     })}`)
 );
+
+fullBg.src = "/imgs/bg.webp";
+
+fullBg.onload = () => {
+  landing.classList.add("loaded");
+};
 
 dateSet?.forEach(
   (e) =>
