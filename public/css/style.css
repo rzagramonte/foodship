@@ -170,10 +170,12 @@
 .link-primary:hover {
   color: RGBA(191, 217, 215, var(--bs-link-opacity, 1)) !important;
 }
-
+/*
 .landing-page {
-  background: url("../imgs/bg.webp") no-repeat center/cover !important;
+  background: url(https://res.cloudinary.com/rza/image/upload/v1746496088/bg.webp) no-repeat center/cover !important;
 }
+*/
+
 
 .group-card {
   background-color: #2f313e;
