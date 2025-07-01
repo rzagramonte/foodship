@@ -1,5 +1,5 @@
 const socket = io();
-const year = document.getElementById("copyright");
+const year = document.getElementById("footer-date");
 const form = document.getElementById("form");
 const chatId = form?.dataset.chatId;
 const senderId = form?.dataset.senderId;
@@ -31,12 +31,9 @@ const eventSystemMessage = document.querySelectorAll(".eventSystemMessage");
 chatBox?.scrollTo(0, chatBox.scrollHeight);
 
 if (year)
-  year.innerText = year.innerText.replace(
-    /\d{4}/g,
-    `${new Date().toLocaleString(undefined, {
-      year: "numeric",
-    })}`
-  );
+  year.innerText = `${new Date().toLocaleString(undefined, {
+    year: "numeric",
+  })}`;
 
 images.forEach((img) => {
   img.addEventListener("load", () => {
