@@ -1,9 +1,39 @@
 const dbManager = require("../config/database");
-const { HfInference } = require("@huggingface/inference");
+const { InferenceClient } = require("@huggingface/inference");
 const { DateTime } = require("luxon");
 
 const fetchQuestionsFromAPI = async () => {
-  const SYSTEM_PROMPT = "You are a psychotherapist with extensive experience in fostering deep interpersonal connections. Your task is to generate 4 thought-provoking and emotionally intelligent questions designed to help participants build a profound sense of trust, understanding, and connection. The questions should evoke vulnerability, curiosity, and shared humanity, encouraging participants to reflect on their experiences, values, and dreams.";
+  const SYSTEM_PROMPT = `
+You are a psychotherapist with extensive experience in fostering deep interpersonal connections.
+
+Your task is to generate 4 thought-provoking and emotionally intelligent questions designed to help participants build a profound sense of trust, understanding, and connection. The questions should evoke vulnerability, curiosity, and shared humanity, encouraging participants to reflect on their experiences, values, and dreams.
+
+These questions are strictly personal and human-focused. They must not be about business, industry, technology, economics, or market trends.
+
+Questions should explore:
+- identity
+- emotions or values
+- formative memories
+- fears or hopes
+- relationships
+- personal growth
+
+Rules:
+- No bolding, no quotes, no numbering, no special characters.
+- No lists, no explanations or commentary.
+- Only output the four questions, each ending with a question mark.
+
+Respond ONLY with valid JSON in the following shape:
+
+{
+  "questions": [
+    "Question 1 here?",
+    "Question 2 here?",
+    "Question 3 here?",
+    "Question 4 here?"
+  ]
+}
+`;
 
   console.log("Fetching questions from Hugging Face API...");
 
@@ -16,17 +46,17 @@ const fetchQuestionsFromAPI = async () => {
     }
 
     // Initialize Hugging Face Inference Client
-    const hf = new HfInference(HF_API_KEY);
+    const client = new InferenceClient(HF_API_KEY);
 
     // Prepare the system prompt and user input
     const messages = [
-      { role: "system", content: SYSTEM_PROMPT },
-      { role: "user", content: "Generate 4 questions for a meetup." },
+      { role: "user", content: SYSTEM_PROMPT },
+      //{ role: "user", content: "Generate 4 questions for a meetup." },
     ];
 
     // Call the Hugging Face API
-    const response = await hf.chatCompletion({
-      model: "mistralai/Mistral-7B-Instruct-v0.3",
+    const response = await client.chatCompletion({
+      model: "katanemo/Arch-Router-1.5B",
       messages: messages,
       max_tokens: 1024,
     });
@@ -37,16 +67,16 @@ const fetchQuestionsFromAPI = async () => {
     const rawContent = response.choices[0].message.content;
     console.log(rawContent);
 
-    // Regex pattern to capture just the questions
-    const questionPattern = /\d+\.\s([^?]+(?:\?[^.]+)*\?)/g;
+    const jsonText = rawContent.replace(/```json|```/g, "").trim();
 
-    // Find all questions using the regex pattern
-    const questions = [];
-    let match;
-    while ((match = questionPattern.exec(rawContent)) !== null) {
-      questions.push(match[1].trim());
+    let data;
+    try {
+      data = JSON.parse(jsonText);
+    } catch (err) {
+      console.error("Failed to parse JSON from model:", err, jsonText);
     }
 
+    const questions = Array.isArray(data?.questions) ? data.questions : [];
     // Return the questions
     return questions;
   } catch (error) {
