@@ -51,7 +51,6 @@ Respond ONLY with valid JSON in the following shape:
     // Prepare the system prompt and user input
     const messages = [
       { role: "user", content: SYSTEM_PROMPT },
-      //{ role: "user", content: "Generate 4 questions for a meetup." },
     ];
 
     // Call the Hugging Face API
